@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityIssuer.WebAPI", "IdentityIssuer.WebAPI\IdentityIssuer.WebAPI.csproj", "{615E5001-B74A-488F-97D8-269C83710F37}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFiles", "{B6D0FEA1-1BF1-4E03-A895-D295724F859D}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{19B45716-B89F-4C1A-9202-D24FA7F4A8BD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{615E5001-B74A-488F-97D8-269C83710F37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{615E5001-B74A-488F-97D8-269C83710F37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{615E5001-B74A-488F-97D8-269C83710F37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{615E5001-B74A-488F-97D8-269C83710F37}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{615E5001-B74A-488F-97D8-269C83710F37} = {19B45716-B89F-4C1A-9202-D24FA7F4A8BD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {64A9FACE-2401-44FE-AB61-DD7ED2E76BD3}
+	EndGlobalSection
+EndGlobal
