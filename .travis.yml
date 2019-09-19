@@ -1,0 +1,12 @@
+language: csharp
+sudo: required
+dist: xenial
+mono: none
+dotnet: 2.2.103
+install:
+- dotnet restore
+cache:
+  directories:
+    - node_modules
+script:
+- dotnet build
