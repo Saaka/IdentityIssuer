@@ -1,22 +1,27 @@
-﻿using Microsoft.EntityFrameworkCore.Design;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace IdentityIssuer.Persistence
 {
     public class AppIdentityContextFactory : IDesignTimeDbContextFactory<AppIdentityContext>
     {
-        private const string AspNetCoreEnvironment = "ASPNETCORE_ENVIRONMENT";
-
         public AppIdentityContextFactory() { }
 
         public AppIdentityContext CreateDbContext(string[] args)
         {
-            var environment = Environment.GetEnvironmentVariable(AspNetCoreEnvironment);
+            var environment = Environment.GetEnvironmentVariable(PersistenceConstants.AspNetCoreEnvironment);
+            var connectionString = GetConnectionString(environment);
 
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(connectionString))
+                throw new ArgumentException($"Connection string '{PersistenceConstants.AppConnectionString}' is null or empty.", nameof(connectionString));
+
+            var optionsBuilder = new DbContextOptionsBuilder<AppIdentityContext>();
+            optionsBuilder.UseSqlServer(connectionString,
+                opt => opt.MigrationsHistoryTable(PersistenceConstants.MigrationsTable));
+
+            return new AppIdentityContext(optionsBuilder.Options);
         }
 
         private string GetConnectionString(string environmentName)
