@@ -13,4 +13,8 @@
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="2.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\IdentityIssuer.Domain\IdentityIssuer.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

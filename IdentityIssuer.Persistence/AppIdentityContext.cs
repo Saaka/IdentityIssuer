@@ -14,7 +14,6 @@ namespace IdentityIssuer.Persistence
         public AppIdentityContext(DbContextOptions options) : base(options) { }
 
         public DbSet<Tenant> Tenants { get; set; }
-        public DbSet<AllowedOrigin> AllowedOrigins { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
