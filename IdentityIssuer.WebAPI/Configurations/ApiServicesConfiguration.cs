@@ -10,7 +10,8 @@ namespace IdentityIssuer.WebAPI.Configurations
         {
             services
                 .AddTransient<ITenantOriginProvider, TenantOriginProvider>()
-                .AddTransient<ICorsPolicyProvider, TenantCorsPolicyProvider>();
+                .AddTransient<ICorsPolicyProvider, TenantCorsPolicyProvider>()
+                .AddTransient<IAllowedOriginsProvider, AllowedOriginsProvider>();
 
             return services;
         }

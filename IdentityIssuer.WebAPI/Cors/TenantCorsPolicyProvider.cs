@@ -16,8 +16,8 @@ namespace IdentityIssuer.WebAPI.Cors
         public async Task<CorsPolicy> GetPolicyAsync(HttpContext context, string policyName)
         {
             string origin;
-            if (policyName == PolicyConstants.TenantHeader.ToLower())
-                origin = "*";
+            if (policyName == PolicyConstants.PreflightPolicy)
+                origin = context.Request.Headers[PolicyConstants.OriginHeader];
             else
                 origin = await tenantOriginProvider.GetAllowedOrigin(policyName);
 

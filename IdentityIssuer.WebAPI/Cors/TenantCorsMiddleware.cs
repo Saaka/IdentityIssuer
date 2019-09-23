@@ -11,14 +11,19 @@ namespace IdentityIssuer.WebAPI.Cors
         private readonly RequestDelegate _next;
         private readonly ICorsService _corsService;
         private readonly ICorsPolicyProvider _corsPolicyProvider;
+        private readonly IAllowedOriginsProvider _allowedOriginsProvider;
         private readonly CorsPolicy _policy;
         private readonly string _corsPolicyName;
 
         public TenantCorsMiddleware(
             RequestDelegate next,
             ICorsService corsService,
-            ICorsPolicyProvider policyProvider)
-            : this(next, corsService, policyProvider, policyName: null) { }
+            ICorsPolicyProvider policyProvider,
+            IAllowedOriginsProvider allowedOriginsProvider)
+            : this(next, corsService, policyProvider, policyName: null)
+        {
+            _allowedOriginsProvider = allowedOriginsProvider ?? throw new ArgumentNullException(nameof(allowedOriginsProvider));
+        }
 
         public TenantCorsMiddleware(
             RequestDelegate next,
@@ -48,10 +53,15 @@ namespace IdentityIssuer.WebAPI.Cors
             {
                 CorsPolicy corsPolicy = null;
                 var accessControlRequestMethod = context.Request.Headers[CorsConstants.AccessControlRequestMethod];
+                var isPreflight = IsPreflight(context, accessControlRequestMethod);
 
                 if (context.Request.Headers.ContainsKey(PolicyConstants.TenantHeader))
                 {
-                    corsPolicy = _policy ?? await _corsPolicyProvider?.GetPolicyAsync(context, context.Request.Headers[PolicyConstants.TenantHeader]);
+                    corsPolicy = _policy ?? await _corsPolicyProvider.GetPolicyAsync(context, context.Request.Headers[PolicyConstants.TenantHeader]);
+                } 
+                else if (isPreflight && await _allowedOriginsProvider.IsOriginAvailable(context.Request.Headers[PolicyConstants.OriginHeader]))
+                {
+                    corsPolicy = _policy ?? await _corsPolicyProvider.GetPolicyAsync(context, PolicyConstants.PreflightPolicy);
                 }
 
                 if (corsPolicy != null)
@@ -59,10 +69,8 @@ namespace IdentityIssuer.WebAPI.Cors
                     var corsResult = _corsService.EvaluatePolicy(context, corsPolicy);
                     _corsService.ApplyResult(corsResult, context.Response);
 
-                    if (IsPreflight(context, accessControlRequestMethod))
+                    if (isPreflight)
                     {
-                        // Since there is a policy which was identified,
-                        // always respond to preflight requests.
                         context.Response.StatusCode = StatusCodes.Status204NoContent;
                         return;
                     }
