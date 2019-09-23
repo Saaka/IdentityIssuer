@@ -12,57 +12,27 @@ namespace IdentityIssuer.WebAPI.Cors
         private readonly ICorsService _corsService;
         private readonly ICorsPolicyProvider _corsPolicyProvider;
         private readonly IAllowedOriginsProvider _allowedOriginsProvider;
-        private readonly CorsPolicy _policy;
-        private readonly string _corsPolicyName;
 
         public TenantCorsMiddleware(
             RequestDelegate next,
             ICorsService corsService,
             ICorsPolicyProvider policyProvider,
             IAllowedOriginsProvider allowedOriginsProvider)
-            : this(next, corsService, policyProvider, policyName: null)
-        {
-            _allowedOriginsProvider = allowedOriginsProvider ?? throw new ArgumentNullException(nameof(allowedOriginsProvider));
-        }
-
-        public TenantCorsMiddleware(
-            RequestDelegate next,
-            ICorsService corsService,
-            ICorsPolicyProvider policyProvider,
-            string policyName)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
             _corsService = corsService ?? throw new ArgumentNullException(nameof(corsService));
             _corsPolicyProvider = policyProvider ?? throw new ArgumentNullException(nameof(policyProvider));
-            _corsPolicyName = policyName;
-        }
-
-        public TenantCorsMiddleware(
-           RequestDelegate next,
-           ICorsService corsService,
-           CorsPolicy policy)
-        {
-            _next = next ?? throw new ArgumentNullException(nameof(next));
-            _corsService = corsService ?? throw new ArgumentNullException(nameof(corsService));
-            _policy = policy ?? throw new ArgumentNullException(nameof(policy));
+            _allowedOriginsProvider = allowedOriginsProvider ?? throw new ArgumentNullException(nameof(allowedOriginsProvider));
         }
 
         public async Task Invoke(HttpContext context)
         {
             if (context.Request.Headers.ContainsKey(CorsConstants.Origin))
             {
-                CorsPolicy corsPolicy = null;
                 var accessControlRequestMethod = context.Request.Headers[CorsConstants.AccessControlRequestMethod];
                 var isPreflight = IsPreflight(context, accessControlRequestMethod);
 
-                if (context.Request.Headers.ContainsKey(PolicyConstants.TenantHeader))
-                {
-                    corsPolicy = _policy ?? await _corsPolicyProvider.GetPolicyAsync(context, context.Request.Headers[PolicyConstants.TenantHeader]);
-                } 
-                else if (isPreflight && await _allowedOriginsProvider.IsOriginAvailable(context.Request.Headers[PolicyConstants.OriginHeader]))
-                {
-                    corsPolicy = _policy ?? await _corsPolicyProvider.GetPolicyAsync(context, PolicyConstants.PreflightPolicy);
-                }
+                var corsPolicy = await GetPolicy(context, isPreflight);
 
                 if (corsPolicy != null)
                 {
@@ -78,6 +48,16 @@ namespace IdentityIssuer.WebAPI.Cors
             }
 
             await _next(context);
+        }
+
+        private async Task<CorsPolicy> GetPolicy(HttpContext context, bool isPreflight)
+        {
+            if (isPreflight && await _allowedOriginsProvider.IsOriginAvailable(context.Request.Headers[PolicyConstants.OriginHeader]))
+                return await _corsPolicyProvider.GetPolicyAsync(context, PolicyConstants.PreflightPolicy);
+            else if (context.Request.Headers.ContainsKey(PolicyConstants.TenantHeader))
+                return await _corsPolicyProvider.GetPolicyAsync(context, context.Request.Headers[PolicyConstants.TenantHeader]);
+            else
+                return null;
         }
 
         private bool IsPreflight(HttpContext context, StringValues accessControlRequestMethod)
