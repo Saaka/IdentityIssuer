@@ -1,4 +1,4 @@
-﻿using IdentityIssuer.Domain.Constants;
+﻿using IdentityIssuer.Common.Constants;
 using IdentityIssuer.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
