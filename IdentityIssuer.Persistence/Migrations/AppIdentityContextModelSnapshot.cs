@@ -20,9 +20,9 @@ namespace IdentityIssuer.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("IdentityIssuer.Persistence.Entities.Tenant", b =>
+            modelBuilder.Entity("IdentityIssuer.Persistence.Entities.TenantEntity", b =>
                 {
-                    b.Property<int>("TenantId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -38,7 +38,7 @@ namespace IdentityIssuer.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(32);
 
-                    b.HasKey("TenantId");
+                    b.HasKey("Id");
 
                     b.HasIndex("Code")
                         .IsUnique()
@@ -47,7 +47,7 @@ namespace IdentityIssuer.Persistence.Migrations
                     b.ToTable("Tenants");
                 });
 
-            modelBuilder.Entity("IdentityIssuer.Persistence.Entities.TenantUser", b =>
+            modelBuilder.Entity("IdentityIssuer.Persistence.Entities.TenantUserEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -232,9 +232,9 @@ namespace IdentityIssuer.Persistence.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("IdentityIssuer.Persistence.Entities.TenantUser", b =>
+            modelBuilder.Entity("IdentityIssuer.Persistence.Entities.TenantUserEntity", b =>
                 {
-                    b.HasOne("IdentityIssuer.Persistence.Entities.Tenant", "Tenant")
+                    b.HasOne("IdentityIssuer.Persistence.Entities.TenantEntity", "Tenant")
                         .WithMany("Users")
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -250,7 +250,7 @@ namespace IdentityIssuer.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("IdentityIssuer.Persistence.Entities.TenantUser")
+                    b.HasOne("IdentityIssuer.Persistence.Entities.TenantUserEntity")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -258,7 +258,7 @@ namespace IdentityIssuer.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("IdentityIssuer.Persistence.Entities.TenantUser")
+                    b.HasOne("IdentityIssuer.Persistence.Entities.TenantUserEntity")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -271,7 +271,7 @@ namespace IdentityIssuer.Persistence.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("IdentityIssuer.Persistence.Entities.TenantUser")
+                    b.HasOne("IdentityIssuer.Persistence.Entities.TenantUserEntity")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -279,7 +279,7 @@ namespace IdentityIssuer.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("IdentityIssuer.Persistence.Entities.TenantUser")
+                    b.HasOne("IdentityIssuer.Persistence.Entities.TenantUserEntity")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

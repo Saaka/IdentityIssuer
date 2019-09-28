@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace IdentityIssuer.Persistence.Configurations
 {
-    public class TenantUserConfiguration : IEntityTypeConfiguration<TenantUser>
+    public class TenantUserConfiguration : IEntityTypeConfiguration<TenantUserEntity>
     {
-        public void Configure(EntityTypeBuilder<TenantUser> builder)
+        public void Configure(EntityTypeBuilder<TenantUserEntity> builder)
         {
             builder
                 .HasOne(x => x.Tenant)

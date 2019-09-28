@@ -2,7 +2,7 @@
 
 namespace IdentityIssuer.Persistence.Entities
 {
-    public class TenantUser : IdentityUser<int>
+    public class TenantUserEntity : IdentityUser<int>
     {
         public string DisplayName { get; set; }
         public string UserGuid { get; set; }
@@ -11,6 +11,6 @@ namespace IdentityIssuer.Persistence.Entities
         public string FacebookId { get; set; }
         public string ImageUrl { get; set; }
 
-        public virtual Tenant Tenant { get; set; }
+        public virtual TenantEntity Tenant { get; set; }
     }
 }

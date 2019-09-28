@@ -32,7 +32,7 @@ namespace IdentityIssuer.Persistence.Migrations
                 schema: "identityiss",
                 columns: table => new
                 {
-                    TenantId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 32, nullable: false),
                     Code = table.Column<string>(maxLength: 3, nullable: false),
@@ -40,7 +40,7 @@ namespace IdentityIssuer.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tenants", x => x.TenantId);
+                    table.PrimaryKey("PK_Tenants", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -102,7 +102,7 @@ namespace IdentityIssuer.Persistence.Migrations
                         column: x => x.TenantId,
                         principalSchema: "identityiss",
                         principalTable: "Tenants",
-                        principalColumn: "TenantId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 

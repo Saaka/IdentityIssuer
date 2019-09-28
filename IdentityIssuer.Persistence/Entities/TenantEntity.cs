@@ -2,18 +2,18 @@
 
 namespace IdentityIssuer.Persistence.Entities
 {
-    public class Tenant
+    public class TenantEntity
     {
-        public Tenant()
+        public TenantEntity()
         {
-            Users = new List<TenantUser>();
+            Users = new List<TenantUserEntity>();
         }
 
-        public int TenantId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
         public string AllowedOrigin { get; set; }
 
-        public virtual ICollection<TenantUser> Users { get; set; }
+        public virtual ICollection<TenantUserEntity> Users { get; set; }
     }
 }

@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace IdentityIssuer.Persistence.Configurations
 {
-    public class TenantConfiguration : IEntityTypeConfiguration<Tenant>
+    public class TenantConfiguration : IEntityTypeConfiguration<TenantEntity>
     {
-        public void Configure(EntityTypeBuilder<Tenant> builder)
+        public void Configure(EntityTypeBuilder<TenantEntity> builder)
         {
             builder
-                .HasKey(x => x.TenantId);
+                .HasKey(x => x.Id);
 
             builder
                 .Property(x => x.Name)
