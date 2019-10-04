@@ -20,6 +20,7 @@ namespace IdentityIssuer.WebAPI
         {
             services
                 .AddApiServices()
+                .AddExternalServices()
                 .AddCors()
                 .AddMvcWithFilters();
         }
