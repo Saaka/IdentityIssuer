@@ -1,4 +1,5 @@
-﻿using IdentityIssuer.WebAPI.Configurations;
+﻿using IdentityIssuer.Persistence;
+using IdentityIssuer.WebAPI.Configurations;
 using IdentityIssuer.WebAPI.Cors;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,17 +10,19 @@ namespace IdentityIssuer.WebAPI
 {
     public class Startup
     {
+        IConfiguration Configuration { get; }
+        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
         public void ConfigureServices(IServiceCollection services)
         {
             services
                 .AddApiServices()
+                .AddDbContext(Configuration)
+                .AddPersistenceModule()
                 .AddExternalServices()
                 .AddCors()
                 .AddMvcWithFilters();
