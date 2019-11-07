@@ -55,8 +55,6 @@ namespace IdentityIssuer.WebAPI.UnitTests.CorsTests
 
             public AllowedOriginsProvider Configure()
             {
-                AutoMock.Provide(MemoryCacheProvider.MemoryCache);
-
                 AutoMock.Mock<ITenantsRepository>()
                     .Setup(x => x.GetAllAllowedOrigins())
                     .ReturnsAsync(allowedOrigins);
