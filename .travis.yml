@@ -10,4 +10,4 @@ cache:
     - node_modules
 script:
 - dotnet build
-  - dotnet test IdentityIssuer.WebAPI.UnitTests/IdentityIssuer.WebAPI.UnitTests.csproj
+- dotnet test IdentityIssuer.WebAPI.UnitTests/IdentityIssuer.WebAPI.UnitTests.csproj
