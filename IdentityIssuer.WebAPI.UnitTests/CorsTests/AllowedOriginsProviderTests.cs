@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Autofac.Extras.Moq;
 using FluentAssertions;
 using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.WebAPI.Cors;
@@ -11,13 +11,13 @@ using Xunit;
 namespace IdentityIssuer.WebAPI.UnitTests.CorsTests
 {
     [Trait("WebAPI", "Cors")]
-    public class AllowedOriginsProviderTests : IClassFixture<AllowedOriginsProviderTests.Fixture>
+    public class AllowedOriginsProviderTests : IDisposable
     {
         private readonly Fixture fixture;
 
-        public AllowedOriginsProviderTests(Fixture fixture)
+        public AllowedOriginsProviderTests()
         {
-            this.fixture = fixture;
+            fixture = new Fixture();
         }
         
         [Fact]
@@ -61,6 +61,11 @@ namespace IdentityIssuer.WebAPI.UnitTests.CorsTests
 
                 return AutoMock.Create<AllowedOriginsProvider>();
             }
+        }
+
+        public void Dispose()
+        {
+            fixture?.Dispose();
         }
     }
 }

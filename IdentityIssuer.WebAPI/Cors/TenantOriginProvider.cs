@@ -34,7 +34,7 @@ namespace IdentityIssuer.WebAPI.Cors
 
                 var tenant = await tenantProvider.GetTenant(tenantCode);
 
-                return tenant.AllowedOrigin;
+                return tenant?.AllowedOrigin;
             });
 
             return origin;
