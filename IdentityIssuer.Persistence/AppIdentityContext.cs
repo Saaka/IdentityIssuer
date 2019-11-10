@@ -1,4 +1,5 @@
-﻿using IdentityIssuer.Persistence.Configurations;
+﻿using IdentityIssuer.Application.Tenants;
+using IdentityIssuer.Persistence.Configurations;
 using IdentityIssuer.Persistence.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -14,6 +15,8 @@ namespace IdentityIssuer.Persistence
         public AppIdentityContext(DbContextOptions options) : base(options) { }
 
         public DbSet<TenantEntity> Tenants { get; set; }
+        public DbSet<TenantConfigurationEntity> TenantConfigurations { get; set; }
+        public DbSet<TenantProvider> TenantProviders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

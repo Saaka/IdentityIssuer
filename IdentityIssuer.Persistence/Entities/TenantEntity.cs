@@ -14,6 +14,7 @@ namespace IdentityIssuer.Persistence.Entities
         public string Code { get; set; }
         public string AllowedOrigin { get; set; }
 
+        public virtual TenantConfigurationEntity TenantConfiguration { get; set; }
         public virtual ICollection<TenantUserEntity> Users { get; set; }
     }
 }

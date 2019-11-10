@@ -9,6 +9,8 @@ namespace IdentityIssuer.Persistence
         public PersistenceMapperProfile()
         {
             CreateMap<TenantEntity, Tenant>();
+            CreateMap<TenantConfigurationEntity, TenantConfiguration>();
+            CreateMap<TenantProviderEntity, TenantProvider>();
         }
     }
 }

@@ -10,6 +10,9 @@ namespace IdentityIssuer.Persistence.Configurations
         public void Configure(EntityTypeBuilder<TenantEntity> builder)
         {
             builder
+                .ToTable("Tenants");
+            
+            builder
                 .HasKey(x => x.Id);
 
             builder
@@ -37,6 +40,12 @@ namespace IdentityIssuer.Persistence.Configurations
                 .WithOne(x => x.Tenant)
                 .HasForeignKey(x => x.TenantId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .HasOne(x => x.TenantConfiguration)
+                .WithOne(x => x.Tenant)
+                .HasForeignKey<TenantConfigurationEntity>(x => x.TenantId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
