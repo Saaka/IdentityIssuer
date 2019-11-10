@@ -1,6 +1,6 @@
 namespace IdentityIssuer.Application.Tenants
 {
-    public class TenantConfiguration
+    public class TenantSettings
     {
         public int Id { get; set; }
         public string TokenSecret { get; set; }

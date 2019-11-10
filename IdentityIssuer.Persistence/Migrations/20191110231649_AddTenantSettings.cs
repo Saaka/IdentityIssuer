@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace IdentityIssuer.Persistence.Migrations
 {
-    public partial class AddTenantConfigurations : Migration
+    public partial class AddTenantSettings : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "TenantConfigurations",
+                name: "TenantSettings",
                 schema: "identityiss",
                 columns: table => new
                 {
@@ -23,9 +23,9 @@ namespace IdentityIssuer.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TenantConfigurations", x => x.Id);
+                    table.PrimaryKey("PK_TenantSettings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TenantConfigurations_Tenants_TenantId",
+                        name: "FK_TenantSettings_Tenants_TenantId",
                         column: x => x.TenantId,
                         principalSchema: "identityiss",
                         principalTable: "Tenants",
@@ -34,51 +34,51 @@ namespace IdentityIssuer.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TenantProviders",
+                name: "TenantProviderSettings",
                 schema: "identityiss",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    TenantConfigurationId = table.Column<int>(nullable: false),
+                    TenantSettingsId = table.Column<int>(nullable: false),
                     ProviderType = table.Column<byte>(nullable: false),
                     Identifier = table.Column<string>(maxLength: 128, nullable: false),
                     Key = table.Column<string>(maxLength: 128, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TenantProviders", x => x.Id);
+                    table.PrimaryKey("PK_TenantProviderSettings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TenantProviders_TenantConfigurations_TenantConfigurationId",
-                        column: x => x.TenantConfigurationId,
+                        name: "FK_TenantProviderSettings_TenantSettings_TenantSettingsId",
+                        column: x => x.TenantSettingsId,
                         principalSchema: "identityiss",
-                        principalTable: "TenantConfigurations",
+                        principalTable: "TenantSettings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TenantConfigurations_TenantId",
+                name: "IX_TenantProviderSettings_TenantSettingsId",
                 schema: "identityiss",
-                table: "TenantConfigurations",
-                column: "TenantId",
-                unique: true);
+                table: "TenantProviderSettings",
+                column: "TenantSettingsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TenantProviders_TenantConfigurationId",
+                name: "IX_TenantSettings_TenantId",
                 schema: "identityiss",
-                table: "TenantProviders",
-                column: "TenantConfigurationId");
+                table: "TenantSettings",
+                column: "TenantId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "TenantProviders",
+                name: "TenantProviderSettings",
                 schema: "identityiss");
 
             migrationBuilder.DropTable(
-                name: "TenantConfigurations",
+                name: "TenantSettings",
                 schema: "identityiss");
         }
     }

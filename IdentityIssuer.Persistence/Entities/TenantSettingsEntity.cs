@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 namespace IdentityIssuer.Persistence.Entities
 {
-    public class TenantConfigurationEntity
+    public class TenantSettingsEntity
     {
-        public TenantConfigurationEntity()
+        public TenantSettingsEntity()
         {
-            TenantProviders = new List<TenantProviderEntity>();
+            TenantProviders = new List<TenantProviderSettingsEntity>();
         }
         
         public int Id { get; set; }
@@ -18,6 +18,6 @@ namespace IdentityIssuer.Persistence.Entities
         public bool EnableFacebookLogin { get; set; }
 
         public virtual TenantEntity Tenant { get; set; }
-        public virtual ICollection<TenantProviderEntity> TenantProviders { get; set; }
+        public virtual ICollection<TenantProviderSettingsEntity> TenantProviders { get; set; }
     }
 }

@@ -2,7 +2,7 @@ using IdentityIssuer.Common.Enums;
 
 namespace IdentityIssuer.Application.Tenants
 {
-    public class TenantProvider
+    public class TenantProviderSettings
     {
         public int Id { get; set; }
         public AuthProviderType ProviderType { get; set; }

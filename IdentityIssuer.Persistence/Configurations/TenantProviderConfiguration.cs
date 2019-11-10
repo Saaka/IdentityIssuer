@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace IdentityIssuer.Persistence.Configurations
 {
-    public class TenantProviderConfiguration : IEntityTypeConfiguration<TenantProviderEntity>
+    public class TenantProviderConfiguration : IEntityTypeConfiguration<TenantProviderSettingsEntity>
     {
-        public void Configure(EntityTypeBuilder<TenantProviderEntity> builder)
+        public void Configure(EntityTypeBuilder<TenantProviderSettingsEntity> builder)
         {
             builder
                 .HasKey(x => x.Id);

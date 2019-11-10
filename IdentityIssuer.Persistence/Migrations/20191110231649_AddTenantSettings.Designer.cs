@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdentityIssuer.Persistence.Migrations
 {
     [DbContext(typeof(AppIdentityContext))]
-    [Migration("20191110225425_AddTenantConfigurations")]
-    partial class AddTenantConfigurations
+    [Migration("20191110231649_AddTenantSettings")]
+    partial class AddTenantSettings
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,34 +21,6 @@ namespace IdentityIssuer.Persistence.Migrations
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("IdentityIssuer.Persistence.Entities.TenantConfigurationEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("EnableCredentialsLogin");
-
-                    b.Property<bool>("EnableFacebookLogin");
-
-                    b.Property<bool>("EnableGoogleLogin");
-
-                    b.Property<int>("TenantId");
-
-                    b.Property<int>("TokenExpirationInMinutes");
-
-                    b.Property<string>("TokenSecret")
-                        .IsRequired()
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TenantId")
-                        .IsUnique();
-
-                    b.ToTable("TenantConfigurations");
-                });
 
             modelBuilder.Entity("IdentityIssuer.Persistence.Entities.TenantEntity", b =>
                 {
@@ -77,7 +49,7 @@ namespace IdentityIssuer.Persistence.Migrations
                     b.ToTable("Tenants");
                 });
 
-            modelBuilder.Entity("IdentityIssuer.Persistence.Entities.TenantProviderEntity", b =>
+            modelBuilder.Entity("IdentityIssuer.Persistence.Entities.TenantProviderSettingsEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -93,13 +65,41 @@ namespace IdentityIssuer.Persistence.Migrations
 
                     b.Property<byte>("ProviderType");
 
-                    b.Property<int>("TenantConfigurationId");
+                    b.Property<int>("TenantSettingsId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TenantConfigurationId");
+                    b.HasIndex("TenantSettingsId");
 
-                    b.ToTable("TenantProviders");
+                    b.ToTable("TenantProviderSettings");
+                });
+
+            modelBuilder.Entity("IdentityIssuer.Persistence.Entities.TenantSettingsEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("EnableCredentialsLogin");
+
+                    b.Property<bool>("EnableFacebookLogin");
+
+                    b.Property<bool>("EnableGoogleLogin");
+
+                    b.Property<int>("TenantId");
+
+                    b.Property<int>("TokenExpirationInMinutes");
+
+                    b.Property<string>("TokenSecret")
+                        .IsRequired()
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId")
+                        .IsUnique();
+
+                    b.ToTable("TenantSettings");
                 });
 
             modelBuilder.Entity("IdentityIssuer.Persistence.Entities.TenantUserEntity", b =>
@@ -287,19 +287,19 @@ namespace IdentityIssuer.Persistence.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("IdentityIssuer.Persistence.Entities.TenantConfigurationEntity", b =>
+            modelBuilder.Entity("IdentityIssuer.Persistence.Entities.TenantProviderSettingsEntity", b =>
                 {
-                    b.HasOne("IdentityIssuer.Persistence.Entities.TenantEntity", "Tenant")
-                        .WithOne("TenantConfiguration")
-                        .HasForeignKey("IdentityIssuer.Persistence.Entities.TenantConfigurationEntity", "TenantId")
+                    b.HasOne("IdentityIssuer.Persistence.Entities.TenantSettingsEntity", "TenantSettings")
+                        .WithMany("TenantProviders")
+                        .HasForeignKey("TenantSettingsId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("IdentityIssuer.Persistence.Entities.TenantProviderEntity", b =>
+            modelBuilder.Entity("IdentityIssuer.Persistence.Entities.TenantSettingsEntity", b =>
                 {
-                    b.HasOne("IdentityIssuer.Persistence.Entities.TenantConfigurationEntity", "TenantConfiguration")
-                        .WithMany("TenantProviders")
-                        .HasForeignKey("TenantConfigurationId")
+                    b.HasOne("IdentityIssuer.Persistence.Entities.TenantEntity", "Tenant")
+                        .WithOne("TenantSettings")
+                        .HasForeignKey("IdentityIssuer.Persistence.Entities.TenantSettingsEntity", "TenantId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

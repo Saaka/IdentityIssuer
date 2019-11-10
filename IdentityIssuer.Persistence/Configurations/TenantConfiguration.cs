@@ -39,9 +39,9 @@ namespace IdentityIssuer.Persistence.Configurations
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
-                .HasOne(x => x.TenantConfiguration)
+                .HasOne(x => x.TenantSettings)
                 .WithOne(x => x.Tenant)
-                .HasForeignKey<TenantConfigurationEntity>(x => x.TenantId)
+                .HasForeignKey<TenantSettingsEntity>(x => x.TenantId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

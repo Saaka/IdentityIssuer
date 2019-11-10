@@ -14,8 +14,8 @@ namespace IdentityIssuer.Persistence
         public AppIdentityContext(DbContextOptions options) : base(options) { }
 
         public DbSet<TenantEntity> Tenants { get; set; }
-        public DbSet<TenantConfigurationEntity> TenantConfigurations { get; set; }
-        public DbSet<TenantProviderEntity> TenantProviders { get; set; }
+        public DbSet<TenantSettingsEntity> TenantSettings { get; set; }
+        public DbSet<TenantProviderSettingsEntity> TenantProviderSettings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace IdentityIssuer.Persistence.Configurations
 {
-    public class TenantConfigurationConfiguration: IEntityTypeConfiguration<TenantConfigurationEntity>
+    public class TenantSettingsConfiguration: IEntityTypeConfiguration<TenantSettingsEntity>
     {
-        public void Configure(EntityTypeBuilder<TenantConfigurationEntity> builder)
+        public void Configure(EntityTypeBuilder<TenantSettingsEntity> builder)
         {
             builder
                 .HasKey(x => x.Id);
@@ -23,8 +23,8 @@ namespace IdentityIssuer.Persistence.Configurations
 
             builder
                 .HasMany(x => x.TenantProviders)
-                .WithOne(x => x.TenantConfiguration)
-                .HasForeignKey(x => x.TenantConfigurationId)
+                .WithOne(x => x.TenantSettings)
+                .HasForeignKey(x => x.TenantSettingsId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder
