@@ -10,9 +10,6 @@ namespace IdentityIssuer.Persistence.Configurations
         public void Configure(EntityTypeBuilder<TenantEntity> builder)
         {
             builder
-                .ToTable("Tenants");
-            
-            builder
                 .HasKey(x => x.Id);
 
             builder
