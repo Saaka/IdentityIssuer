@@ -1,4 +1,4 @@
-using IdentityIssuer.Application;
+﻿using IdentityIssuer.Application;
 using IdentityIssuer.Persistence;
 using IdentityIssuer.WebAPI.Configurations;
 using IdentityIssuer.WebAPI.Cors;
@@ -35,12 +35,13 @@ namespace IdentityIssuer.WebAPI
             if(env.IsProduction())
             {
                 application
-                    .UseHsts();
+                    .UseHsts()
+                    .UseHttpsRedirection();
             }
 
             application
                 .UseMiddleware<TenantCorsMiddleware>()
-                .UseHttpsRedirection()
+                .UseAuthentication()
                 .UseMvc();
         }
     }
