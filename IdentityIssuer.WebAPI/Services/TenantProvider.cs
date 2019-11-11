@@ -1,10 +1,10 @@
-﻿using IdentityIssuer.Application.Tenants;
-using IdentityIssuer.Application.Tenants.Repositories;
+﻿using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Common.Constants;
 using IdentityIssuer.Common.Exceptions;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Threading.Tasks;
+using IdentityIssuer.Application.Models;
 
 namespace IdentityIssuer.WebAPI.Services
 {

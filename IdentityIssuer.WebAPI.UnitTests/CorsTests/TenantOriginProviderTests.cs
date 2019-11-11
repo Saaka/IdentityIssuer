@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using FluentAssertions;
-using IdentityIssuer.Application.Tenants;
+using IdentityIssuer.Application.Models;
 using IdentityIssuer.WebAPI.Cors;
 using IdentityIssuer.WebAPI.Services;
 using IdentityIssuer.WebAPI.UnitTests.Utils;

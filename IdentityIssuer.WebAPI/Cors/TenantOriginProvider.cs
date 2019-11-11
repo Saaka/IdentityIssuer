@@ -1,5 +1,4 @@
-﻿using IdentityIssuer.Application.Tenants.Repositories;
-using IdentityIssuer.Common.Constants;
+﻿using IdentityIssuer.Common.Constants;
 using IdentityIssuer.WebAPI.Services;
 using Microsoft.Extensions.Caching.Memory;
 using System;

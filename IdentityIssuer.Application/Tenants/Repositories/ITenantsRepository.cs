@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using IdentityIssuer.Application.Models;
 
 namespace IdentityIssuer.Application.Tenants.Repositories
 {

@@ -1,10 +1,10 @@
-﻿using IdentityIssuer.Application.Tenants;
-using IdentityIssuer.Application.Tenants.Repositories;
+﻿using IdentityIssuer.Application.Tenants.Repositories;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using IdentityIssuer.Application.Models;
 
 namespace IdentityIssuer.Persistence.Repositories
 {

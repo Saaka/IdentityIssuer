@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using IdentityIssuer.Application.Tenants;
+using IdentityIssuer.Application.Models;
 using IdentityIssuer.Persistence.Entities;
 
 namespace IdentityIssuer.Persistence

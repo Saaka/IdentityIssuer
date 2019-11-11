@@ -1,6 +1,6 @@
 using IdentityIssuer.Common.Enums;
 
-namespace IdentityIssuer.Application.Tenants
+namespace IdentityIssuer.Application.Models
 {
     public class TenantProviderSettings
     {

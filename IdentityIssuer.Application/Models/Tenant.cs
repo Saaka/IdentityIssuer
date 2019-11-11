@@ -1,4 +1,4 @@
-﻿namespace IdentityIssuer.Application.Tenants
+﻿namespace IdentityIssuer.Application.Models
 {
     public class Tenant
     {
