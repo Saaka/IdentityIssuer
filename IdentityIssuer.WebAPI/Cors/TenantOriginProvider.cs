@@ -1,8 +1,8 @@
 ﻿using IdentityIssuer.Common.Constants;
-using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Tenants;
+using IdentityIssuer.Common.Services;
 
 namespace IdentityIssuer.WebAPI.Cors
 {
@@ -13,12 +13,12 @@ namespace IdentityIssuer.WebAPI.Cors
 
     public class TenantOriginProvider : ITenantOriginProvider
     {
-        private readonly IMemoryCache cache;
+        private readonly ICacheStore cache;
         private readonly ITenantProvider tenantProvider;
 
         public TenantOriginProvider(
             ITenantProvider tenantProvider,
-            IMemoryCache cache)
+            ICacheStore cache)
         {
             this.cache = cache;
             this.tenantProvider = tenantProvider;

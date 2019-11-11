@@ -1,10 +1,13 @@
 using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using FluentAssertions;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Tenants;
+using IdentityIssuer.Common.Services;
 using IdentityIssuer.WebAPI.Cors;
 using IdentityIssuer.WebAPI.UnitTests.Utils;
+using Microsoft.Extensions.Caching.Memory;
 using Moq;
 using Xunit;
 
@@ -46,7 +49,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.CorsTests
             origin.Should().BeNull();
         }
 
-        public class Fixture : MemoryCacheFixture
+        public class Fixture : AutoMockFixture
         {
             Tenant tenant;
 
@@ -58,9 +61,9 @@ namespace IdentityIssuer.WebAPI.UnitTests.CorsTests
 
             public TenantOriginProvider Configure()
             {
-                AutoMock.Mock<ITenantProvider>()
-                    .Setup(x => x.GetTenant(It.IsAny<string>()))
-                    .ReturnsAsync(tenant);
+                AutoMock.Mock<ICacheStore>()
+                    .Setup(x => x.GetOrCreateAsync(It.IsAny<string>(), It.IsAny<Func<ICacheEntry, Task<string>>>()))
+                    .ReturnsAsync(tenant?.AllowedOrigin);
 
                 return AutoMock.Create<TenantOriginProvider>();
             }

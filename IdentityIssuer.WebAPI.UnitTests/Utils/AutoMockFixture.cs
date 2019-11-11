@@ -9,6 +9,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.Utils
     public abstract class AutoMockFixture : IDisposable
     {
         protected AutoMock AutoMock { get; }
+
         public AutoMockFixture()
         {
             AutoMock = AutoMock.GetLoose();

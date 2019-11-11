@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using IdentityIssuer.Application.Tenants.Repositories;
+using IdentityIssuer.Common.Services;
 using IdentityIssuer.WebAPI.Cors;
 using IdentityIssuer.WebAPI.UnitTests.Utils;
+using Microsoft.Extensions.Caching.Memory;
 using Moq;
 using Xunit;
 
@@ -44,7 +46,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.CorsTests
             result.Should().BeFalse();
         }
 
-        public class Fixture : MemoryCacheFixture
+        public class Fixture : AutoMockFixture
         {
             private readonly List<string> allowedOrigins = new List<string>();
             public Fixture WithAllowedOrigin(string origin)
@@ -55,10 +57,10 @@ namespace IdentityIssuer.WebAPI.UnitTests.CorsTests
 
             public AllowedOriginsProvider Configure()
             {
-                AutoMock.Mock<ITenantsRepository>()
-                    .Setup(x => x.GetAllAllowedOrigins())
+                AutoMock.Mock<ICacheStore>()
+                    .Setup(x => x.GetOrCreateAsync(It.IsAny<string>(), It.IsAny<Func<ICacheEntry, Task<IEnumerable<string>>>>()))
                     .ReturnsAsync(allowedOrigins);
-
+                
                 return AutoMock.Create<AllowedOriginsProvider>();
             }
         }

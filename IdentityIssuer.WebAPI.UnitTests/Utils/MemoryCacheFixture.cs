@@ -7,7 +7,8 @@ namespace IdentityIssuer.WebAPI.UnitTests.Utils
     /// </summary>
     public abstract class MemoryCacheFixture : AutoMockFixture
     {
-        protected MemoryCacheProvider MemoryCacheProvider { get; }
+        private MemoryCacheProvider MemoryCacheProvider { get; }
+
         public MemoryCacheFixture()
         {    
             MemoryCacheProvider = new MemoryCacheProvider();

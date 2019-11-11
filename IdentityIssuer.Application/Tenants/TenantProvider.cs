@@ -1,10 +1,10 @@
 ﻿using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Common.Constants;
 using IdentityIssuer.Common.Exceptions;
-using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Models;
+using IdentityIssuer.Common.Services;
 
 namespace IdentityIssuer.Application.Tenants
 {
@@ -16,10 +16,10 @@ namespace IdentityIssuer.Application.Tenants
     public class TenantProvider : ITenantProvider
     {
         private readonly ITenantsRepository tenantsRepository;
-        private readonly IMemoryCache cache;
+        private readonly ICacheStore cache;
 
         public TenantProvider(ITenantsRepository tenantsRepository,
-            IMemoryCache cache)
+            ICacheStore cache)
         {
             this.tenantsRepository = tenantsRepository;
             this.cache = cache;

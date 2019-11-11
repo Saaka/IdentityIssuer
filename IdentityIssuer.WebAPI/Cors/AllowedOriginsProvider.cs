@@ -1,8 +1,8 @@
 ﻿using IdentityIssuer.Application.Tenants.Repositories;
-using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityIssuer.Common.Services;
 
 namespace IdentityIssuer.WebAPI.Cors
 {
@@ -14,11 +14,11 @@ namespace IdentityIssuer.WebAPI.Cors
     public class AllowedOriginsProvider : IAllowedOriginsProvider
     {
         private const string AllOriginsCachePrefix = "_AAO_";
-        private readonly IMemoryCache cache;
+        private readonly ICacheStore cache;
         private readonly ITenantsRepository tenantsRepository;
 
         public AllowedOriginsProvider(
-            IMemoryCache cache,
+            ICacheStore cache,
             ITenantsRepository tenantsRepository)
         {
             this.cache = cache;
