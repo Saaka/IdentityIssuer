@@ -6,7 +6,7 @@ using System;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Models;
 
-namespace IdentityIssuer.WebAPI.Services
+namespace IdentityIssuer.Application.Tenants
 {
     public interface ITenantProvider
     {

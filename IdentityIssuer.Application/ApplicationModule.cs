@@ -1,4 +1,5 @@
 using IdentityIssuer.Application.Services;
+using IdentityIssuer.Application.Tenants;
 using IdentityIssuer.Common.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,10 @@ namespace IdentityIssuer.Application
         {
             services
                 .AddTransient<ICacheStore, MemoryCacheStore>();
+            
+            services
+                .AddTransient<ITenantProvider, TenantProvider>();
+            
             return services;
         }
     }
