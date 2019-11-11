@@ -1,4 +1,5 @@
-﻿using IdentityIssuer.Persistence;
+using IdentityIssuer.Application;
+using IdentityIssuer.Persistence;
 using IdentityIssuer.WebAPI.Configurations;
 using IdentityIssuer.WebAPI.Cors;
 using Microsoft.AspNetCore.Builder;
@@ -23,6 +24,7 @@ namespace IdentityIssuer.WebAPI
                 .AddApiServices()
                 .AddDbContext(Configuration)
                 .AddPersistenceModule()
+                .AddApplicationModule()
                 .AddExternalServices()
                 .AddCors()
                 .AddMvcWithFilters();

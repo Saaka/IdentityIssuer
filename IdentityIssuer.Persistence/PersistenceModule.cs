@@ -11,8 +11,7 @@ namespace IdentityIssuer.Persistence
         public static IServiceCollection AddPersistenceModule(this IServiceCollection services)
         {
             services
-                .AddTransient<ITenantsRepository, TenantsRepository>()
-                ;
+                .AddTransient<ITenantsRepository, TenantsRepository>();
 
             return services;
         }
