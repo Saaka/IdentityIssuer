@@ -32,7 +32,7 @@ namespace IdentityIssuer.WebAPI.Cors
                 ce.SlidingExpiration = TimeSpan.FromMinutes(5);
                 ce.AbsoluteExpiration = DateTime.Now.AddHours(1);
 
-                var origins = await tenantsRepository.GetAllAllowedOrigins();
+                var origins = await tenantsRepository.GetAllAllowedOriginsAsync();
 
                 return origins;
             });

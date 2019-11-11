@@ -18,5 +18,10 @@ namespace IdentityIssuer.Application.Services
         {
             return await memoryCache.GetOrCreateAsync(key, factory);
         }
+
+        public TItem GetOrCreate<TItem>(object key, Func<ICacheEntry, TItem> factory)
+        {
+            return memoryCache.GetOrCreate(key, factory);
+        }
     }
 }

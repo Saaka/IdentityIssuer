@@ -6,8 +6,9 @@ namespace IdentityIssuer.Application.Tenants.Repositories
 {
     public interface ITenantsRepository
     {
-        Task<Tenant> GetTenant(string code);
-        Task<IEnumerable<string>> GetAllAllowedOrigins();
-        Task<TenantSettings> GetTenantSettings(int tenantId);
+        Task<Tenant> GetTenantAsync(string code);
+        Task<IEnumerable<string>> GetAllAllowedOriginsAsync();
+        Task<TenantSettings> GetTenantSettingsAsync(string code);
+        TenantSettings GetTenantSettings(string code);
     }
 }

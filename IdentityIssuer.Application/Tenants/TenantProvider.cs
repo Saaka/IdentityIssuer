@@ -10,7 +10,9 @@ namespace IdentityIssuer.Application.Tenants
 {
     public interface ITenantProvider
     {
-        Task<Tenant> GetTenant(string tenantCode);
+        Task<Tenant> GetTenantAsync(string tenantCode);
+        Task<TenantSettings> GetTenantSettingsAsync(string tenantCode);
+        TenantSettings GetTenantSettings(string tenantCode);
     }
 
     public class TenantProvider : ITenantProvider
@@ -25,19 +27,50 @@ namespace IdentityIssuer.Application.Tenants
             this.cache = cache;
         }
 
-        public async Task<Tenant> GetTenant(string tenantCode)
+        public async Task<Tenant> GetTenantAsync(string tenantCode)
         {
-            var result = await cache.GetOrCreateAsync($"{CacheConstants.TenantCachePrefix}{tenantCode}", async (ce) =>
-            {
-                ce.SlidingExpiration = TimeSpan.FromMinutes(5);
-                ce.AbsoluteExpiration = DateTime.Now.AddHours(1);
+            var result = await cache.GetOrCreateAsync($"{CacheConstants.TenantCachePrefix}{tenantCode}",
+                async (ce) =>
+                {
+                    ce.SlidingExpiration = TimeSpan.FromMinutes(5);
+                    ce.AbsoluteExpiration = DateTime.Now.AddHours(1);
 
-                var tenant = await tenantsRepository.GetTenant(tenantCode);
-                if (tenant == null)
-                    throw new TenantNotFoundException(tenantCode);
+                    var tenant = await tenantsRepository.GetTenantAsync(tenantCode);
+                    if (tenant == null)
+                        throw new TenantNotFoundException(tenantCode);
 
-                return tenant;
-            });
+                    return tenant;
+                });
+            return result;
+        }
+
+        public async Task<TenantSettings> GetTenantSettingsAsync(string tenantCode)
+        {
+            var result = await cache.GetOrCreateAsync($"{CacheConstants.TenantSettingsCachePrefix}{tenantCode}",
+                async (ce) => { 
+                    ce.SlidingExpiration = TimeSpan.FromMinutes(5);
+                    ce.AbsoluteExpiration = DateTime.Now.AddHours(1);
+
+                    var settings = await tenantsRepository.GetTenantSettingsAsync(tenantCode);
+
+                    return settings;
+                });
+
+            return result;
+        }
+
+        public TenantSettings GetTenantSettings(string tenantCode)
+        {
+            var result = cache.GetOrCreate($"{CacheConstants.TenantSettingsCachePrefix}{tenantCode}",
+                (ce) => {
+                    ce.SlidingExpiration = TimeSpan.FromMinutes(5);
+                    ce.AbsoluteExpiration = DateTime.Now.AddHours(1);
+
+                    var settings = tenantsRepository.GetTenantSettings(tenantCode);
+
+                    return settings;
+                });
+
             return result;
         }
     }

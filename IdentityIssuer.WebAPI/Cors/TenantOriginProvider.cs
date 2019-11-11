@@ -31,7 +31,7 @@ namespace IdentityIssuer.WebAPI.Cors
                 ce.SlidingExpiration = TimeSpan.FromMinutes(5);
                 ce.AbsoluteExpiration = DateTime.Now.AddHours(1);
 
-                var tenant = await tenantProvider.GetTenant(tenantCode);
+                var tenant = await tenantProvider.GetTenantAsync(tenantCode);
 
                 return tenant?.AllowedOrigin;
             });

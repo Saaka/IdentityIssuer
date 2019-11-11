@@ -27,7 +27,8 @@ namespace IdentityIssuer.WebAPI
                 .AddApplicationModule()
                 .AddExternalServices()
                 .AddCors()
-                .AddMvcWithFilters();
+                .AddMvcWithFilters()
+                .AddJwtTokenBearerAuthentication(Configuration);
         }
 
         public void Configure(IApplicationBuilder application, IHostingEnvironment env)

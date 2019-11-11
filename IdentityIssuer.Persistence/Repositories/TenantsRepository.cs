@@ -20,7 +20,7 @@ namespace IdentityIssuer.Persistence.Repositories
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<string>> GetAllAllowedOrigins()
+        public async Task<IEnumerable<string>> GetAllAllowedOriginsAsync()
         {
             var query = from tenant in context.Tenants
                 select tenant.AllowedOrigin;
@@ -28,7 +28,7 @@ namespace IdentityIssuer.Persistence.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<Tenant> GetTenant(string code)
+        public async Task<Tenant> GetTenantAsync(string code)
         {
             var query = from tenant in context.Tenants
                 where tenant.Code == code
@@ -39,13 +39,26 @@ namespace IdentityIssuer.Persistence.Repositories
             return mapper.Map<Tenant>(result);
         }
 
-        public async Task<TenantSettings> GetTenantSettings(int tenantId)
+        public async Task<TenantSettings> GetTenantSettingsAsync(string code)
         {
-            var query = from tc in context.TenantSettings
-                where tc.TenantId == tenantId
-                select tc;
+            var query = from ts in context.TenantSettings
+                join t in context.Tenants on ts.TenantId equals t.Id
+                where t.Code == code
+                select ts;
 
             var result = await query.FirstOrDefaultAsync();
+
+            return mapper.Map<TenantSettings>(result);
+        }
+
+        public TenantSettings GetTenantSettings(string code)
+        {
+            var query = from ts in context.TenantSettings
+                join t in context.Tenants on ts.TenantId equals t.Id
+                where t.Code == code
+                select ts;
+
+            var result = query.FirstOrDefault();
 
             return mapper.Map<TenantSettings>(result);
         }
