@@ -4,7 +4,7 @@ using IdentityIssuer.Common.Exceptions;
 using System;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Models;
-using IdentityIssuer.Common.Services;
+using IdentityIssuer.Application.Services;
 
 namespace IdentityIssuer.Application.Tenants
 {

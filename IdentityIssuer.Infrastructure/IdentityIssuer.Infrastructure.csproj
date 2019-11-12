@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\IdentityIssuer.Application\IdentityIssuer.Application.csproj" />
+      <ProjectReference Include="..\IdentityIssuer.Common\IdentityIssuer.Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.4.0" />
+    </ItemGroup>
+
+</Project>

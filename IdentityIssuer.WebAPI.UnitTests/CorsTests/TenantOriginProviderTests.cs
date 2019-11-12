@@ -1,10 +1,8 @@
 using System;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using FluentAssertions;
 using IdentityIssuer.Application.Models;
-using IdentityIssuer.Application.Tenants;
-using IdentityIssuer.Common.Services;
+using IdentityIssuer.Application.Services;
 using IdentityIssuer.WebAPI.Cors;
 using IdentityIssuer.WebAPI.UnitTests.Utils;
 using Microsoft.Extensions.Caching.Memory;

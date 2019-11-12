@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace IdentityIssuer.Common.Services
+namespace IdentityIssuer.Application.Services
 {
     public interface ICacheStore
     {

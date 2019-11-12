@@ -6,11 +6,12 @@ using System.Text;
 using IdentityIssuer.Application.Configuration;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Common.Constants;
+using IdentityIssuer.Application.Services;
 using Microsoft.IdentityModel.Tokens;
 
-namespace IdentityIssuer.Application.Services
+namespace IdentityIssuer.Infrastructure.Security
 {
-    public class JwtTokenFactory
+    public class JwtTokenFactory : IJwtTokenFactory
     {
         private readonly ITokenConfiguration tokenConfiguration;
 

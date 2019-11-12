@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using IdentityIssuer.Common.Services;
+using IdentityIssuer.Application.Services;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace IdentityIssuer.Application.Services
+namespace IdentityIssuer.Infrastructure.Cache
 {
     public class MemoryCacheStore : ICacheStore
     {

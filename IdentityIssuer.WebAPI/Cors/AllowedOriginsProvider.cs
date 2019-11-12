@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using IdentityIssuer.Common.Services;
+using IdentityIssuer.Application.Services;
 
 namespace IdentityIssuer.WebAPI.Cors
 {

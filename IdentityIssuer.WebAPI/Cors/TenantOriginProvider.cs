@@ -1,8 +1,8 @@
 ﻿using IdentityIssuer.Common.Constants;
 using System;
 using System.Threading.Tasks;
+using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Tenants;
-using IdentityIssuer.Common.Services;
 
 namespace IdentityIssuer.WebAPI.Cors
 {
