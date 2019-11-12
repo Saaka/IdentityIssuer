@@ -7,7 +7,7 @@ namespace IdentityIssuer.Infrastructure
 {
     public static class InfrastructureModule
     {
-        public static IServiceCollection AddApplicationModule(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructureModule(this IServiceCollection services)
         {
             services
                 .AddTransient<ICacheStore, MemoryCacheStore>();
