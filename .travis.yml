@@ -11,3 +11,4 @@ cache:
 script:
 - dotnet build
 - dotnet test IdentityIssuer.WebAPI.UnitTests/IdentityIssuer.WebAPI.UnitTests.csproj
+- dotnet test IdentityIssuer.Infrastructure.UnitTests/IdentityIssuer.Infrastructure.UnitTests.csproj
