@@ -2,6 +2,7 @@ using IdentityIssuer.Application.Services;
 using IdentityIssuer.Infrastructure.Cache;
 using IdentityIssuer.Infrastructure.Helpers;
 using IdentityIssuer.Infrastructure.Http;
+using IdentityIssuer.Infrastructure.Images;
 using IdentityIssuer.Infrastructure.Security;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,7 +21,9 @@ namespace IdentityIssuer.Infrastructure
 
                 .AddTransient<IRestSharpClientFactory, RestSharpClientFactory>()
             
-                .AddTransient<IJwtTokenFactory, JwtTokenFactory>();
+                .AddTransient<IJwtTokenFactory, JwtTokenFactory>()
+                
+                .AddTransient<IProfileImageUrlProvider, GravatarProfileImageUrlProvider>();
             
             return services;
         }
