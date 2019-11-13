@@ -1,7 +1,7 @@
 using System;
 using Autofac.Extras.Moq;
 
-namespace IdentityIssuer.WebAPI.UnitTests.Utils
+namespace IdentityIssuer.UnitTests.Utils.Fixtures
 {
     /// <summary>
     /// Base fixture with AutoMock

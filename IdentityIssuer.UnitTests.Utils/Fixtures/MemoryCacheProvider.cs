@@ -2,7 +2,7 @@ using System;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace IdentityIssuer.WebAPI.UnitTests.Utils
+namespace IdentityIssuer.UnitTests.Utils.Fixtures
 {
     /// <summary>
     /// Helper class that creates fully working IMemoryCache 

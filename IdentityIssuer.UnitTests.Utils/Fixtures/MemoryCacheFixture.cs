@@ -1,6 +1,4 @@
-using System;
-
-namespace IdentityIssuer.WebAPI.UnitTests.Utils
+namespace IdentityIssuer.UnitTests.Utils.Fixtures
 {
     /// <summary>
     /// Base fixture using AutoMock and MemoryCacheProvider that enables to use MemoryCache

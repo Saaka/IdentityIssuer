@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Autofac.Extras.Moq;
 using FluentAssertions;
 using IdentityIssuer.Application.Services;
+using IdentityIssuer.UnitTests.Utils.Fixtures;
 using IdentityIssuer.WebAPI.Cors;
-using IdentityIssuer.WebAPI.UnitTests.Utils;
 using Microsoft.Extensions.Caching.Memory;
 using Moq;
 using Xunit;
