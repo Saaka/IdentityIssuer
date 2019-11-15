@@ -1,6 +1,6 @@
 namespace IdentityIssuer.WebAPI.Configurations
 {
-    public class ConfigurationProperties
+    public static class ConfigurationProperties
     {
         public const string Issuer = "Auth:Issuer";
     }
