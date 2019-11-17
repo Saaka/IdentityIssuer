@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Threading.Tasks;
+using IdentityIssuer.WebAPI.Configurations;
 
 namespace IdentityIssuer.WebAPI.Cors
 {
@@ -46,10 +47,10 @@ namespace IdentityIssuer.WebAPI.Cors
 
         private async Task<CorsPolicy> GetPolicy(HttpContext context, bool isPreflight, ICorsPolicyProvider policyProvider, IAllowedOriginsProvider allowedOriginsProvider)
         {
-            if (isPreflight && await allowedOriginsProvider.IsOriginAvailable(context.Request.Headers[PolicyConstants.OriginHeader]))
+            if (isPreflight && await allowedOriginsProvider.IsOriginAvailable(context.Request.Headers[IdentityIssuerHeaders.OriginHeader]))
                 return await policyProvider.GetPolicyAsync(context, PolicyConstants.PreflightPolicy);
-            else if (context.Request.Headers.ContainsKey(PolicyConstants.TenantHeader))
-                return await policyProvider.GetPolicyAsync(context, context.Request.Headers[PolicyConstants.TenantHeader]);
+            else if (context.Request.Headers.ContainsKey(IdentityIssuerHeaders.TenantHeader))
+                return await policyProvider.GetPolicyAsync(context, context.Request.Headers[IdentityIssuerHeaders.TenantHeader]);
             else
                 return null;
         }

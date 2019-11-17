@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
+using IdentityIssuer.WebAPI.Configurations;
 
 namespace IdentityIssuer.WebAPI.Cors
 {
@@ -17,7 +18,7 @@ namespace IdentityIssuer.WebAPI.Cors
         {
             string origin;
             if (policyName == PolicyConstants.PreflightPolicy)
-                origin = context.Request.Headers[PolicyConstants.OriginHeader];
+                origin = context.Request.Headers[IdentityIssuerHeaders.OriginHeader];
             else
                 origin = await tenantOriginProvider.GetAllowedOrigin(policyName);
 

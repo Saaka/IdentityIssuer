@@ -18,15 +18,19 @@ namespace IdentityIssuer.WebAPI.Filters
         {
             var code = HttpStatusCode.InternalServerError;
 
-            if (exception is ArgumentException)
-                code = HttpStatusCode.BadRequest;
+            switch (exception)
+            {
+                case ArgumentException _:
+                    code = HttpStatusCode.BadRequest;
+                    break;
+                case InvalidOperationException _:
+                    code = HttpStatusCode.Forbidden;
+                    break;
+                case UnauthorizedAccessException _:
+                    code = HttpStatusCode.Unauthorized;
+                    break;
+            }
 
-            if (exception is InvalidOperationException)
-                code = HttpStatusCode.Forbidden;
-
-            if (exception is UnauthorizedAccessException)
-                code = HttpStatusCode.Unauthorized;
-            
             context.HttpContext.Response.ContentType = "application/json";
             context.HttpContext.Response.StatusCode = (int)code;
             context.Result = new JsonResult(new
