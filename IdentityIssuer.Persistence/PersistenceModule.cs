@@ -1,4 +1,5 @@
 using IdentityIssuer.Application.Tenants.Repositories;
+using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,11 +12,12 @@ namespace IdentityIssuer.Persistence
         public static IServiceCollection AddPersistenceModule(this IServiceCollection services)
         {
             services
-                .AddTransient<ITenantsRepository, TenantsRepository>();
+                .AddTransient<ITenantsRepository, TenantsRepository>()
+                .AddTransient<IUserRepository, UsersRepository>();
 
             return services;
         }
-        
+
         public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString(PersistenceConstants.AppConnectionString);
@@ -24,16 +26,14 @@ namespace IdentityIssuer.Persistence
             return services;
         }
 
-        private static void RegisterContext<T>(IServiceCollection services, string connectionString, string migrationsTable)
+        private static void RegisterContext<T>(IServiceCollection services, string connectionString,
+            string migrationsTable)
             where T : DbContext
         {
             services.AddDbContext<T>((opt) =>
                     opt.UseSqlServer(
                         connectionString,
-                        cb =>
-                        {
-                            cb.MigrationsHistoryTable(migrationsTable);
-                        }),
+                        cb => { cb.MigrationsHistoryTable(migrationsTable); }),
                 ServiceLifetime.Scoped);
         }
     }

@@ -1,6 +1,8 @@
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using IdentityIssuer.Application.Tenants;
+using IdentityIssuer.Application.Users;
 using IdentityIssuer.Common.Exceptions;
 using IdentityIssuer.WebAPI.Configurations;
 using Microsoft.AspNetCore.Http;
@@ -15,14 +17,23 @@ namespace IdentityIssuer.WebAPI.Services
 
     public class ContextDataProvider : IContextDataProvider
     {
+        readonly IUsersProvider usersProvider;
+        readonly ITenantProvider tenantProvider;
+
+        public ContextDataProvider(ITenantProvider tenantProvider, IUsersProvider usersProvider)
+        {
+            this.tenantProvider = tenantProvider;
+            this.usersProvider = usersProvider;
+        }
+
         public async Task<UserContextData> GetUser(HttpContext context)
         {
             var userGuid = GetUserCodeFromContext(context);
             var tenantCode = GetTenantCodeFromContext(context);
-            
+
             var userId = await GetUserId(userGuid);
             var tenantId = await GetTenantId(tenantCode);
-            
+
             return new UserContextData(userId, userGuid, tenantId, tenantCode);
         }
 
@@ -30,18 +41,20 @@ namespace IdentityIssuer.WebAPI.Services
         {
             var tenantCode = GetTenantCodeFromContext(context);
             var tenantId = await GetTenantId(tenantCode);
-            
+
             return new TenantContextData(tenantId, tenantCode);
         }
 
         private async Task<int> GetTenantId(string tenantCode)
         {
-            throw new NotImplementedException();
+            var tenant = await tenantProvider.GetTenantAsync(tenantCode);
+            return tenant.Id;
         }
 
-        private async Task<int> GetUserId(string userCode)
+        private async Task<int> GetUserId(string guid)
         {
-            throw new System.NotImplementedException();
+            var user = await usersProvider.GetUserAsync(guid);
+            return user.Id;
         }
 
         private string GetUserCodeFromContext(HttpContext context)
@@ -52,7 +65,7 @@ namespace IdentityIssuer.WebAPI.Services
             var userCode = context.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
             return userCode;
         }
-        
+
         private string GetTenantCodeFromContext(HttpContext context)
         {
             if (!context.Request.Headers.ContainsKey(IdentityIssuerHeaders.TenantHeader))
