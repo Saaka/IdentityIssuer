@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Mvc;
+
 namespace IdentityIssuer.WebAPI.Controllers
 {
-    public class AuthController
+    [Route("api/[controller]")]
+    public class AuthController : BaseApiController
     {
         
     }
