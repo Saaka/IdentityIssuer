@@ -1,3 +1,4 @@
+using IdentityIssuer.Application.Requests;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.WebAPI.Services;
 using MediatR;
@@ -19,5 +20,18 @@ namespace IdentityIssuer.WebAPI.Controllers
         protected IContextDataProvider ContextDataProvider =>
             contextDataProvider ??
             (contextDataProvider = HttpContext.RequestServices.GetService<IContextDataProvider>());
+        
+        protected ActionResult GetRequestResult<TRes>(TRes @base)
+            where TRes : RequestResultBase
+        {
+            if (@base.IsSuccessful)
+            {
+                return Ok(@base);
+            }
+            else
+            {
+                return BadRequest(new { @base.Error });
+            }
+        }
     }
 }
