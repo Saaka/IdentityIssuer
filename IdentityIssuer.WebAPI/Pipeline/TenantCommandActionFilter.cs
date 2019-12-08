@@ -16,7 +16,7 @@ namespace IdentityIssuer.WebAPI.Pipeline
         
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (context.ActionArguments["request"] is ITenantCommand command)
+            if (context.ActionArguments.ContainsKey("request") && context.ActionArguments["request"] is ITenantCommand command)
             {
                 var tenant = await contextDataProvider.GetTenant(context.HttpContext);
                 command.TenantId = tenant.TenantId;
