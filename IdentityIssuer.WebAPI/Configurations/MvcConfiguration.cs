@@ -17,7 +17,7 @@ namespace IdentityIssuer.WebAPI.Configurations
                 .AddMvc(options =>
                 {
                     options.Filters.Add<CustomExceptionFilterAttribute>();
-                    options.Filters.Add<TenantCommandActionFilter>();
+                    options.Filters.Add<TenantActionFilter>();
                 })
                 .AddJsonOptions(s => s.UseCamelCasing(true))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

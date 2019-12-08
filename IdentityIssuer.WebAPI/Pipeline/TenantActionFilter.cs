@@ -5,19 +5,21 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace IdentityIssuer.WebAPI.Pipeline
 {
-    public class TenantCommandActionFilter : IAsyncActionFilter
+    public class TenantActionFilter : IAsyncActionFilter
     {
         private readonly IContextDataProvider contextDataProvider;
 
-        public TenantCommandActionFilter(IContextDataProvider contextDataProvider)
+        public TenantActionFilter(IContextDataProvider contextDataProvider)
         {
             this.contextDataProvider = contextDataProvider;
         }
         
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (context.ActionArguments.ContainsKey("request") && context.ActionArguments["request"] is ITenantCommand command)
+            foreach (var argument in context.ActionArguments.Values)
             {
+                if (!(argument is ITenantCommand command)) continue;
+                
                 var tenant = await contextDataProvider.GetTenant(context.HttpContext);
                 command.TenantId = tenant.TenantId;
             }
