@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Net;
 
-namespace IdentityIssuer.WebAPI.Filters
+namespace IdentityIssuer.WebAPI.Pipeline
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class CustomExceptionFilterAttribute : ExceptionFilterAttribute

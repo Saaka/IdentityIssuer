@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using IdentityIssuer.Application.Tenants;
-using IdentityIssuer.WebAPI.Filters;
+using IdentityIssuer.WebAPI.Pipeline;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +14,11 @@ namespace IdentityIssuer.WebAPI.Configurations
         public static IServiceCollection AddMvcWithFilters(this IServiceCollection services)
         {
             services
-                .AddMvc(options => { options.Filters.Add<CustomExceptionFilterAttribute>(); })
+                .AddMvc(options =>
+                {
+                    options.Filters.Add<CustomExceptionFilterAttribute>();
+                    options.Filters.Add<TenantCommandActionFilter>();
+                })
                 .AddJsonOptions(s => s.UseCamelCasing(true))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 

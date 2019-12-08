@@ -1,8 +1,9 @@
+using IdentityIssuer.Application.Requests;
 using MediatR;
 
 namespace IdentityIssuer.Application.Users.Commands
 {
-    public class RegisterUserWithCredentialsCommand : IRequest<AuthUserCommandResult>
+    public class RegisterUserWithCredentialsCommand : IRequest<AuthUserCommandResult>, ITenantCommand
     {
         public string Email { get; set; }
         public string DisplayName { get; set; }

@@ -1,5 +1,5 @@
-using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Tenants;
+using IdentityIssuer.Application.Users;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityIssuer.Application
@@ -9,8 +9,9 @@ namespace IdentityIssuer.Application
         public static IServiceCollection AddApplicationModule(this IServiceCollection services)
         {
             services
-                .AddTransient<ITenantProvider, TenantProvider>();
-            
+                .AddTransient<ITenantProvider, TenantProvider>()
+                .AddTransient<IUsersProvider, UsersProvider>();
+
             return services;
         }
     }
