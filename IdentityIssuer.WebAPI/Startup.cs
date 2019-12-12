@@ -1,4 +1,6 @@
-﻿using IdentityIssuer.Application;
+﻿using System;
+using System.Diagnostics;
+using IdentityIssuer.Application;
 using IdentityIssuer.Infrastructure;
 using IdentityIssuer.Persistence;
 using IdentityIssuer.WebAPI.Configurations;
@@ -46,6 +48,8 @@ namespace IdentityIssuer.WebAPI
                 .UseMiddleware<TenantCorsMiddleware>()
                 .UseAuthentication()
                 .UseMvc();
+            
+            Console.WriteLine($"Welcome to IdentityIssuer. PID: {Process.GetCurrentProcess().Id.ToString()}");
         }
     }
 }

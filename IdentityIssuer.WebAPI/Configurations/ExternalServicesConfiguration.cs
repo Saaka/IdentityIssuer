@@ -2,7 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using IdentityIssuer.Application;
+using IdentityIssuer.Application.Behaviors;
 using MediatR;
+using MediatR.Pipeline;
 
 namespace IdentityIssuer.WebAPI.Configurations
 {
@@ -15,8 +17,20 @@ namespace IdentityIssuer.WebAPI.Configurations
                 {
                     typeof(Persistence.PersistenceMapperProfile).Assembly
                 })
+                .AddMediatRBehaviors()
                 .AddMediatR(typeof(ApplicationModule).Assembly)
                 .AddMemoryCache();
+
+            return services;
+        }
+        
+        private static IServiceCollection AddMediatRBehaviors(this IServiceCollection services)
+        {
+            services
+                .AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>))
+                .AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPostProcessorBehavior<,>))
+                
+                .AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandValidationBehavior<,>));
 
             return services;
         }

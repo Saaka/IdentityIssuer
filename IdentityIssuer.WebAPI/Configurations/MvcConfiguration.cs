@@ -1,4 +1,6 @@
 ﻿using System.Text;
+using FluentValidation.AspNetCore;
+using IdentityIssuer.Application;
 using IdentityIssuer.Application.Tenants;
 using IdentityIssuer.WebAPI.Pipeline;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -20,6 +22,7 @@ namespace IdentityIssuer.WebAPI.Configurations
                     options.Filters.Add<TenantActionFilter>();
                 })
                 .AddJsonOptions(s => s.UseCamelCasing(true))
+                .AddFluentValidation(v => v.RegisterValidatorsFromAssembly(typeof(ApplicationModule).Assembly))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
