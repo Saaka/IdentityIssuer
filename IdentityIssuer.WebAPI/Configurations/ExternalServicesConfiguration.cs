@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using IdentityIssuer.Application;
+using MediatR;
 
 namespace IdentityIssuer.WebAPI.Configurations
 {
@@ -13,6 +15,7 @@ namespace IdentityIssuer.WebAPI.Configurations
                 {
                     typeof(Persistence.PersistenceMapperProfile).Assembly
                 })
+                .AddMediatR(typeof(ApplicationModule).Assembly)
                 .AddMemoryCache();
 
             return services;

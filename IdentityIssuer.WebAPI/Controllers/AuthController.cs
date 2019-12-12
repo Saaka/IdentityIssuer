@@ -10,11 +10,9 @@ namespace IdentityIssuer.WebAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterUserWithCredentialsCommand request)
         {
-//            var result = await Mediator.Send(request);
-//
-//            return GetRequestResult(result);
+            var result = await Mediator.Send(request);
 
-            return Ok(request);
+            return GetRequestResult(result);
         }
     }
 }
