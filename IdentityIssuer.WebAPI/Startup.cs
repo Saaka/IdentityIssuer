@@ -26,6 +26,7 @@ namespace IdentityIssuer.WebAPI
             services
                 .AddApiServices()
                 .AddDbContext(Configuration)
+                .AddIdentityStore(Configuration)
                 .AddPersistenceModule()
                 .AddApplicationModule()
                 .AddInfrastructureModule()
