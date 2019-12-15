@@ -29,9 +29,10 @@ namespace IdentityIssuer.WebAPI.Configurations
             services
                 .AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>))
                 .AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPostProcessorBehavior<,>))
-                
-                .AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandValidationBehavior<,>));
 
+                .AddApplicationModuleBehaviors();
+            
+            
             return services;
         }
     }
