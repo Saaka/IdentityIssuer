@@ -1,3 +1,5 @@
+using IdentityIssuer.WebAPI.Models;
+
 namespace IdentityIssuer.WebAPI.Controllers.Auth.Models
 {
     public class RegisterUserWithCredentialsRequest
@@ -5,6 +7,5 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth.Models
         public string Email { get; set; }
         public string DisplayName { get; set; }
         public string Password { get; set; }
-        public int TenantId { get; set; }
     }
 }

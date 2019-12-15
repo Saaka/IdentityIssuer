@@ -1,12 +1,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Services;
-using IdentityIssuer.Application.Users.Models;
 using MediatR;
 
 namespace IdentityIssuer.Application.Users.Commands.RegisterUserWithCredentials
 {
-    public class RegisterUserWithCredentialsCommandHandler : IRequestHandler<RegisterUserWithCredentialsCommand, AuthUserCommandResult>
+    public class RegisterUserWithCredentialsCommandHandler : AsyncRequestHandler<RegisterUserWithCredentialsCommand>
     {
         private readonly IGuid guid;
 
@@ -15,15 +14,9 @@ namespace IdentityIssuer.Application.Users.Commands.RegisterUserWithCredentials
             this.guid = guid;
         }
 
-        public async Task<AuthUserCommandResult> Handle(RegisterUserWithCredentialsCommand request, CancellationToken cancellationToken)
+        protected override async Task Handle(RegisterUserWithCredentialsCommand request, CancellationToken cancellationToken)
         {
-            return new AuthUserCommandResult
-            {
-                User = new UserDto
-                {
-                    Email = request.Email
-                }
-            };
+            
         }
     }
 }

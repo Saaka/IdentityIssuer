@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using IdentityIssuer.Application.Requests;
+using IdentityIssuer.WebAPI.Models;
 using IdentityIssuer.WebAPI.Services;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -18,10 +18,10 @@ namespace IdentityIssuer.WebAPI.Pipeline
         {
             foreach (var argument in context.ActionArguments.Values)
             {
-                if (!(argument is ITenantCommand command)) continue;
+                if (!(argument is ITenantRequest request)) continue;
                 
                 var tenant = await contextDataProvider.GetTenant(context.HttpContext);
-                command.TenantId = tenant.TenantId;
+                request.TenantId = tenant.TenantId;
             }
             
             await next();

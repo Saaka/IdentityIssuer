@@ -1,4 +1,4 @@
-using IdentityIssuer.Application.Requests;
+using System.Threading.Tasks;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.WebAPI.Services;
 using MediatR;
@@ -20,18 +20,10 @@ namespace IdentityIssuer.WebAPI.Controllers
         protected IContextDataProvider ContextDataProvider =>
             contextDataProvider ??
             (contextDataProvider = HttpContext.RequestServices.GetService<IContextDataProvider>());
-        
-        protected ActionResult GetRequestResult<TRes>(TRes @base)
-            where TRes : RequestResultBase
+
+        protected async Task<int> GetTenantId()
         {
-            if (@base.IsSuccessful)
-            {
-                return Ok(@base);
-            }
-            else
-            {
-                return BadRequest(new { @base.Error });
-            }
+            return (await ContextDataProvider.GetTenant(HttpContext)).TenantId;
         }
     }
 }
