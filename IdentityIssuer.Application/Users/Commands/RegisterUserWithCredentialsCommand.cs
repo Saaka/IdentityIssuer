@@ -1,9 +1,8 @@
 using System;
-using MediatR;
 
 namespace IdentityIssuer.Application.Users.Commands
 {
-    public class RegisterUserWithCredentialsCommand : IRequest
+    public class RegisterUserWithCredentialsCommand : CommandBase
     {
         public Guid Guid { get; set; }
         public string Email { get; set; }
