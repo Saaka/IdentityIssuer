@@ -20,6 +20,7 @@ namespace IdentityIssuer.Application
         public static IServiceCollection AddApplicationModuleBehaviors(this IServiceCollection services)
         {
             services
+                .AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandLogger<,>))
                 .AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandValidationBehavior<,>));
 
             return services;
