@@ -3,7 +3,6 @@ using AutoMapper;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Users.Repositories;
 using System.Linq;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityIssuer.Persistence.Repositories
@@ -19,6 +18,7 @@ namespace IdentityIssuer.Persistence.Repositories
             this.context = context;
             this.mapper = mapper;
         }
+
         public async Task<TenantUser> GetUser(int userId, int tenantId)
         {
             var query = from u in context.Users
@@ -33,12 +33,23 @@ namespace IdentityIssuer.Persistence.Repositories
         public async Task<TenantUser> GetUser(string guid)
         {
             var query = from u in context.Users
-                where  u.UserGuid == guid
+                where u.UserGuid == guid
                 select u;
 
             var result = await query.FirstOrDefaultAsync();
 
             return mapper.Map<TenantUser>(result);
+        }
+
+        public async Task<bool> IsEmailUniqueForTenant(string email, int tenantId)
+        {
+            var normalizedEmail = email.ToUpper();
+            var query = from u in context.Users
+                where u.TenantId == tenantId &&
+                      u.NormalizedEmail == normalizedEmail
+                select u;
+
+            return !(await query.AnyAsync());
         }
     }
 }

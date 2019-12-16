@@ -14,7 +14,7 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
             var guid = GuidProvider.GetGuid();
             await Mediator.Send(new RegisterUserWithCredentialsCommand
             {
-                Guid = guid,
+                UserGuid = guid,
                 Email = request.Email,
                 Password = request.Password,
                 DisplayName = request.DisplayName,

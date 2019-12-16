@@ -1,10 +1,19 @@
+using System.Threading;
+using System.Threading.Tasks;
 using FluentValidation;
+using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Constants;
 
 namespace IdentityIssuer.Application.Users.Commands.RegisterUserWithCredentials
 {
     public class RegisterUserWithCredentialsCommandValidator: AbstractValidator<RegisterUserWithCredentialsCommand>
     {
+        private readonly IUserRepository userRepository;
+
+        public RegisterUserWithCredentialsCommandValidator(IUserRepository userRepository)
+        {
+            this.userRepository = userRepository;
+        }
         public RegisterUserWithCredentialsCommandValidator()
         {
             RuleFor(x => x.DisplayName)
@@ -17,6 +26,16 @@ namespace IdentityIssuer.Application.Users.Commands.RegisterUserWithCredentials
                 .NotEmpty()
                 .EmailAddress()
                 .Length(UserConstants.MinEmailLength, UserConstants.MaxPasswordLength);
+            RuleFor(x => x.TenantId)
+                .NotEmpty();
+            RuleFor(x => x)
+                .MustAsync(HaveUniqueEmailForTenant)
+                .WithMessage(ValidationErrors.EmailNotUniqueForTenant);
+        }
+
+        private async Task<bool> HaveUniqueEmailForTenant(RegisterUserWithCredentialsCommand command, CancellationToken cancellationToken)
+        {
+            return await userRepository.IsEmailUniqueForTenant(command.Email, command.TenantId);
         }
     }
 }
