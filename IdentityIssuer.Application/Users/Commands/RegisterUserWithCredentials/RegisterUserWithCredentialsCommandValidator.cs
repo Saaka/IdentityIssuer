@@ -6,16 +6,14 @@ using IdentityIssuer.Common.Constants;
 
 namespace IdentityIssuer.Application.Users.Commands.RegisterUserWithCredentials
 {
-    public class RegisterUserWithCredentialsCommandValidator: AbstractValidator<RegisterUserWithCredentialsCommand>
+    public class RegisterUserWithCredentialsCommandValidator : AbstractValidator<RegisterUserWithCredentialsCommand>
     {
         private readonly IUserRepository userRepository;
 
         public RegisterUserWithCredentialsCommandValidator(IUserRepository userRepository)
         {
             this.userRepository = userRepository;
-        }
-        public RegisterUserWithCredentialsCommandValidator()
-        {
+            
             RuleFor(x => x.DisplayName)
                 .Length(UserConstants.MinDisplayNameLength, UserConstants.MaxDisplayNameLength)
                 .NotEmpty();
@@ -30,10 +28,12 @@ namespace IdentityIssuer.Application.Users.Commands.RegisterUserWithCredentials
                 .NotEmpty();
             RuleFor(x => x)
                 .MustAsync(HaveUniqueEmailForTenant)
-                .WithMessage(ValidationErrors.EmailNotUniqueForTenant);
+                .WithMessage(ValidationErrors.EmailNotUniqueForTenant)
+                .OverridePropertyName(nameof(RegisterUserWithCredentialsCommand.Email));
         }
 
-        private async Task<bool> HaveUniqueEmailForTenant(RegisterUserWithCredentialsCommand command, CancellationToken cancellationToken)
+        private async Task<bool> HaveUniqueEmailForTenant(RegisterUserWithCredentialsCommand command,
+            CancellationToken cancellationToken)
         {
             return await userRepository.IsEmailUniqueForTenant(command.Email, command.TenantId);
         }

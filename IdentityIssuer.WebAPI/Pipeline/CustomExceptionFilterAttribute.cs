@@ -63,8 +63,7 @@ namespace IdentityIssuer.WebAPI.Pipeline
             context.Result = new JsonResult(new
             {
                 Error = validationException.Message,
-                Errors = validationException.Errors.Select(ToCamelCase).ToList(),
-                ErrorDetails = env.IsDevelopment() ? validationException.Failures : new Dictionary<string, string[]>(),
+                ErrorDetails = validationException.Errors.Select(ToCamelCase).ToList()
             });
         }
 
@@ -75,7 +74,7 @@ namespace IdentityIssuer.WebAPI.Pipeline
             context.Result = new JsonResult(new
             {
                 Error = repositoryException.Message,
-                Errors = repositoryException.Errors
+                ErrorDetails = repositoryException.Errors
             });
         }
 

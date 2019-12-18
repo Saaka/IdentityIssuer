@@ -17,14 +17,14 @@ namespace IdentityIssuer.WebAPI.Configurations
                 {
                     typeof(Persistence.PersistenceMapperProfile).Assembly
                 })
-                .AddMediatRBehaviors()
-                .AddMediatR(typeof(ApplicationModule).Assembly)
-                .AddMemoryCache();
+                .AddMediatrBehaviors()
+                .AddMemoryCache()
+                .AddMediatR(typeof(ApplicationModule).Assembly);
 
             return services;
         }
         
-        private static IServiceCollection AddMediatRBehaviors(this IServiceCollection services)
+        private static IServiceCollection AddMediatrBehaviors(this IServiceCollection services)
         {
             services
                 .AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>))

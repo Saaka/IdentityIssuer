@@ -4,7 +4,7 @@ namespace IdentityIssuer.Application.Users.Commands
 {
     public class RegisterUserWithCredentialsCommand : CommandBase
     {
-        public Guid UserGuid { get; set; }
+        public string UserGuid { get; set; }
         public string Email { get; set; }
         public string DisplayName { get; set; }
         public string Password { get; set; }
