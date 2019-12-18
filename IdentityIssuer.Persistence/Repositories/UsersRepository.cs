@@ -3,6 +3,10 @@ using AutoMapper;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Users.Repositories;
 using System.Linq;
+using IdentityIssuer.Application.Users.Models;
+using IdentityIssuer.Common.Exceptions;
+using IdentityIssuer.Persistence.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityIssuer.Persistence.Repositories
@@ -11,12 +15,15 @@ namespace IdentityIssuer.Persistence.Repositories
     {
         private readonly AppIdentityContext context;
         private readonly IMapper mapper;
+        private readonly UserManager<TenantUserEntity> userManager;
 
         public UsersRepository(AppIdentityContext context,
-            IMapper mapper)
+            IMapper mapper,
+            UserManager<TenantUserEntity> userManager)
         {
             this.context = context;
             this.mapper = mapper;
+            this.userManager = userManager;
         }
 
         public async Task<TenantUser> GetUser(int userId, int tenantId)
@@ -50,6 +57,25 @@ namespace IdentityIssuer.Persistence.Repositories
                 select u;
 
             return !(await query.AnyAsync());
+        }
+
+        public async Task<TenantUser> CreateUser(CreateUserDto data)
+        {
+            var tenantUser = new TenantUserEntity
+            {
+                Email = data.Email,
+                UserName = data.UserGuid,
+                DisplayName = data.DisplayName,
+                UserGuid = data.UserGuid,
+                ImageUrl = data.ImageUrl,
+                TenantId = data.TenantId
+            };
+
+            var result = await userManager.CreateAsync(tenantUser, data.Password);
+            if (!result.Succeeded)
+                throw new RepositoryException(nameof(CreateUser), result.Errors.Select(x => x.Code));
+            
+            return mapper.Map<TenantUser>(tenantUser);
         }
     }
 }
