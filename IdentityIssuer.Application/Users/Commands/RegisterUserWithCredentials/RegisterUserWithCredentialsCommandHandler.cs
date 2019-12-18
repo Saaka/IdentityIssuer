@@ -1,22 +1,38 @@
 using System.Threading;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Services;
+using IdentityIssuer.Application.Users.Models;
+using IdentityIssuer.Application.Users.Repositories;
 using MediatR;
 
 namespace IdentityIssuer.Application.Users.Commands.RegisterUserWithCredentials
 {
     public class RegisterUserWithCredentialsCommandHandler : AsyncRequestHandler<RegisterUserWithCredentialsCommand>
     {
-        private readonly IGuid guid;
+        private readonly IUserRepository userRepository;
+        private readonly IProfileImageUrlProvider profileImageUrlProvider;
 
-        public RegisterUserWithCredentialsCommandHandler(IGuid guid)
+        public RegisterUserWithCredentialsCommandHandler(
+            IUserRepository userRepository,
+            IProfileImageUrlProvider profileImageUrlProvider)
         {
-            this.guid = guid;
+            this.userRepository = userRepository;
+            this.profileImageUrlProvider = profileImageUrlProvider;
         }
 
-        protected override async Task Handle(RegisterUserWithCredentialsCommand request, CancellationToken cancellationToken)
+        protected override async Task Handle(RegisterUserWithCredentialsCommand request,
+            CancellationToken cancellationToken)
         {
-            
+            var imageUrl = profileImageUrlProvider.GetImageUrl(request.Email);
+            var user = await userRepository.CreateUser(new CreateUserDto
+            {
+                Email = request.Email,
+                Password = request.Password,
+                DisplayName = request.DisplayName,
+                ImageUrl = imageUrl,
+                TenantId = request.TenantId,
+                UserGuid = request.UserGuid
+            });
         }
     }
 }
