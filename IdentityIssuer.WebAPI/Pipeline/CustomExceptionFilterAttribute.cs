@@ -24,6 +24,8 @@ namespace IdentityIssuer.WebAPI.Pipeline
             var exception = context.Exception;
             if (exception is CommandValidationException validationException)
                 HandleValidationException(validationException, context);
+            if (exception is RepositoryException repositoryException)
+                HandleRepositoryException(repositoryException, context);
             else
                 HandleApplicationExceptions(context, exception);
         }
@@ -63,6 +65,17 @@ namespace IdentityIssuer.WebAPI.Pipeline
                 Error = validationException.Message,
                 Errors = validationException.Errors.Select(ToCamelCase).ToList(),
                 ErrorDetails = env.IsDevelopment() ? validationException.Failures : new Dictionary<string, string[]>(),
+            });
+        }
+
+        private void HandleRepositoryException(RepositoryException repositoryException, ExceptionContext context)
+        {
+            context.HttpContext.Response.ContentType = "application/json";
+            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            context.Result = new JsonResult(new
+            {
+                Error = repositoryException.Message,
+                Errors = repositoryException.Errors
             });
         }
 
