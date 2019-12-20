@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Users.Commands;
+using IdentityIssuer.Application.Users.Queries;
 using IdentityIssuer.WebAPI.Controllers.Auth.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityIssuer.WebAPI.Controllers.Auth
@@ -22,6 +24,19 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
             });
 
             return Ok(guid);
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginUserWithCredentialsRequest request)
+        {
+            var result = await Mediator.Send(new AuthUserByCredentialsQuery
+            {
+                Email = request.Email,
+                Password = request.Password,
+                TenantId = await GetTenantId()
+            });
+
+            return Ok(result);
         }
     }
 }
