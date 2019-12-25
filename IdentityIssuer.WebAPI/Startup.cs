@@ -28,9 +28,9 @@ namespace IdentityIssuer.WebAPI
                 .AddDbContext(Configuration)
                 .AddIdentityStore(Configuration)
                 .AddPersistenceModule()
-                .AddExternalServices()
                 .AddApplicationModule()
                 .AddInfrastructureModule()
+                .AddExternalServices()
                 .AddCors()
                 .AddMvcWithFilters()
                 .AddJwtTokenBearerAuthentication(Configuration);

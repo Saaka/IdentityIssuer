@@ -1,4 +1,5 @@
-﻿using IdentityIssuer.WebAPI.Cors;
+﻿using IdentityIssuer.Application.Configuration;
+using IdentityIssuer.WebAPI.Cors;
 using IdentityIssuer.WebAPI.Services;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +15,9 @@ namespace IdentityIssuer.WebAPI.Configurations
                 .AddTransient<ICorsPolicyProvider, TenantCorsPolicyProvider>()
                 .AddTransient<IAllowedOriginsProvider, AllowedOriginsProvider>()
                 
-                .AddTransient<IContextDataProvider, ContextDataProvider>();
+                .AddTransient<IContextDataProvider, ContextDataProvider>()
+                
+                .AddTransient<ITokenConfiguration, AuthSettings>();
 
             return services;
         }

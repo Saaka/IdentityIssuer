@@ -17,9 +17,11 @@ namespace IdentityIssuer.Application.Users.Queries.GetUserByCredentials
         private readonly ITenantsRepository tenantsRepository;
         private readonly IMapper mapper;
 
-        public GetUserByCredentialsQueryHandler(IUserRepository userRepository,
+        public GetUserByCredentialsQueryHandler(
+            IUserRepository userRepository,
             IJwtTokenFactory jwtTokenFactory,
-            ITenantsRepository tenantsRepository, IMapper mapper)
+            ITenantsRepository tenantsRepository, 
+            IMapper mapper)
         {
             this.userRepository = userRepository;
             this.jwtTokenFactory = jwtTokenFactory;
@@ -35,6 +37,8 @@ namespace IdentityIssuer.Application.Users.Queries.GetUserByCredentials
                 throw new UserNotFoundException(request.Email, request.TenantId);
 
             var settings = await tenantsRepository.GetTenantSettings(request.TenantId);
+            if(settings == null)
+                throw new TenantSettingsNotFoundException(request.TenantId);
             var token = jwtTokenFactory.Create(user, settings);
             return new AuthUserResult
             {

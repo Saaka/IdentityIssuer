@@ -18,8 +18,8 @@ namespace IdentityIssuer.WebAPI.Configurations
                     typeof(Persistence.PersistenceMapperProfile).Assembly,
                     typeof(ApplicationMapperProfile).Assembly
                 })
-                .AddMediatrBehaviors()
                 .AddMemoryCache()
+                .AddMediatrBehaviors()
                 .AddMediatR(typeof(ApplicationModule).Assembly);
 
             return services;
