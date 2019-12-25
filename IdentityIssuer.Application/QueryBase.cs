@@ -9,7 +9,7 @@ namespace IdentityIssuer.Application
     }
     public class QueryBase<T> :  IRequest<T>, IQueryBase
     {
-        public QueryBase()
+        protected QueryBase()
         {
             QueryUuid = Guid.NewGuid();
         }

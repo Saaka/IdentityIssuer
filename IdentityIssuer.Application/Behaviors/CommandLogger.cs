@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace IdentityIssuer.Application.Behaviors
 {
     public class CommandLogger<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : IRequest<TResponse>, ICommandBase
+        where TRequest : IRequest<TResponse>
     {
         private readonly ILogger _logger;
 
@@ -18,9 +18,12 @@ namespace IdentityIssuer.Application.Behaviors
             _logger = logger;
         }
 
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken,
+        public async Task<TResponse> Handle(TRequest req, CancellationToken cancellationToken,
             RequestHandlerDelegate<TResponse> next)
         {
+            if (!(req is ICommandBase request))
+                return await next();
+            
             var name = typeof(TRequest).Name;
             TResponse response;
 
