@@ -29,7 +29,7 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUserWithCredentialsRequest request)
         {
-            var result = await Mediator.Send(new AuthUserByCredentialsQuery
+            var result = await Mediator.Send(new GetUserByCredentialsQuery
             {
                 Email = request.Email,
                 Password = request.Password,

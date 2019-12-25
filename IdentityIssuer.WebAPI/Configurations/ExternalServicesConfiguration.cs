@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using IdentityIssuer.Application;
-using IdentityIssuer.Application.Behaviors;
+using IdentityIssuer.Application.Configuration;
 using MediatR;
 using MediatR.Pipeline;
 
@@ -15,7 +15,8 @@ namespace IdentityIssuer.WebAPI.Configurations
             services
                 .AddAutoMapper(new Assembly[]
                 {
-                    typeof(Persistence.PersistenceMapperProfile).Assembly
+                    typeof(Persistence.PersistenceMapperProfile).Assembly,
+                    typeof(ApplicationMapperProfile).Assembly
                 })
                 .AddMediatrBehaviors()
                 .AddMemoryCache()

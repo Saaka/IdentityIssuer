@@ -10,5 +10,6 @@ namespace IdentityIssuer.Application.Tenants.Repositories
         Task<IEnumerable<string>> GetAllAllowedOriginsAsync();
         Task<TenantSettings> GetTenantSettingsAsync(string code);
         TenantSettings GetTenantSettings(string code);
+        Task<TenantSettings> GetTenantSettings(int tenantId);
     }
 }

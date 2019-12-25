@@ -62,5 +62,16 @@ namespace IdentityIssuer.Persistence.Repositories
 
             return mapper.Map<TenantSettings>(result);
         }
+
+        public async Task<TenantSettings> GetTenantSettings(int tenantId)
+        {
+            var query = from ts in context.TenantSettings
+                where ts.TenantId == tenantId
+                select ts;
+
+            var result = await query.FirstOrDefaultAsync();
+
+            return mapper.Map<TenantSettings>(result);
+        }
     }
 }

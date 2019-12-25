@@ -8,6 +8,7 @@ using IdentityIssuer.Common.Exceptions;
 using IdentityIssuer.Persistence.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 
 namespace IdentityIssuer.Persistence.Repositories
 {
@@ -74,8 +75,24 @@ namespace IdentityIssuer.Persistence.Repositories
             var result = await userManager.CreateAsync(tenantUser, data.Password);
             if (!result.Succeeded)
                 throw new RepositoryException(nameof(CreateUser), result.Errors.Select(x => x.Code));
-            
+
             return mapper.Map<TenantUser>(tenantUser);
+        }
+
+        public async Task<TenantUser> GetUserByCredentials(string email, string password, int tenantId)
+        {
+            var normalizedEmail = email.ToUpper();
+            var query = from u in context.Users
+                where u.NormalizedEmail == normalizedEmail
+                      && u.TenantId == tenantId
+                select u;
+
+            var user = await query.FirstOrDefaultAsync();
+
+            if (await userManager.CheckPasswordAsync(user, password))
+                return mapper.Map<TenantUser>(user);
+
+            return null;
         }
     }
 }

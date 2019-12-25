@@ -10,5 +10,6 @@ namespace IdentityIssuer.Application.Users.Repositories
         Task<TenantUser> GetUser(string guid);
         Task<bool> IsEmailUniqueForTenant(string email, int tenantId);
         Task<TenantUser> CreateUser(CreateUserDto data);
+        Task<TenantUser> GetUserByCredentials(string email, string password, int tenantId);
     }
 }
