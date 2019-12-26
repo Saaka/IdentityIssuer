@@ -20,7 +20,7 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
                 Email = request.Email,
                 Password = request.Password,
                 DisplayName = request.DisplayName,
-                TenantId = await GetTenantId()
+                Tenant = await GetTenant()
             });
 
             return Ok(guid);
@@ -33,7 +33,7 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
             {
                 Email = request.Email,
                 Password = request.Password,
-                TenantId = await GetTenantId()
+                Tenant = await GetTenant()
             });
 
             return Ok(result);

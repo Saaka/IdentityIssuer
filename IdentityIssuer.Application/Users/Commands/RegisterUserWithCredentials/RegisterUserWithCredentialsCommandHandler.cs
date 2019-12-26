@@ -30,7 +30,7 @@ namespace IdentityIssuer.Application.Users.Commands.RegisterUserWithCredentials
                 Password = request.Password,
                 DisplayName = request.DisplayName,
                 ImageUrl = imageUrl,
-                TenantId = request.TenantId,
+                TenantId = request.Tenant.TenantId,
                 UserGuid = request.UserGuid
             });
         }

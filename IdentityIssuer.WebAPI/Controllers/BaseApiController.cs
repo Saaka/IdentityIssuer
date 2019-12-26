@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.WebAPI.Services;
 using MediatR;
@@ -21,9 +22,9 @@ namespace IdentityIssuer.WebAPI.Controllers
             contextDataProvider ??
             (contextDataProvider = HttpContext.RequestServices.GetService<IContextDataProvider>());
 
-        protected async Task<int> GetTenantId()
+        protected async Task<TenantContextData> GetTenant()
         {
-            return (await ContextDataProvider.GetTenant(HttpContext)).TenantId;
+            return await ContextDataProvider.GetTenant(HttpContext);
         }
     }
 }

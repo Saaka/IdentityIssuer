@@ -4,8 +4,8 @@ namespace IdentityIssuer.Common.Exceptions
 {
     public class TenantSettingsNotFoundException: ArgumentException
     {
-        public TenantSettingsNotFoundException(int tenantId)
-            : base($"Tenant settings {tenantId} not found")
+        public TenantSettingsNotFoundException(string tenantCode)
+            : base($"Tenant settings {tenantCode} not found")
         {
         }
     }

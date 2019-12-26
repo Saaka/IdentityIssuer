@@ -9,13 +9,8 @@ namespace IdentityIssuer.Common.Exceptions
         {
         }
         
-        public UserNotFoundException(int userId, int tenantId)
-            : base($"User with id {userId} and tenant id {tenantId} not found")
-        {
-        }
-        
-        public UserNotFoundException(string email, int tenantId)
-            : base($"User with email {email} and tenant id {tenantId} not found")
+        public UserNotFoundException(string email, string tenantCode)
+            : base($"User with email {email} and tenant id {tenantCode} not found")
         {
         }
     }

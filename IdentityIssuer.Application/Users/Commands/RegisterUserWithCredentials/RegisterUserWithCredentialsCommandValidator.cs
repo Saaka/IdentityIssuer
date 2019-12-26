@@ -24,7 +24,9 @@ namespace IdentityIssuer.Application.Users.Commands.RegisterUserWithCredentials
                 .NotEmpty()
                 .EmailAddress()
                 .Length(UserConstants.MinEmailLength, UserConstants.MaxPasswordLength);
-            RuleFor(x => x.TenantId)
+            RuleFor(x => x.Tenant)
+                .NotNull();
+            RuleFor(x => x.Tenant.TenantId)
                 .NotEmpty();
             RuleFor(x => x)
                 .MustAsync(HaveUniqueEmailForTenant)
@@ -35,7 +37,7 @@ namespace IdentityIssuer.Application.Users.Commands.RegisterUserWithCredentials
         private async Task<bool> HaveUniqueEmailForTenant(RegisterUserWithCredentialsCommand command,
             CancellationToken cancellationToken)
         {
-            return await userRepository.IsEmailUniqueForTenant(command.Email, command.TenantId);
+            return await userRepository.IsEmailUniqueForTenant(command.Email, command.Tenant.TenantId);
         }
     }
 }

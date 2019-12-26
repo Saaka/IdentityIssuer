@@ -31,14 +31,14 @@ namespace IdentityIssuer.Application.Users.Queries.GetUserByCredentials
 
         public async Task<AuthUserResult> Handle(GetUserByCredentialsQuery request, CancellationToken cancellationToken)
         {
-            var user = await userRepository.GetUserByCredentials(request.Email, request.Password, request.TenantId);
-
+            var user = await userRepository.GetUserByCredentials(request.Email, request.Password, request.Tenant.TenantId);
             if (user == null)
-                throw new UserNotFoundException(request.Email, request.TenantId);
+                throw new UserNotFoundException(request.Email, request.Tenant.TenantCode);
 
-            var settings = await tenantsRepository.GetTenantSettings(request.TenantId);
+            var settings = await tenantsRepository.GetTenantSettings(request.Tenant.TenantId);
             if(settings == null)
-                throw new TenantSettingsNotFoundException(request.TenantId);
+                throw new TenantSettingsNotFoundException(request.Tenant.TenantCode);
+            
             var token = jwtTokenFactory.Create(user, settings);
             return new AuthUserResult
             {

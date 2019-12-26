@@ -1,4 +1,4 @@
-namespace IdentityIssuer.WebAPI.Services
+namespace IdentityIssuer.Application.Models
 {
     public class TenantContextData
     {

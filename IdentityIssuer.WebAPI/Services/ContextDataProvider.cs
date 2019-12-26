@@ -1,6 +1,7 @@
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Tenants;
 using IdentityIssuer.Application.Users;
 using IdentityIssuer.Common.Exceptions;
