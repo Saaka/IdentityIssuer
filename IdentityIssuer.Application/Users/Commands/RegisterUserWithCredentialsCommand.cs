@@ -5,10 +5,24 @@ namespace IdentityIssuer.Application.Users.Commands
 {
     public class RegisterUserWithCredentialsCommand : CommandBase
     {
-        public string UserGuid { get; set; }
-        public string Email { get; set; }
-        public string DisplayName { get; set; }
-        public string Password { get; set; }
-        public TenantContextData Tenant { get; set; }
+        public RegisterUserWithCredentialsCommand(
+            string userGuid, 
+            string email, 
+            string displayName, 
+            string password, 
+            TenantContextData tenant)
+        {
+            UserGuid = userGuid;
+            Email = email;
+            DisplayName = displayName;
+            Password = password;
+            Tenant = tenant;
+        }
+
+        public string UserGuid { get;  }
+        public string Email { get;  }
+        public string DisplayName { get;  }
+        public string Password { get;  }
+        public TenantContextData Tenant { get;  }
     }
 }

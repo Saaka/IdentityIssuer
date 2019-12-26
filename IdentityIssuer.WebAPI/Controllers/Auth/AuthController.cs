@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using IdentityIssuer.Application.Users.Commands;
 using IdentityIssuer.Application.Users.Queries;
 using IdentityIssuer.WebAPI.Controllers.Auth.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityIssuer.WebAPI.Controllers.Auth
@@ -14,14 +13,13 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
         public async Task<IActionResult> Register(RegisterUserWithCredentialsRequest request)
         {
             var guid = GuidProvider.GetNormalizedGuid();
-            await Mediator.Send(new RegisterUserWithCredentialsCommand
-            {
-                UserGuid = guid,
-                Email = request.Email,
-                Password = request.Password,
-                DisplayName = request.DisplayName,
-                Tenant = await GetTenant()
-            });
+            await Mediator.Send(new RegisterUserWithCredentialsCommand(
+                userGuid: guid,
+                email: request.Email,
+                displayName: request.DisplayName,
+                password: request.Password,
+                tenant: await GetTenant()
+            ));
 
             return Ok(guid);
         }
@@ -29,12 +27,11 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUserWithCredentialsRequest request)
         {
-            var result = await Mediator.Send(new GetUserByCredentialsQuery
-            {
-                Email = request.Email,
-                Password = request.Password,
-                Tenant = await GetTenant()
-            });
+            var result = await Mediator.Send(new GetUserByCredentialsQuery(
+                email: request.Email,
+                password: request.Password,
+                tenant: await GetTenant()
+            ));
 
             return Ok(result);
         }
