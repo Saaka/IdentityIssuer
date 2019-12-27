@@ -1,9 +1,12 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using FluentValidation.AspNetCore;
 using IdentityIssuer.Application;
 using IdentityIssuer.Application.Tenants;
 using IdentityIssuer.WebAPI.Pipeline;
+using IdentityIssuer.WebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +28,8 @@ namespace IdentityIssuer.WebAPI.Configurations
                 .AddFluentValidation(v => v.RegisterValidatorsFromAssembly(typeof(ApplicationModule).Assembly))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
+            services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; })
+                .AddHttpContextAccessor();
 
             return services;
         }
@@ -33,7 +37,10 @@ namespace IdentityIssuer.WebAPI.Configurations
         public static IServiceCollection AddJwtTokenBearerAuthentication(this IServiceCollection services,
             IConfiguration configuration)
         {
-            var tenantProvider = services.BuildServiceProvider().GetService<ITenantProvider>();
+            var serviceProvider = services.BuildServiceProvider();
+            var tenantProvider = serviceProvider.GetService<ITenantProvider>();
+            var httpContextAccessor = serviceProvider.GetService<IHttpContextAccessor>();
+            var contextDataProvider = serviceProvider.GetService<IContextDataProvider>();
 
             services.AddAuthentication(x =>
                 {
@@ -51,8 +58,14 @@ namespace IdentityIssuer.WebAPI.Configurations
                         IssuerSigningKeyResolver = (string token, SecurityToken securityToken, string kid,
                             TokenValidationParameters validationParameters) =>
                         {
-                            var key = tenantProvider.GetTenantSettings(kid).TokenSecret;
-                            return new[] {new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))};
+                            var currentTenant = contextDataProvider.GetTenant(httpContextAccessor.HttpContext).Result;
+                            if (currentTenant.TenantCode != kid)
+                                throw new UnauthorizedAccessException(currentTenant.TenantCode);
+                            var key = tenantProvider.GetTenantSettings(currentTenant.TenantCode).TokenSecret;
+                            return new[]
+                            {
+                                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+                            };
                         },
 
                         ValidateIssuer = true,
