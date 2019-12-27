@@ -48,10 +48,10 @@ namespace IdentityIssuer.WebAPI.Configurations
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKeyResolver = (string token, SecurityToken securityToken, string tenantCode,
+                        IssuerSigningKeyResolver = (string token, SecurityToken securityToken, string kid,
                             TokenValidationParameters validationParameters) =>
                         {
-                            var key = tenantProvider.GetTenantSettings(tenantCode).TokenSecret;
+                            var key = tenantProvider.GetTenantSettings(kid).TokenSecret;
                             return new[] {new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))};
                         },
 

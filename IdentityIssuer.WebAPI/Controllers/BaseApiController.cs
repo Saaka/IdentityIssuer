@@ -29,7 +29,7 @@ namespace IdentityIssuer.WebAPI.Controllers
 
         protected async Task<UserContextData> GetUser()
         {
-            return await contextDataProvider.GetUser(HttpContext);
+            return await ContextDataProvider.GetUser(HttpContext);
         }
     }
 }

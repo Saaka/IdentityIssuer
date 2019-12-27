@@ -9,10 +9,11 @@ namespace IdentityIssuer.Application.Models
         {
             UserId = userId;
             UserGuid = userGuid;
+            Tenant = tenant;
         }
 
         public int UserId { get; }
         public string UserGuid { get; }
-        public TenantContextData Tenant { get; set; }
+        public TenantContextData Tenant { get; }
     }
 }

@@ -20,7 +20,7 @@ namespace IdentityIssuer.Application.Users.Queries.GetUserByCredentials
         public GetUserByCredentialsQueryHandler(
             IUserRepository userRepository,
             IJwtTokenFactory jwtTokenFactory,
-            ITenantsRepository tenantsRepository, 
+            ITenantsRepository tenantsRepository,
             IMapper mapper)
         {
             this.userRepository = userRepository;
@@ -31,15 +31,16 @@ namespace IdentityIssuer.Application.Users.Queries.GetUserByCredentials
 
         public async Task<AuthUserResult> Handle(GetUserByCredentialsQuery request, CancellationToken cancellationToken)
         {
-            var user = await userRepository.GetUserByCredentials(request.Email, request.Password, request.Tenant.TenantId);
+            var user = await userRepository.GetUserByCredentials(request.Email, request.Password,
+                request.Tenant.TenantId);
             if (user == null)
                 throw new UserNotFoundException(request.Email, request.Tenant.TenantCode);
 
             var settings = await tenantsRepository.GetTenantSettings(request.Tenant.TenantId);
-            if(settings == null)
+            if (settings == null)
                 throw new TenantSettingsNotFoundException(request.Tenant.TenantCode);
-            
-            var token = jwtTokenFactory.Create(user, settings);
+
+            var token = jwtTokenFactory.Create(user, settings, request.Tenant.TenantCode);
             return new AuthUserResult
             {
                 Token = token,

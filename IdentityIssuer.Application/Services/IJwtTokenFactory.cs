@@ -4,6 +4,6 @@ namespace IdentityIssuer.Application.Services
 {
     public interface IJwtTokenFactory
     {
-        string Create(TenantUser user, TenantSettings settings);
+        string Create(TenantUser user, TenantSettings settings, string tenantCode);
     }
 }

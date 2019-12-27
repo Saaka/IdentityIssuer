@@ -20,14 +20,14 @@ namespace IdentityIssuer.Infrastructure.Security
             this.tokenConfiguration = tokenConfiguration;
         }
 
-        public string Create(TenantUser user, TenantSettings settings)
+        public string Create(TenantUser user, TenantSettings settings, string tenantCode)
         {
             var key = Encoding.ASCII.GetBytes(settings.TokenSecret);
             var tokenHandler = new JwtSecurityTokenHandler();
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserGuid),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
             if (user.IsAdmin)
                 claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, UserRoles.Admin));
@@ -40,9 +40,10 @@ namespace IdentityIssuer.Infrastructure.Security
                 Expires = DateTime.Now.AddMinutes(settings.TokenExpirationInMinutes),
                 Issuer = tokenConfiguration.Issuer,
             };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var jwt = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
+            jwt.Header.Add(JwtHeaderParameterNames.Kid, tenantCode);
 
-            return tokenHandler.WriteToken(token);
+            return tokenHandler.WriteToken(jwt);
         }
     }
 }
