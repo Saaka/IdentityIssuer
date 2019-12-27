@@ -8,7 +8,6 @@ using IdentityIssuer.Common.Exceptions;
 using IdentityIssuer.Persistence.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 
 namespace IdentityIssuer.Persistence.Repositories
 {

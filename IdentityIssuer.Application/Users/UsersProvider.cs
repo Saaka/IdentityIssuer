@@ -10,7 +10,7 @@ namespace IdentityIssuer.Application.Users
 {
     public interface IUsersProvider
     {
-        Task<TenantUser> GetUser(string guid);
+        Task<TenantUser> GetUser(int id, int tenantId);
         Task<int> GetUserId(string guid);
     }
 
@@ -26,17 +26,15 @@ namespace IdentityIssuer.Application.Users
             this.cache = cache;
         }
 
-        public async Task<TenantUser> GetUser(string guid)
+        public async Task<TenantUser> GetUser(int id, int tenantId)
         {
-            var result = await cache.GetOrCreateAsync($"{CacheConstants.UserCachePrefix}{guid}",
+            var result = await cache.GetOrCreateAsync($"{CacheConstants.UserCachePrefix}{id}_{tenantId}",
                 async (ce) =>
                 {
                     ce.SlidingExpiration = TimeSpan.FromMinutes(5);
                     ce.AbsoluteExpiration = DateTime.Now.AddHours(1);
 
-                    var user = await userRepository.GetUser(guid);
-                    if (user == null)
-                        throw new UserNotFoundException(guid);
+                    var user = await userRepository.GetUser(id, tenantId);
 
                     return user;
                 });

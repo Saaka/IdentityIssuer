@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using IdentityIssuer.Application.Users.Commands;
 using IdentityIssuer.Application.Users.Queries;
 using IdentityIssuer.WebAPI.Controllers.Auth.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityIssuer.WebAPI.Controllers.Auth
@@ -32,6 +33,19 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
                 password: request.Password,
                 tenant: await GetTenant()
             ));
+
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("user")]
+        public async Task<IActionResult> GetUserData()
+        {
+            var user = await GetUser();
+            var result = await Mediator.Send(new GetUserByIdQuery(
+                user.UserId, 
+                user.UserGuid,
+                user.Tenant));
 
             return Ok(result);
         }
