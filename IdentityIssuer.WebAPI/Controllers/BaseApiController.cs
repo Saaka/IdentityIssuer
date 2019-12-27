@@ -26,5 +26,10 @@ namespace IdentityIssuer.WebAPI.Controllers
         {
             return await ContextDataProvider.GetTenant(HttpContext);
         }
+
+        protected async Task<UserContextData> GetUser()
+        {
+            return await contextDataProvider.GetUser(HttpContext);
+        }
     }
 }

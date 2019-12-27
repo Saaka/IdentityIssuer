@@ -8,6 +8,7 @@ namespace IdentityIssuer.Application.Users.Repositories
     {
         Task<TenantUser> GetUser(int userId, int tenantId);
         Task<TenantUser> GetUser(string guid);
+        Task<int> GetUserId(string guid);
         Task<bool> IsEmailUniqueForTenant(string email, int tenantId);
         Task<TenantUser> CreateUser(CreateUserDto data);
         Task<TenantUser> GetUserByCredentials(string email, string password, int tenantId);

@@ -49,6 +49,17 @@ namespace IdentityIssuer.Persistence.Repositories
             return mapper.Map<TenantUser>(result);
         }
 
+        public async Task<int> GetUserId(string guid)
+        {
+            var query = from u in context.Users
+                where u.UserGuid == guid
+                select u.Id;
+
+            var result = await query.FirstOrDefaultAsync();
+
+            return result;
+        }
+
         public async Task<bool> IsEmailUniqueForTenant(string email, int tenantId)
         {
             var normalizedEmail = email.ToUpper();

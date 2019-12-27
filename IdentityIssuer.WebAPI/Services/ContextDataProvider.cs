@@ -30,12 +30,11 @@ namespace IdentityIssuer.WebAPI.Services
         public async Task<UserContextData> GetUser(HttpContext context)
         {
             var userGuid = GetUserCodeFromContext(context);
-            var tenantCode = GetTenantCodeFromContext(context);
+            var userId = await usersProvider.GetUserId(userGuid);
+            
+            var tenant = await GetTenant(context);
 
-            var userId = await GetUserId(userGuid);
-            var tenantId = await GetTenantId(tenantCode);
-
-            return new UserContextData(userId, userGuid, tenantId, tenantCode);
+            return new UserContextData(userId, userGuid, tenant);
         }
 
         public async Task<TenantContextData> GetTenant(HttpContext context)
@@ -50,12 +49,6 @@ namespace IdentityIssuer.WebAPI.Services
         {
             var tenant = await tenantProvider.GetTenantAsync(tenantCode);
             return tenant.Id;
-        }
-
-        private async Task<int> GetUserId(string guid)
-        {
-            var user = await usersProvider.GetUserAsync(guid);
-            return user.Id;
         }
 
         private string GetUserCodeFromContext(HttpContext context)
