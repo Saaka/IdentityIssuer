@@ -17,7 +17,9 @@ namespace IdentityIssuer.WebAPI.Configurations
                 
                 .AddTransient<IContextDataProvider, ContextDataProvider>()
                 
-                .AddTransient<ITokenConfiguration, AuthSettings>();
+                .AddTransient<ITokenConfiguration, AuthSettings>()
+                
+                .AddTransient<ITenantSigningKeyResolver, TenantSigningKeyResolver>();
 
             return services;
         }

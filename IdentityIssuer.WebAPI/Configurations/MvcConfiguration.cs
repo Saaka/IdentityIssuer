@@ -38,9 +38,7 @@ namespace IdentityIssuer.WebAPI.Configurations
             IConfiguration configuration)
         {
             var serviceProvider = services.BuildServiceProvider();
-            var tenantProvider = serviceProvider.GetService<ITenantProvider>();
-            var httpContextAccessor = serviceProvider.GetService<IHttpContextAccessor>();
-            var contextDataProvider = serviceProvider.GetService<IContextDataProvider>();
+            var tenantKeyResolver = serviceProvider.GetService<ITenantSigningKeyResolver>();
 
             services.AddAuthentication(x =>
                 {
@@ -55,18 +53,7 @@ namespace IdentityIssuer.WebAPI.Configurations
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKeyResolver = (string token, SecurityToken securityToken, string kid,
-                            TokenValidationParameters validationParameters) =>
-                        {
-                            var currentTenant = contextDataProvider.GetTenant(httpContextAccessor.HttpContext).Result;
-                            if (currentTenant.TenantCode != kid)
-                                throw new UnauthorizedAccessException(currentTenant.TenantCode);
-                            var key = tenantProvider.GetTenantSettings(currentTenant.TenantCode).TokenSecret;
-                            return new[]
-                            {
-                                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
-                            };
-                        },
+                        IssuerSigningKeyResolver = tenantKeyResolver.ResolveSecurityKey,
 
                         ValidateIssuer = true,
                         ValidIssuer = configuration[ConfigurationProperties.Issuer],
