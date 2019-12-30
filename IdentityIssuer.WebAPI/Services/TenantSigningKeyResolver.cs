@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using IdentityIssuer.Application.Tenants;
+using IdentityIssuer.Common.Constants;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 
@@ -39,13 +40,20 @@ namespace IdentityIssuer.WebAPI.Services
             TokenValidationParameters validationParameters)
         {
             var currentTenant = contextDataProvider.GetTenant(httpContextAccessor.HttpContext).Result;
+            if (currentTenant == null)
+                throw new UnauthorizedAccessException(
+                    Exceptions.UnauthorizedAccessException.MissingTenantContextData);
             if (currentTenant.TenantCode != kid)
-                throw new UnauthorizedAccessException(currentTenant.TenantCode);
-            var key = tenantProvider.GetTenantSettings(currentTenant.TenantCode).TokenSecret;
-            
+                throw new UnauthorizedAccessException(
+                    Exceptions.UnauthorizedAccessException.KidMissmatch);
+
+            var tenantSettings = tenantProvider.GetTenantSettings(currentTenant.TenantCode);
+            if (string.IsNullOrEmpty(tenantSettings?.TokenSecret))
+                throw new UnauthorizedAccessException(Exceptions.UnauthorizedAccessException.MissingTenantTokenSecret);
+
             return new[]
             {
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tenantSettings.TokenSecret))
             };
         }
     }
