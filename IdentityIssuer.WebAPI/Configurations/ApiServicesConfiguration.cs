@@ -19,6 +19,8 @@ namespace IdentityIssuer.WebAPI.Configurations
                 
                 .AddTransient<ITokenConfiguration, AuthSettings>()
                 
+                .AddTransient<IGoogleConfiguration, ProvidersSettings>()
+                
                 .AddTransient<ITenantSigningKeyResolver, TenantSigningKeyResolver>();
 
             return services;

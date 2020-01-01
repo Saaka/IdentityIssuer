@@ -16,6 +16,7 @@ namespace IdentityIssuer.WebAPI.Configurations
                 .AddAutoMapper(new Assembly[]
                 {
                     typeof(Persistence.PersistenceMapperProfile).Assembly,
+                    typeof(Infrastructure.InfrastructureAutoMapperProfile).Assembly,
                     typeof(ApplicationMapperProfile).Assembly
                 })
                 .AddMemoryCache()
