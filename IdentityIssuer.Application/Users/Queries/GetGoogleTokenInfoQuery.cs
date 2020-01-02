@@ -4,7 +4,13 @@ namespace IdentityIssuer.Application.Users.Queries
 {
     public class GetGoogleTokenInfoQuery: QueryBase<TokenInfo>
     {
-        public string Token { get; set; }
-        public TenantContextData Tenant { get; set; }
+        public GetGoogleTokenInfoQuery(string token, TenantContextData tenant)
+        {
+            Token = token;
+            Tenant = tenant;
+        }
+
+        public string Token { get; }
+        public TenantContextData Tenant { get; }
     }
 }

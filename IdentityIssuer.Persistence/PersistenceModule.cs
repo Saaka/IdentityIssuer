@@ -17,6 +17,7 @@ namespace IdentityIssuer.Persistence
         {
             services
                 .AddTransient<ITenantsRepository, TenantsRepository>()
+                .AddTransient<ITenantProviderSettingsRepository, TenantProviderSettingsRepository>()
                 .AddTransient<IUserRepository, UsersRepository>();
 
             return services;
