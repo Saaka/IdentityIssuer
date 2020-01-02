@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Users.Commands;
 using IdentityIssuer.Application.Users.Queries;
@@ -35,6 +36,12 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
             ));
 
             return Ok(result);
+        }
+
+        [HttpPost("google")]
+        public async Task<IActionResult> AuthorizeWithGoogle(AuthorizeUserWithGoogleRequest request)
+        {
+            throw new NotImplementedException();
         }
 
         [Authorize]
