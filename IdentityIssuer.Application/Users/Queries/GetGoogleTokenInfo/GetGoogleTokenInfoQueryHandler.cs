@@ -28,8 +28,10 @@ namespace IdentityIssuer.Application.Users.Queries.GetGoogleTokenInfo
             var providerSettings = await providerSettingsRepository
                 .GetProviderSettings(request.Tenant.TenantId, AuthProviderType.Google);
 
+            if(providerSettings == null)
+                throw new TenantSettingsNotFoundException(request.Tenant.TenantCode);
             if (tokenInfo.ClientId != providerSettings.Identifier)
-                throw new InvalidProviderTokenException(AuthProviderType.Google);
+                throw new InvalidProviderTokenException(AuthProviderType.Google, request.Tenant.TenantCode);
 
             return tokenInfo;
         }

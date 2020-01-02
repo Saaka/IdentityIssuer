@@ -41,11 +41,14 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
         [HttpPost("google")]
         public async Task<IActionResult> AuthorizeWithGoogle(AuthorizeUserWithGoogleRequest request)
         {
-            var result = await Mediator.Send(new GetGoogleTokenInfoQuery(
+            var tenant = await GetTenant();
+            var tokenInfo = await Mediator.Send(new GetGoogleTokenInfoQuery(
                 token: request.GoogleToken,
-                tenant: await GetTenant()));
+                tenant: tenant));
 
-            return Ok(result);
+            
+            
+            return Ok(tokenInfo);
         }
 
         [Authorize]

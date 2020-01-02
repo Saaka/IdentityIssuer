@@ -3,10 +3,10 @@ using IdentityIssuer.Common.Enums;
 
 namespace IdentityIssuer.Common.Exceptions
 {
-    public class InvalidProviderTokenException : Exception
+    public class InvalidProviderTokenException : InvalidOperationException
     {
-        public InvalidProviderTokenException(AuthProviderType providerType)
-            : base($"Invalid token for {providerType} provider")
+        public InvalidProviderTokenException(AuthProviderType providerType, string tenantCode)
+            : base($"Invalid {providerType} token for tenant \"{tenantCode}\"")
         {
         }
     }

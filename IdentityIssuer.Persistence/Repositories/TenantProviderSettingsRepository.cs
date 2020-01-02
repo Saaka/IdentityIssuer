@@ -26,7 +26,8 @@ namespace IdentityIssuer.Persistence.Repositories
                 join settings in context.TenantSettings on tenant.Id equals settings.TenantId
                 join providerSettings in context.TenantProviderSettings
                     on settings.Id equals providerSettings.TenantSettingsId
-                where providerSettings.ProviderType == providerType
+                where tenant.Id == tenantId && 
+                    providerSettings.ProviderType == providerType
                 select providerSettings;
 
             var result = await query.FirstOrDefaultAsync();
