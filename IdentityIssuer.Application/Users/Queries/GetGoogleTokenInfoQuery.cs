@@ -1,8 +1,9 @@
 using IdentityIssuer.Application.Models;
+using IdentityIssuer.Application.Users.Queries.GetGoogleTokenInfo;
 
 namespace IdentityIssuer.Application.Users.Queries
 {
-    public class GetGoogleTokenInfoQuery: QueryBase<TokenInfo>
+    public class GetGoogleTokenInfoQuery: QueryBase<GetGoogleTokenInfoQueryResult>
     {
         public GetGoogleTokenInfoQuery(string token, TenantContextData tenant)
         {

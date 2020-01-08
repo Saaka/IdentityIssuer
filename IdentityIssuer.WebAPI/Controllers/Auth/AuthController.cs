@@ -45,8 +45,6 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
             var tokenInfo = await Mediator.Send(new GetGoogleTokenInfoQuery(
                 token: request.GoogleToken,
                 tenant: tenant));
-
-            
             
             return Ok(tokenInfo);
         }

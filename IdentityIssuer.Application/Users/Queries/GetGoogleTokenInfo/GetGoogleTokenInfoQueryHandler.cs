@@ -9,7 +9,7 @@ using MediatR;
 
 namespace IdentityIssuer.Application.Users.Queries.GetGoogleTokenInfo
 {
-    public class GetGoogleTokenInfoQueryHandler : IRequestHandler<GetGoogleTokenInfoQuery, TokenInfo>
+    public class GetGoogleTokenInfoQueryHandler : IRequestHandler<GetGoogleTokenInfoQuery, GetGoogleTokenInfoQueryResult>
     {
         private readonly IGoogleApiClient googleApiClient;
         private readonly ITenantProviderSettingsRepository providerSettingsRepository;
@@ -22,7 +22,7 @@ namespace IdentityIssuer.Application.Users.Queries.GetGoogleTokenInfo
             this.providerSettingsRepository = providerSettingsRepository;
         }
 
-        public async Task<TokenInfo> Handle(GetGoogleTokenInfoQuery request, CancellationToken cancellationToken)
+        public async Task<GetGoogleTokenInfoQueryResult> Handle(GetGoogleTokenInfoQuery request, CancellationToken cancellationToken)
         {
             var tokenInfo = await googleApiClient.GetTokenInfoAsync(request.Token);
             var providerSettings = await providerSettingsRepository
@@ -33,7 +33,10 @@ namespace IdentityIssuer.Application.Users.Queries.GetGoogleTokenInfo
             if (tokenInfo.ClientId != providerSettings.Identifier)
                 throw new InvalidProviderTokenException(AuthProviderType.Google, request.Tenant.TenantCode);
 
-            return tokenInfo;
+            return new GetGoogleTokenInfoQueryResult
+            {
+                TokenInfo =  tokenInfo
+            };
         }
     }
 }
