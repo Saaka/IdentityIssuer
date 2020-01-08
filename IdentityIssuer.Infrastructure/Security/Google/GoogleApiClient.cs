@@ -1,3 +1,4 @@
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using IdentityIssuer.Application.Configuration;
@@ -15,6 +16,7 @@ namespace IdentityIssuer.Infrastructure.Security.Google
         private readonly IGoogleConfiguration googleConfiguration;
         private readonly IMapper mapper;
         private const string TokenInfoAddress = "tokeninfo?id_token=";
+        private const string InvalidValueContentString = "Invalid Value";
 
         public GoogleApiClient(
             IRestSharpClientFactory restSharpClientFactory,
@@ -32,10 +34,18 @@ namespace IdentityIssuer.Infrastructure.Security.Google
             var request = clientFactory.CreateRequest($"{TokenInfoAddress}{token}", Method.GET);
 
             var response = await client.ExecuteTaskAsync<GoogleTokenInfo>(request);
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                throw new ProviderCommunicationException(response.ErrorMessage ?? response.StatusCode.ToString());
+            return response.StatusCode == System.Net.HttpStatusCode.OK
+                ? mapper.Map<TokenInfo>(response.Data)
+                : GetInvalidResult(response);
+        }
 
-            return mapper.Map<TokenInfo>(response.Data);
+        private TokenInfo GetInvalidResult(IRestResponse response)
+        {
+            if (response.StatusCode == HttpStatusCode.BadRequest &&
+                response.Content.Contains(InvalidValueContentString))
+                return null;
+            else
+                throw new ProviderCommunicationException(response.ErrorMessage ?? response.StatusCode.ToString());
         }
     }
 }
