@@ -1,6 +1,5 @@
 using System.Threading;
 using System.Threading.Tasks;
-using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Common.Enums;
@@ -9,7 +8,8 @@ using MediatR;
 
 namespace IdentityIssuer.Application.Users.Queries.GetGoogleTokenInfo
 {
-    public class GetGoogleTokenInfoQueryHandler : IRequestHandler<GetGoogleTokenInfoQuery, GetGoogleTokenInfoQueryResult>
+    public class
+        GetGoogleTokenInfoQueryHandler : IRequestHandler<GetGoogleTokenInfoQuery, GetGoogleTokenInfoQueryResult>
     {
         private readonly IGoogleApiClient googleApiClient;
         private readonly ITenantProviderSettingsRepository providerSettingsRepository;
@@ -22,20 +22,23 @@ namespace IdentityIssuer.Application.Users.Queries.GetGoogleTokenInfo
             this.providerSettingsRepository = providerSettingsRepository;
         }
 
-        public async Task<GetGoogleTokenInfoQueryResult> Handle(GetGoogleTokenInfoQuery request, CancellationToken cancellationToken)
+        public async Task<GetGoogleTokenInfoQueryResult> Handle(GetGoogleTokenInfoQuery request,
+            CancellationToken cancellationToken)
         {
             var tokenInfo = await googleApiClient.GetTokenInfoAsync(request.Token);
             var providerSettings = await providerSettingsRepository
                 .GetProviderSettings(request.Tenant.TenantId, AuthProviderType.Google);
 
-            if(providerSettings == null)
+            if (providerSettings == null)
                 throw new TenantSettingsNotFoundException(request.Tenant.TenantCode);
-            if (tokenInfo.ClientId != providerSettings.Identifier)
+            if (tokenInfo == null || tokenInfo.ClientId != providerSettings.Identifier)
                 throw new InvalidProviderTokenException(AuthProviderType.Google, request.Tenant.TenantCode);
 
             return new GetGoogleTokenInfoQueryResult
             {
-                TokenInfo =  tokenInfo
+                TokenInfo = tokenInfo,
+                IsEmailRegistered = false,
+                IsGoogleUserRegistered = false
             };
         }
     }

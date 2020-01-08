@@ -6,5 +6,6 @@ namespace IdentityIssuer.Application.Users.Queries.GetGoogleTokenInfo
     {
         public TokenInfo TokenInfo { get; set; }
         public bool IsGoogleUserRegistered { get; set; }
+        public bool IsEmailRegistered { get; set; }
     }
 }
