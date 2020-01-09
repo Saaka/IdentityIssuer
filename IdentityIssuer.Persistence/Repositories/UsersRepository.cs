@@ -59,7 +59,7 @@ namespace IdentityIssuer.Persistence.Repositories
             return result;
         }
 
-        public async Task<bool> IsEmailUniqueForTenant(string email, int tenantId)
+        public async Task<bool> IsEmailRegisteredForTenant(string email, int tenantId)
         {
             var normalizedEmail = email.ToUpper();
             var query = from u in context.Users
@@ -67,7 +67,17 @@ namespace IdentityIssuer.Persistence.Repositories
                       u.NormalizedEmail == normalizedEmail
                 select u;
 
-            return !(await query.AnyAsync());
+            return await query.AnyAsync();
+        }
+
+        public async Task<bool> GoogleUserExists(string externalUserId, int tenantId)
+        {
+            var query = from u in context.Users
+                where u.TenantId == tenantId &&
+                      u.GoogleId == externalUserId
+                select u.Id;
+
+            return await query.AnyAsync();
         }
 
         public async Task<TenantUser> CreateUser(CreateUserDto data)

@@ -37,7 +37,7 @@ namespace IdentityIssuer.Application.Users.Commands.RegisterUserWithCredentials
         private async Task<bool> HaveUniqueEmailForTenant(RegisterUserWithCredentialsCommand command,
             CancellationToken cancellationToken)
         {
-            return await userRepository.IsEmailUniqueForTenant(command.Email, command.Tenant.TenantId);
+            return !(await userRepository.IsEmailRegisteredForTenant(command.Email, command.Tenant.TenantId));
         }
     }
 }
