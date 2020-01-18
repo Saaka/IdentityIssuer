@@ -42,7 +42,7 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
         public async Task<IActionResult> AuthorizeWithGoogle(AuthorizeUserWithGoogleRequest request)
         {
             var tenant = await GetTenant();
-            var tokenResult = await Mediator.Send(new GetGoogleTokenInfoQuery(
+            var tokenResult = await Mediator.Send(new AuthorizeUserWithGoogleCommand(
                 token: request.GoogleToken,
                 tenant: tenant));
             
