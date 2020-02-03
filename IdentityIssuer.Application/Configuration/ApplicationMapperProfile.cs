@@ -9,6 +9,7 @@ namespace IdentityIssuer.Application.Configuration
         public ApplicationMapperProfile()
         {
             CreateMap<TenantUser, UserDto>();
+            CreateMap<TokenInfo, CreateUserDto>();
         }
     }
 }

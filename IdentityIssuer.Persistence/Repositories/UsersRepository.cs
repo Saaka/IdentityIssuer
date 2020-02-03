@@ -99,6 +99,26 @@ namespace IdentityIssuer.Persistence.Repositories
             return mapper.Map<TenantUser>(tenantUser);
         }
 
+        public async Task<TenantUser> CreateGoogleUser(CreateUserDto data)
+        {
+            var tenantUser = new TenantUserEntity
+            {
+                Email = data.Email,
+                UserName = data.UserGuid,
+                DisplayName = data.DisplayName,
+                UserGuid = data.UserGuid,
+                ImageUrl = data.ImageUrl,
+                TenantId = data.TenantId,
+                GoogleId = data.ExternalUserId
+            };
+
+            var result = await userManager.CreateAsync(tenantUser);
+            if (!result.Succeeded)
+                throw new RepositoryException(nameof(CreateGoogleUser), result.Errors.Select(x => x.Code));
+
+            return mapper.Map<TenantUser>(tenantUser);
+        }
+
         public async Task<TenantUser> GetUserByCredentials(string email, string password, int tenantId)
         {
             var normalizedEmail = email.ToUpper();

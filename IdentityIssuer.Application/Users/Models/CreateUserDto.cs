@@ -7,6 +7,7 @@ namespace IdentityIssuer.Application.Users.Models
         public string UserGuid { get; set; }
         public string Password { get; set; }
         public string ImageUrl { get; set; }
+        public string ExternalUserId { get; set; }
         public int TenantId { get; set; }
     }
 }
