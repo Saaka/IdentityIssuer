@@ -80,6 +80,42 @@ namespace IdentityIssuer.Persistence.Repositories
             return await query.AnyAsync();
         }
 
+        public async Task<TenantUser> AddGoogleLoginToUser(
+            int tenantId, string email, string externalUserId, string imageUrl)
+        {
+            var user = await GetUserForTenant(email, tenantId);
+
+            user.GoogleId = externalUserId;
+            user.ImageUrl = imageUrl;
+
+            return await UpdateUser(user, nameof(AddGoogleLoginToUser));
+        }
+
+        private async Task<TenantUser> UpdateUser(TenantUserEntity user, string method)
+        {
+            var result = await userManager.UpdateAsync(user);
+            if (result.Succeeded)
+                return mapper.Map<TenantUser>(user);
+            else
+                throw new RepositoryException(method, result.Errors.Select(x => x.Code));
+        }
+
+        private async Task<TenantUserEntity> GetUserForTenant(string email, int tenantId)
+        {
+            var normalizedEmail = email.ToUpper();
+            var query = from u in context.Users
+                where u.NormalizedEmail == normalizedEmail
+                      && u.TenantId == tenantId
+                select u;
+
+            var user= await query.FirstOrDefaultAsync();
+
+            if (user == null)
+                throw new RepositoryException(nameof(GetUserForTenant));
+
+            return user;
+        }
+
         public async Task<TenantUser> CreateUser(CreateUserDto data)
         {
             var tenantUser = new TenantUserEntity

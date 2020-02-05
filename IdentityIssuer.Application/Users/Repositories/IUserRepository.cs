@@ -14,5 +14,6 @@ namespace IdentityIssuer.Application.Users.Repositories
         Task<TenantUser> CreateGoogleUser(CreateUserDto data);
         Task<TenantUser> GetUserByCredentials(string email, string password, int tenantId);
         Task<bool> GoogleUserExists(string externalUserId, int tenantId);
+        Task<TenantUser> AddGoogleLoginToUser(int tenantId, string email, string externalUserId, string imageUrl);
     }
 }
