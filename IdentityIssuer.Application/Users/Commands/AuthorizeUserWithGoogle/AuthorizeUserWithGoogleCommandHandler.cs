@@ -77,7 +77,10 @@ namespace IdentityIssuer.Application.Users.Commands.AuthorizeUserWithGoogle
 
         private async Task<AuthUserResult> UpdateExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
         {
-            throw new System.NotImplementedException();
+            var user = await userRepository
+                .UpdateExistingGoogleUser(requestTenant.TenantId, tokenInfo.Email, tokenInfo.ImageUrl);
+
+            return await AuthUserResult(requestTenant, user);
         }
 
         private async Task<AuthUserResult> AuthUserResult(TenantContextData requestTenant, TenantUser user)

@@ -91,6 +91,14 @@ namespace IdentityIssuer.Persistence.Repositories
             return await UpdateUser(user, nameof(AddGoogleLoginToUser));
         }
 
+        public async Task<TenantUser> UpdateExistingGoogleUser(int tenantId, string email, string imageUrl)
+        {
+            var user = await GetUserForTenant(email, tenantId);
+
+            user.ImageUrl = imageUrl;
+            return await UpdateUser(user, nameof(UpdateExistingGoogleUser));
+        }
+
         private async Task<TenantUser> UpdateUser(TenantUserEntity user, string method)
         {
             var result = await userManager.UpdateAsync(user);
@@ -108,7 +116,7 @@ namespace IdentityIssuer.Persistence.Repositories
                       && u.TenantId == tenantId
                 select u;
 
-            var user= await query.FirstOrDefaultAsync();
+            var user = await query.FirstOrDefaultAsync();
 
             if (user == null)
                 throw new RepositoryException(nameof(GetUserForTenant));
