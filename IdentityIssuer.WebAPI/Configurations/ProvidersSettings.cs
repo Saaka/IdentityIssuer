@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace IdentityIssuer.WebAPI.Configurations
 {
-    public class ProvidersSettings : IGoogleConfiguration
+    public class ProvidersSettings : IGoogleConfiguration, IFacebookConfiguration
     {
         private readonly IConfiguration configuration;
 
@@ -12,6 +12,10 @@ namespace IdentityIssuer.WebAPI.Configurations
             this.configuration = configuration;
         }
 
-        public string ValidationEndpoint => configuration[ConfigurationProperties.GoogleValidationEndpointProperty];
+        public string GoogleValidationEndpoint => 
+            configuration[ConfigurationProperties.GoogleValidationEndpointProperty];
+
+        public string FacebookValidationEndpoint =>
+            configuration[ConfigurationProperties.FacebookValidationEndpointProperty];
     }
 }

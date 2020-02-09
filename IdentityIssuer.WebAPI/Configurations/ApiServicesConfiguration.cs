@@ -20,6 +20,7 @@ namespace IdentityIssuer.WebAPI.Configurations
                 .AddTransient<ITokenConfiguration, AuthSettings>()
                 
                 .AddTransient<IGoogleConfiguration, ProvidersSettings>()
+                .AddTransient<IFacebookConfiguration, ProvidersSettings>()
                 
                 .AddTransient<ITenantSigningKeyResolver, TenantSigningKeyResolver>();
 

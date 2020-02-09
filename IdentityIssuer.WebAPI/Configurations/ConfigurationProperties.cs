@@ -4,5 +4,6 @@ namespace IdentityIssuer.WebAPI.Configurations
     {
         public const string Issuer = "Auth:Issuer";
         public const string GoogleValidationEndpointProperty = "Google:ValidationEndpoint";
+        public const string FacebookValidationEndpointProperty = "Facebook:ValidationEndpoint";
     }
 }
