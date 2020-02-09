@@ -30,7 +30,7 @@ namespace IdentityIssuer.Infrastructure.Security.Google
 
         public async Task<TokenInfo> GetTokenInfoAsync(string token)
         {
-            var client = clientFactory.CreateClient(googleConfiguration.ValidationEndpoint);
+            var client = clientFactory.CreateClient(googleConfiguration.GoogleValidationEndpoint);
             var request = clientFactory.CreateRequest($"{TokenInfoAddress}{token}", Method.GET);
 
             var response = await client.ExecuteTaskAsync<GoogleTokenInfo>(request);
