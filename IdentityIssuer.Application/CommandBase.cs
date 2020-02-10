@@ -22,7 +22,7 @@ namespace IdentityIssuer.Application
     {
         protected CommandBase()
         {
-            CommandUuid = new Guid();
+            CommandUuid = Guid.NewGuid();
         }
 
         public Guid CommandUuid { get; }
