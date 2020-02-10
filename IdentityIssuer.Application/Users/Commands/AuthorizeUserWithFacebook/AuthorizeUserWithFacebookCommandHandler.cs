@@ -12,8 +12,8 @@ using MediatR;
 
 namespace IdentityIssuer.Application.Users.Commands.AuthorizeUserWithFacebook
 {
-    public class
-        AuthorizeUserWithFacebookCommandHandler : IRequestHandler<AuthorizeUserWithFacebookCommand, AuthUserResult>
+    public class AuthorizeUserWithFacebookCommandHandler
+        : IRequestHandler<AuthorizeUserWithFacebookCommand, AuthUserResult>
     {
         private readonly IFacebookApiClient facebookApiClient;
         private readonly ITenantProviderSettingsRepository providerSettingsRepository;
@@ -71,7 +71,8 @@ namespace IdentityIssuer.Application.Users.Commands.AuthorizeUserWithFacebook
             return await AuthUserResult(requestTenant, user);
         }
 
-        private async Task<AuthUserResult> AddFacebookToExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
+        private async Task<AuthUserResult> AddFacebookToExistingUser(TokenInfo tokenInfo,
+            TenantContextData requestTenant)
         {
             var user = await userRepository
                 .AddFacebookLoginToUser(requestTenant.TenantId, tokenInfo.Email, tokenInfo.ExternalUserId,
@@ -106,7 +107,7 @@ namespace IdentityIssuer.Application.Users.Commands.AuthorizeUserWithFacebook
                 .GetProviderSettings(tenant.TenantId, AuthProviderType.Facebook);
             if (providerSettings == null)
                 throw new TenantProviderSettingsNotFoundException(tenant.TenantCode, AuthProviderType.Facebook);
-            
+
             return providerSettings;
         }
 

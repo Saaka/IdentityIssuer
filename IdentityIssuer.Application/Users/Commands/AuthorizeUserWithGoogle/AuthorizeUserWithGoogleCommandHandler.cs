@@ -12,7 +12,8 @@ using MediatR;
 
 namespace IdentityIssuer.Application.Users.Commands.AuthorizeUserWithGoogle
 {
-    public class AuthorizeUserWithGoogleCommandHandler : IRequestHandler<AuthorizeUserWithGoogleCommand, AuthUserResult>
+    public class AuthorizeUserWithGoogleCommandHandler 
+        : IRequestHandler<AuthorizeUserWithGoogleCommand, AuthUserResult>
     {
         private readonly IGoogleApiClient googleApiClient;
         private readonly ITenantProviderSettingsRepository providerSettingsRepository;

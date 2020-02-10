@@ -49,6 +49,17 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
             return Ok(tokenResult);
         }
 
+        [HttpPost("facebook")]
+        public async Task<IActionResult> AuthorizeWithFacebook(AuthorizeUserWithFacebookRequest request)
+        {
+            var tenant = await GetTenant();
+            var tokenResult = await Mediator.Send(new AuthorizeUserWithFacebookCommand(
+                token: request.FacebookToken,
+                tenant: tenant));
+            
+            return Ok(tokenResult);
+        }
+
         [Authorize]
         [HttpGet("user")]
         public async Task<IActionResult> GetUserData()
