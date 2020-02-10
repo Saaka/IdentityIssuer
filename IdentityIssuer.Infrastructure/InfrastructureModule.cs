@@ -4,6 +4,7 @@ using IdentityIssuer.Infrastructure.Helpers;
 using IdentityIssuer.Infrastructure.Http;
 using IdentityIssuer.Infrastructure.Images;
 using IdentityIssuer.Infrastructure.Security;
+using IdentityIssuer.Infrastructure.Security.Facebook;
 using IdentityIssuer.Infrastructure.Security.Google;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,6 +25,7 @@ namespace IdentityIssuer.Infrastructure
             
                 .AddTransient<IJwtTokenFactory, JwtTokenFactory>()
                 .AddTransient<IGoogleApiClient, GoogleApiClient>()
+                .AddTransient<IFacebookApiClient, FacebookApiClient>()
                 
                 .AddTransient<IProfileImageUrlProvider, GravatarProfileImageUrlProvider>();
             
