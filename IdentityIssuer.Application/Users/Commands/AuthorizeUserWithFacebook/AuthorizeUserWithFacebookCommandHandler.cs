@@ -105,7 +105,7 @@ namespace IdentityIssuer.Application.Users.Commands.AuthorizeUserWithFacebook
             var providerSettings = await providerSettingsRepository
                 .GetProviderSettings(tenant.TenantId, AuthProviderType.Facebook);
             if (providerSettings == null)
-                throw new TenantSettingsNotFoundException(tenant.TenantCode);
+                throw new TenantProviderSettingsNotFoundException(tenant.TenantCode, AuthProviderType.Facebook);
             
             return providerSettings;
         }

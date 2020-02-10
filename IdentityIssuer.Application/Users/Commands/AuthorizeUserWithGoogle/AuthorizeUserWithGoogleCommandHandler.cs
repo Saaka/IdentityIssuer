@@ -101,7 +101,7 @@ namespace IdentityIssuer.Application.Users.Commands.AuthorizeUserWithGoogle
                 .GetProviderSettings(tenant.TenantId, AuthProviderType.Google);
 
             if (providerSettings == null)
-                throw new TenantSettingsNotFoundException(tenant.TenantCode);
+                throw new TenantProviderSettingsNotFoundException(tenant.TenantCode, AuthProviderType.Google);
             if (tokenInfo == null || tokenInfo.ClientId != providerSettings.Identifier)
                 throw new InvalidProviderTokenException(AuthProviderType.Google, tenant.TenantCode);
         }
