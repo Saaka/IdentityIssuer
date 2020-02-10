@@ -47,7 +47,7 @@ namespace IdentityIssuer.Application.Users.Commands.AuthorizeUserWithFacebook
             var providerSettings = await GetTenantProviderSettings(request.Tenant);
 
             var tokenInfo = await facebookApiClient
-                .GetTokenInfoAsync(request.Token, providerSettings.Identifier, providerSettings.Identifier);
+                .GetTokenInfoAsync(request.Token, providerSettings.Identifier, providerSettings.Key);
             ValidateTokenWithProviderSettings(tokenInfo, request.Tenant, providerSettings);
 
             if (await userRepository.FacebookUserExists(tokenInfo.ExternalUserId, request.Tenant.TenantId))
