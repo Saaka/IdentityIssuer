@@ -80,6 +80,16 @@ namespace IdentityIssuer.Persistence.Repositories
             return await query.AnyAsync();
         }
 
+        public async Task<bool> FacebookUserExists(string externalUserId, int tenantId)
+        {
+            var query = from u in context.Users
+                where u.TenantId == tenantId &&
+                      u.FacebookId == externalUserId
+                select u.Id;
+
+            return await query.AnyAsync();
+        }
+
         public async Task<TenantUser> AddGoogleLoginToUser(
             int tenantId, string email, string externalUserId, string imageUrl)
         {
@@ -91,12 +101,30 @@ namespace IdentityIssuer.Persistence.Repositories
             return await UpdateUser(user, nameof(AddGoogleLoginToUser));
         }
 
+        public async Task<TenantUser> AddFacebookLoginToUser(int tenantId, string email, string externalUserId, string imageUrl)
+        {
+            var user = await GetUserForTenant(email, tenantId);
+
+            user.FacebookId = externalUserId;
+            user.ImageUrl = imageUrl;
+
+            return await UpdateUser(user, nameof(AddFacebookLoginToUser));
+        }
+
         public async Task<TenantUser> UpdateExistingGoogleUser(int tenantId, string email, string imageUrl)
         {
             var user = await GetUserForTenant(email, tenantId);
 
             user.ImageUrl = imageUrl;
             return await UpdateUser(user, nameof(UpdateExistingGoogleUser));
+        }
+
+        public async Task<TenantUser> UpdateExistingFacebookUser(int tenantId, string email, string imageUrl)
+        {
+            var user = await GetUserForTenant(email, tenantId);
+
+            user.ImageUrl = imageUrl;
+            return await UpdateUser(user, nameof(UpdateExistingFacebookUser));
         }
 
         private async Task<TenantUser> UpdateUser(TenantUserEntity user, string method)
@@ -159,6 +187,26 @@ namespace IdentityIssuer.Persistence.Repositories
             var result = await userManager.CreateAsync(tenantUser);
             if (!result.Succeeded)
                 throw new RepositoryException(nameof(CreateGoogleUser), result.Errors.Select(x => x.Code));
+
+            return mapper.Map<TenantUser>(tenantUser);
+        }
+
+        public async Task<TenantUser> CreateFacebookUser(CreateUserDto data)
+        {
+            var tenantUser = new TenantUserEntity
+            {
+                Email = data.Email,
+                UserName = data.UserGuid,
+                DisplayName = data.DisplayName,
+                UserGuid = data.UserGuid,
+                ImageUrl = data.ImageUrl,
+                TenantId = data.TenantId,
+                FacebookId = data.ExternalUserId
+            };
+
+            var result = await userManager.CreateAsync(tenantUser);
+            if (!result.Succeeded)
+                throw new RepositoryException(nameof(CreateFacebookUser), result.Errors.Select(x => x.Code));
 
             return mapper.Map<TenantUser>(tenantUser);
         }
