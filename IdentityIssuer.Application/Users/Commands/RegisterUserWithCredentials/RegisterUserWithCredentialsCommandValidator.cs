@@ -25,9 +25,7 @@ namespace IdentityIssuer.Application.Users.Commands.RegisterUserWithCredentials
                 .EmailAddress()
                 .Length(UserConstants.MinEmailLength, UserConstants.MaxPasswordLength);
             RuleFor(x => x.Tenant)
-                .NotNull();
-            RuleFor(x => x.Tenant.TenantId)
-                .NotEmpty();
+                .IsValid();
             RuleFor(x => x)
                 .MustAsync(HaveUniqueEmailForTenant)
                 .WithMessage(ValidationErrors.EmailNotUniqueForTenant)
