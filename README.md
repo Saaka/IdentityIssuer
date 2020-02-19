@@ -3,6 +3,24 @@
 IdentityIssuer lets you manage user accounts for multiple application in one place.
 Create Tenants with independent users. Each of them enables multiple registration options like classic credentials or Social logins: Google, Facebook (more comming soon).
 
+## Appsettings
+
+`ConnectionStrings` section is most important as you need to provide valid MSSQL Server address.
+`Issuer` in `Auth` section is adds an extra validation for our tokens. 
+`Google` and `Facebook` validation inputs are preset and should not be changed most of the time.
+
+* `ConnectionStrings`
+    * `AppConnectionString` - MSSQL database address
+    
+* `Auth`
+    * `Issuer` - The issuer name. It is validated during JWT Token authorization process.
+
+* `Google`
+    * `ValidationEndpoint` - API Endpoint for Google token validation. 
+
+* `Facebook`
+    * `ValidationEndpoint` - API Endpoint for Facebook token validation. 
+    
 ## Docker 
 #### WebAPI
 Run commands to build and run Web API in docker.
