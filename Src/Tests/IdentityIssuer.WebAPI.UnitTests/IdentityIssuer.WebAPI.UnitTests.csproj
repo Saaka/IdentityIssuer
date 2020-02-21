@@ -20,7 +20,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\IdentityIssuer.UnitTests.Utils\IdentityIssuer.UnitTests.Utils.csproj" />
-      <ProjectReference Include="..\IdentityIssuer.WebAPI\IdentityIssuer.WebAPI.csproj" />
+      <ProjectReference Include="..\..\IdentityIssuer.WebAPI\IdentityIssuer.WebAPI.csproj" />
     </ItemGroup>
 
 </Project>

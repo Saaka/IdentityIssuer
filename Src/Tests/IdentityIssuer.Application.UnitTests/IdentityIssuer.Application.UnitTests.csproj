@@ -14,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\IdentityIssuer.Application\IdentityIssuer.Application.csproj" />
+      <ProjectReference Include="..\..\IdentityIssuer.Application\IdentityIssuer.Application.csproj" />
     </ItemGroup>
 
 </Project>

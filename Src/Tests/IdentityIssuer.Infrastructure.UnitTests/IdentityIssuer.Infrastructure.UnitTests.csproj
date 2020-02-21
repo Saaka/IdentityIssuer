@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\IdentityIssuer.Infrastructure\IdentityIssuer.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\IdentityIssuer.Infrastructure\IdentityIssuer.Infrastructure.csproj" />
       <ProjectReference Include="..\IdentityIssuer.UnitTests.Utils\IdentityIssuer.UnitTests.Utils.csproj" />
     </ItemGroup>
 
