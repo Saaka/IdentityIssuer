@@ -1,7 +1,7 @@
+using IdentityIssuer.Application.Auth.Models;
 using IdentityIssuer.Application.Models;
-using IdentityIssuer.Application.Users.Models;
 
-namespace IdentityIssuer.Application.Users.Queries
+namespace IdentityIssuer.Application.Auth.Queries
 {
     public class GetUserByCredentialsQuery : QueryBase<AuthUserResult>
     {

@@ -1,6 +1,6 @@
 using IdentityIssuer.Application.Models;
 
-namespace IdentityIssuer.Application.Users.Queries.GetGoogleTokenInfo
+namespace IdentityIssuer.Application.Auth.Queries.GetGoogleTokenInfo
 {
     public class GetGoogleTokenInfoQueryResult
     {

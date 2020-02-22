@@ -1,4 +1,4 @@
-namespace IdentityIssuer.Application.Users.Models
+namespace IdentityIssuer.Application.Auth.Models
 {
     public class CreateUserDto
     {

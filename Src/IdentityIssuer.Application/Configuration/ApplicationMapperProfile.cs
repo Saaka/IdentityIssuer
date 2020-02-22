@@ -1,4 +1,5 @@
 using AutoMapper;
+using IdentityIssuer.Application.Auth.Models;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Users.Models;
 

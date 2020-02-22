@@ -1,6 +1,6 @@
-using System;
 using System.Threading.Tasks;
-using IdentityIssuer.Application.Users.Commands;
+using IdentityIssuer.Application.Auth.Commands;
+using IdentityIssuer.Application.Auth.Queries;
 using IdentityIssuer.Application.Users.Queries;
 using IdentityIssuer.WebAPI.Controllers.Auth.Models;
 using Microsoft.AspNetCore.Authorization;

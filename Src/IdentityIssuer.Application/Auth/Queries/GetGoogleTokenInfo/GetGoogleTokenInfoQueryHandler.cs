@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using IdentityIssuer.Application.Auth.Queries;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Application.Users.Repositories;
@@ -7,7 +8,7 @@ using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
 using MediatR;
 
-namespace IdentityIssuer.Application.Users.Queries.GetGoogleTokenInfo
+namespace IdentityIssuer.Application.Auth.Queries.GetGoogleTokenInfo
 {
     public class
         GetGoogleTokenInfoQueryHandler : IRequestHandler<GetGoogleTokenInfoQuery, GetGoogleTokenInfoQueryResult>

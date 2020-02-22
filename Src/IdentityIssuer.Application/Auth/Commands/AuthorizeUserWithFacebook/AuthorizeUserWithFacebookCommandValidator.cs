@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace IdentityIssuer.Application.Users.Commands.AuthorizeUserWithFacebook
+namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
 {
     public class AuthorizeUserWithFacebookCommandValidator : AbstractValidator<AuthorizeUserWithFacebookCommand>
     {

@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace IdentityIssuer.Application.Users.Commands.AuthorizeUserWithGoogle
+namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
 {
     public class AuthorizeUserWithGoogleCommandValidator : AbstractValidator<AuthorizeUserWithGoogleCommand>
     {

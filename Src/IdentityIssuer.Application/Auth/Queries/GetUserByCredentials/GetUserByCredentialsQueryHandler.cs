@@ -1,6 +1,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using IdentityIssuer.Application.Auth.Models;
+using IdentityIssuer.Application.Auth.Queries;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Application.Users.Models;
@@ -8,7 +10,7 @@ using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Exceptions;
 using MediatR;
 
-namespace IdentityIssuer.Application.Users.Queries.GetUserByCredentials
+namespace IdentityIssuer.Application.Auth.Queries.GetUserByCredentials
 {
     public class GetUserByCredentialsQueryHandler : IRequestHandler<GetUserByCredentialsQuery, AuthUserResult>
     {

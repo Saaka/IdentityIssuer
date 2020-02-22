@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using IdentityIssuer.Application.Auth.Models;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Tenants.Repositories;
@@ -10,7 +11,7 @@ using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
 using MediatR;
 
-namespace IdentityIssuer.Application.Users.Commands.AuthorizeUserWithFacebook
+namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
 {
     public class AuthorizeUserWithFacebookCommandHandler
         : IRequestHandler<AuthorizeUserWithFacebookCommand, AuthUserResult>

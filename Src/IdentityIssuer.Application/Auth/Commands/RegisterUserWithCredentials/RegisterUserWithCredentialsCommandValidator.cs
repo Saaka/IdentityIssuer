@@ -4,7 +4,7 @@ using FluentValidation;
 using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Constants;
 
-namespace IdentityIssuer.Application.Users.Commands.RegisterUserWithCredentials
+namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
 {
     public class RegisterUserWithCredentialsCommandValidator : AbstractValidator<RegisterUserWithCredentialsCommand>
     {

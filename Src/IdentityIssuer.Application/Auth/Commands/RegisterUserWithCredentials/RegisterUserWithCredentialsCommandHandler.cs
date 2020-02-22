@@ -1,11 +1,11 @@
 using System.Threading;
 using System.Threading.Tasks;
+using IdentityIssuer.Application.Auth.Models;
 using IdentityIssuer.Application.Services;
-using IdentityIssuer.Application.Users.Models;
 using IdentityIssuer.Application.Users.Repositories;
 using MediatR;
 
-namespace IdentityIssuer.Application.Users.Commands.RegisterUserWithCredentials
+namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
 {
     public class RegisterUserWithCredentialsCommandHandler : AsyncRequestHandler<RegisterUserWithCredentialsCommand>
     {

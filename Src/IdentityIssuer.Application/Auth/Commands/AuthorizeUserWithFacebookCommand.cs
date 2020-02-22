@@ -1,7 +1,7 @@
+using IdentityIssuer.Application.Auth.Models;
 using IdentityIssuer.Application.Models;
-using IdentityIssuer.Application.Users.Models;
 
-namespace IdentityIssuer.Application.Users.Commands
+namespace IdentityIssuer.Application.Auth.Commands
 {
     public class AuthorizeUserWithFacebookCommand : CommandBase<AuthUserResult>
     {

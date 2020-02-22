@@ -1,7 +1,7 @@
 using System;
 using IdentityIssuer.Application.Models;
 
-namespace IdentityIssuer.Application.Users.Commands
+namespace IdentityIssuer.Application.Auth.Commands
 {
     public class RegisterUserWithCredentialsCommand : CommandBase
     {
