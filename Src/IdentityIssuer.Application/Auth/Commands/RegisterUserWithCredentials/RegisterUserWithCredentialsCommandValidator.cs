@@ -1,18 +1,18 @@
 using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
-using IdentityIssuer.Application.Users.Repositories;
+using IdentityIssuer.Application.Auth.Repositories;
 using IdentityIssuer.Common.Constants;
 
 namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
 {
     public class RegisterUserWithCredentialsCommandValidator : AbstractValidator<RegisterUserWithCredentialsCommand>
     {
-        private readonly IUserRepository userRepository;
+        private readonly IAuthRepository authRepository;
 
-        public RegisterUserWithCredentialsCommandValidator(IUserRepository userRepository)
+        public RegisterUserWithCredentialsCommandValidator(IAuthRepository authRepository)
         {
-            this.userRepository = userRepository;
+            this.authRepository = authRepository;
             
             RuleFor(x => x.DisplayName)
                 .Length(UserConstants.MinDisplayNameLength, UserConstants.MaxDisplayNameLength)
@@ -35,7 +35,7 @@ namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
         private async Task<bool> HaveUniqueEmailForTenant(RegisterUserWithCredentialsCommand command,
             CancellationToken cancellationToken)
         {
-            return !(await userRepository.IsEmailRegisteredForTenant(command.Email, command.Tenant.TenantId));
+            return !(await authRepository.IsEmailRegisteredForTenant(command.Email, command.Tenant.TenantId));
         }
     }
 }

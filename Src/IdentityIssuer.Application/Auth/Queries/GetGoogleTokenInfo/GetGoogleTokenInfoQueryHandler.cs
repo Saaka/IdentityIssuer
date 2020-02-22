@@ -1,9 +1,8 @@
 using System.Threading;
 using System.Threading.Tasks;
-using IdentityIssuer.Application.Auth.Queries;
+using IdentityIssuer.Application.Auth.Repositories;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Tenants.Repositories;
-using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
 using MediatR;
@@ -15,16 +14,16 @@ namespace IdentityIssuer.Application.Auth.Queries.GetGoogleTokenInfo
     {
         private readonly IGoogleApiClient googleApiClient;
         private readonly ITenantProviderSettingsRepository providerSettingsRepository;
-        private readonly IUserRepository userRepository;
+        private readonly IAuthRepository authRepository;
 
         public GetGoogleTokenInfoQueryHandler(
             IGoogleApiClient googleApiClient,
             ITenantProviderSettingsRepository providerSettingsRepository,
-            IUserRepository userRepository)
+            IAuthRepository authRepository)
         {
             this.googleApiClient = googleApiClient;
             this.providerSettingsRepository = providerSettingsRepository;
-            this.userRepository = userRepository;
+            this.authRepository = authRepository;
         }
 
         public async Task<GetGoogleTokenInfoQueryResult> Handle(GetGoogleTokenInfoQuery request,
@@ -40,12 +39,12 @@ namespace IdentityIssuer.Application.Auth.Queries.GetGoogleTokenInfo
                 throw new InvalidProviderTokenException(AuthProviderType.Google, request.Tenant.TenantCode);
 
             var isEmailRegistered = false;
-            var googleUserExists = await userRepository
+            var googleUserExists = await authRepository
                 .GoogleUserExists(tokenInfo.ExternalUserId, request.Tenant.TenantId);
             if (googleUserExists)
                 isEmailRegistered = true;
             else
-                isEmailRegistered = await userRepository
+                isEmailRegistered = await authRepository
                     .IsEmailRegisteredForTenant(tokenInfo.Email, request.Tenant.TenantId);
 
             return new GetGoogleTokenInfoQueryResult

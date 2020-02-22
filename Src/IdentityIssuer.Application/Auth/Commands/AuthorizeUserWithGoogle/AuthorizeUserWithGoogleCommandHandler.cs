@@ -2,11 +2,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using IdentityIssuer.Application.Auth.Models;
+using IdentityIssuer.Application.Auth.Repositories;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Application.Users.Models;
-using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
 using MediatR;
@@ -19,7 +19,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
         private readonly IGoogleApiClient googleApiClient;
         private readonly ITenantProviderSettingsRepository providerSettingsRepository;
         private readonly ITenantsRepository tenantsRepository;
-        private readonly IUserRepository userRepository;
+        private readonly IAuthRepository authRepository;
         private readonly IJwtTokenFactory jwtTokenFactory;
         private readonly IGuid guid;
         private readonly IMapper mapper;
@@ -28,7 +28,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
             IGoogleApiClient googleApiClient,
             ITenantProviderSettingsRepository providerSettingsRepository,
             ITenantsRepository tenantsRepository,
-            IUserRepository userRepository,
+            IAuthRepository authRepository,
             IJwtTokenFactory jwtTokenFactory,
             IGuid guid,
             IMapper mapper)
@@ -36,7 +36,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
             this.googleApiClient = googleApiClient;
             this.providerSettingsRepository = providerSettingsRepository;
             this.tenantsRepository = tenantsRepository;
-            this.userRepository = userRepository;
+            this.authRepository = authRepository;
             this.jwtTokenFactory = jwtTokenFactory;
             this.guid = guid;
             this.mapper = mapper;
@@ -48,10 +48,10 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
             var tokenInfo = await googleApiClient.GetTokenInfoAsync(request.Token);
             await ValidateTokenWithProviderSettings(tokenInfo, request.Tenant);
 
-            if (await userRepository.GoogleUserExists(tokenInfo.ExternalUserId, request.Tenant.TenantId))
+            if (await authRepository.GoogleUserExists(tokenInfo.ExternalUserId, request.Tenant.TenantId))
                 return await UpdateExistingUser(tokenInfo, request.Tenant);
 
-            if (await userRepository.IsEmailRegisteredForTenant(tokenInfo.Email, request.Tenant.TenantId))
+            if (await authRepository.IsEmailRegisteredForTenant(tokenInfo.Email, request.Tenant.TenantId))
                 return await AddGoogleToExistingUser(tokenInfo, request.Tenant);
 
             return await CreateNewGoogleUser(tokenInfo, request.Tenant);
@@ -65,13 +65,13 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
             userProperties.UserGuid = userGuid;
             userProperties.TenantId = requestTenant.TenantId;
 
-            var user = await userRepository.CreateGoogleUser(userProperties);
+            var user = await authRepository.CreateGoogleUser(userProperties);
             return await AuthUserResult(requestTenant, user);
         }
 
         private async Task<AuthUserResult> AddGoogleToExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
         {
-            var user = await userRepository
+            var user = await authRepository
                 .AddGoogleLoginToUser(requestTenant.TenantId, tokenInfo.Email, tokenInfo.ExternalUserId, tokenInfo.ImageUrl);
 
             return await AuthUserResult(requestTenant, user);
@@ -79,7 +79,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
 
         private async Task<AuthUserResult> UpdateExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
         {
-            var user = await userRepository
+            var user = await authRepository
                 .UpdateExistingGoogleUser(requestTenant.TenantId, tokenInfo.Email, tokenInfo.ImageUrl);
 
             return await AuthUserResult(requestTenant, user);

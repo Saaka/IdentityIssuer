@@ -1,3 +1,4 @@
+using IdentityIssuer.Application.Auth.Repositories;
 using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Constants;
@@ -18,7 +19,8 @@ namespace IdentityIssuer.Persistence
             services
                 .AddTransient<ITenantsRepository, TenantsRepository>()
                 .AddTransient<ITenantProviderSettingsRepository, TenantProviderSettingsRepository>()
-                .AddTransient<IUserRepository, UsersRepository>();
+                .AddTransient<IUserRepository, UsersRepository>()
+                .AddTransient<IAuthRepository, AuthRepository>();
 
             return services;
         }
