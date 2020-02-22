@@ -5,7 +5,6 @@ using IdentityIssuer.Application.Users.Repositories;
 using System.Linq;
 using IdentityIssuer.Common.Exceptions;
 using IdentityIssuer.Persistence.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityIssuer.Persistence.Repositories
@@ -14,15 +13,12 @@ namespace IdentityIssuer.Persistence.Repositories
     {
         private readonly AppIdentityContext context;
         private readonly IMapper mapper;
-        private readonly UserManager<TenantUserEntity> userManager;
 
         public UsersRepository(AppIdentityContext context,
-            IMapper mapper,
-            UserManager<TenantUserEntity> userManager)
+            IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
-            this.userManager = userManager;
         }
 
         public async Task<TenantUser> GetUser(int userId, int tenantId)
@@ -52,8 +48,9 @@ namespace IdentityIssuer.Persistence.Repositories
             var user = await GetUser(userGuid);
 
             user.DisplayName = name;
+            await  context.SaveChangesAsync();
 
-            return await UpdateUser(user, nameof(UpdateUserDisplayName));
+            return mapper.Map<TenantUser>(user);
         }
 
         private async Task<TenantUserEntity> GetUser(string guid)
@@ -67,15 +64,6 @@ namespace IdentityIssuer.Persistence.Repositories
                 throw new UserNotFoundException(guid);
 
             return user;
-        }
-
-        private async Task<TenantUser> UpdateUser(TenantUserEntity user, string method)
-        {
-            var result = await userManager.UpdateAsync(user);
-            if (result.Succeeded)
-                return mapper.Map<TenantUser>(user);
-            else
-                throw new RepositoryException(method, result.Errors.Select(x => x.Code));
         }
     }
 }
