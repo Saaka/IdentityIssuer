@@ -7,7 +7,6 @@ namespace IdentityIssuer.Application.Users.Repositories
     public interface IUserRepository
     {
         Task<TenantUser> GetUser(int userId, int tenantId);
-        Task<TenantUser> GetUser(string guid);
         Task<int> GetUserId(string guid);
         Task<bool> IsEmailRegisteredForTenant(string email, int tenantId);
         Task<TenantUser> GetUserByCredentials(string email, string password, int tenantId);
@@ -20,5 +19,6 @@ namespace IdentityIssuer.Application.Users.Repositories
         Task<TenantUser> AddFacebookLoginToUser(int tenantId, string email, string externalUserId, string imageUrl);
         Task<TenantUser> UpdateExistingGoogleUser(int tenantId, string email, string imageUrl);
         Task<TenantUser> UpdateExistingFacebookUser(int tenantId, string email, string imageUrl);
+        Task<TenantUser> UpdateUserDisplayName(string userGuid, string name);
     }
 }

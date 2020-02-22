@@ -4,6 +4,7 @@ using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Users.Repositories;
 using System.Linq;
 using IdentityIssuer.Application.Users.Models;
+using IdentityIssuer.Application.Users.Queries;
 using IdentityIssuer.Common.Exceptions;
 using IdentityIssuer.Persistence.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -30,17 +31,6 @@ namespace IdentityIssuer.Persistence.Repositories
         {
             var query = from u in context.Users
                 where u.Id == userId && u.TenantId == tenantId
-                select u;
-
-            var result = await query.FirstOrDefaultAsync();
-
-            return mapper.Map<TenantUser>(result);
-        }
-
-        public async Task<TenantUser> GetUser(string guid)
-        {
-            var query = from u in context.Users
-                where u.UserGuid == guid
                 select u;
 
             var result = await query.FirstOrDefaultAsync();
@@ -125,6 +115,28 @@ namespace IdentityIssuer.Persistence.Repositories
 
             user.ImageUrl = imageUrl;
             return await UpdateUser(user, nameof(UpdateExistingFacebookUser));
+        }
+
+        public async Task<TenantUser> UpdateUserDisplayName(string userGuid, string name)
+        {
+            var user = await GetUser(userGuid);
+
+            user.DisplayName = name;
+
+            return await UpdateUser(user, nameof(UpdateUserDisplayName));
+        }
+
+        private async Task<TenantUserEntity> GetUser(string guid)
+        {
+            var query = from u in context.Users
+                where u.UserGuid == guid
+                select u;
+
+            var user = await query.FirstOrDefaultAsync();
+            if (user == null)
+                throw new UserNotFoundException(guid);
+
+            return user;
         }
 
         private async Task<TenantUser> UpdateUser(TenantUserEntity user, string method)
