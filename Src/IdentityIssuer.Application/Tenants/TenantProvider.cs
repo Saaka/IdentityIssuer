@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Services;
+using IdentityIssuer.Common.Enums;
 
 namespace IdentityIssuer.Application.Tenants
 {
@@ -37,7 +38,7 @@ namespace IdentityIssuer.Application.Tenants
 
                     var tenant = await tenantsRepository.GetTenantAsync(tenantCode);
                     if (tenant == null)
-                        throw new TenantNotFoundException(tenantCode);
+                        throw new DomainException(ExceptionCode.TenantNotFound, new { tenantCode });
 
                     return tenant;
                 });

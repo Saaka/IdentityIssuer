@@ -22,12 +22,18 @@ namespace IdentityIssuer.WebAPI.Pipeline
         public override void OnException(ExceptionContext context)
         {
             var exception = context.Exception;
-            if (exception is CommandValidationException validationException)
-                HandleValidationException(validationException, context);
-            else if (exception is RepositoryException repositoryException)
-                HandleRepositoryException(repositoryException, context);
-            else
-                HandleApplicationExceptions(context, exception);
+            switch (exception)
+            {
+                case CommandValidationException validationException:
+                    HandleValidationException(validationException, context);
+                    break;
+                case RepositoryException repositoryException:
+                    HandleRepositoryException(repositoryException, context);
+                    break;
+                default:
+                    HandleApplicationExceptions(context, exception);
+                    break;
+            }
         }
 
         private void HandleApplicationExceptions(ExceptionContext context, Exception exception)

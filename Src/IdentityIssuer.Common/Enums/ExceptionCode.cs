@@ -18,5 +18,9 @@ namespace IdentityIssuer.Common.Enums
         /// Could not get current Tenant token secret key.
         /// </summary>
         MissingTenantTokenSecret = 4,
+        /// <summary>
+        /// Tenant was not found for given criteria.
+        /// </summary>
+        TenantNotFound = 5,
     }
 }
