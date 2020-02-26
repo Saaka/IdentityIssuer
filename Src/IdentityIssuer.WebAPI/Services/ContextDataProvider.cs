@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Tenants;
 using IdentityIssuer.Application.Users;
+using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
 using IdentityIssuer.WebAPI.Configurations;
 using Microsoft.AspNetCore.Http;
@@ -63,7 +64,7 @@ namespace IdentityIssuer.WebAPI.Services
         private string GetTenantCodeFromContext(HttpContext context)
         {
             if (!context.Request.Headers.ContainsKey(IdentityIssuerHeaders.TenantHeader))
-                throw new TenantHeaderMissingException();
+                throw new DomainException(ExceptionCode.TenantHeaderMissing);
 
             return context.Request.Headers[IdentityIssuerHeaders.TenantHeader];
         }

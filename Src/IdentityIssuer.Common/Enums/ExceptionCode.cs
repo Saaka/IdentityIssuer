@@ -22,5 +22,9 @@ namespace IdentityIssuer.Common.Enums
         /// Tenant was not found for given criteria.
         /// </summary>
         TenantNotFound = 5,
+        /// <summary>
+        /// Tenant header not found in request.
+        /// </summary>
+        TenantHeaderMissing = 6,
     }
 }
