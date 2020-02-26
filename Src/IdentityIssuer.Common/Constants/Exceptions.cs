@@ -1,8 +1,8 @@
 namespace IdentityIssuer.Common.Constants
 {
-    public class Exceptions
+    public static class Exceptions
     {
-        public class UnauthorizedAccessException
+        public static class TenantSigninException
         {
             /// <summary>
             /// Could not establish Tenant from current context

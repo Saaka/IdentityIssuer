@@ -42,14 +42,14 @@ namespace IdentityIssuer.WebAPI.Services
             var currentTenant = contextDataProvider.GetTenant(httpContextAccessor.HttpContext).Result;
             if (currentTenant == null)
                 throw new UnauthorizedAccessException(
-                    Exceptions.UnauthorizedAccessException.MissingTenantContextData);
+                    Exceptions.TenantSigninException.MissingTenantContextData);
             if (currentTenant.TenantCode != kid)
                 throw new UnauthorizedAccessException(
-                    Exceptions.UnauthorizedAccessException.KidMissmatch);
+                    Exceptions.TenantSigninException.KidMissmatch);
 
             var tenantSettings = tenantProvider.GetTenantSettings(currentTenant.TenantCode);
             if (string.IsNullOrEmpty(tenantSettings?.TokenSecret))
-                throw new UnauthorizedAccessException(Exceptions.UnauthorizedAccessException.MissingTenantTokenSecret);
+                throw new UnauthorizedAccessException(Exceptions.TenantSigninException.MissingTenantTokenSecret);
 
             return new[]
             {
