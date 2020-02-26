@@ -4,6 +4,7 @@ using FluentAssertions;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Tenants;
 using IdentityIssuer.Common.Constants;
+using IdentityIssuer.Common.Enums;
 using IdentityIssuer.WebAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
@@ -54,7 +55,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
                 .And
                 .Message
                 .Should()
-                .Be(Exceptions.TenantSigninException.KidMissmatch);
+                .Be(ExceptionCode.KidMissmatch.ToString());
         }
 
         [Fact]
@@ -74,7 +75,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
                 .And
                 .Message
                 .Should()
-                .Be(Exceptions.TenantSigninException.MissingTenantTokenSecret);
+                .Be(ExceptionCode.MissingTenantTokenSecret.ToString());
         }
 
         [Theory]
@@ -97,7 +98,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
                 .And
                 .Message
                 .Should()
-                .Be(Exceptions.TenantSigninException.MissingTenantTokenSecret);
+                .Be(ExceptionCode.MissingTenantTokenSecret.ToString());
         }
 
         [Fact]
@@ -117,7 +118,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
                 .And
                 .Message
                 .Should()
-                .Be(Exceptions.TenantSigninException.MissingTenantContextData);
+                .Be(ExceptionCode.MissingTenantContextData.ToString());
         }
 
         private class Fixture
