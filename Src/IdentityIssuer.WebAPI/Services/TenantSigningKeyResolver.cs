@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using IdentityIssuer.Application.Tenants;
 using IdentityIssuer.Common.Constants;
+using IdentityIssuer.Common.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 
@@ -41,15 +42,13 @@ namespace IdentityIssuer.WebAPI.Services
         {
             var currentTenant = contextDataProvider.GetTenant(httpContextAccessor.HttpContext).Result;
             if (currentTenant == null)
-                throw new UnauthorizedAccessException(
-                    Exceptions.TenantSigninException.MissingTenantContextData);
+                throw new UnauthorizedAccessException(ExceptionCode.MissingTenantContextData.ToString());
             if (currentTenant.TenantCode != kid)
-                throw new UnauthorizedAccessException(
-                    Exceptions.TenantSigninException.KidMissmatch);
+                throw new UnauthorizedAccessException(ExceptionCode.KidMissmatch.ToString());
 
             var tenantSettings = tenantProvider.GetTenantSettings(currentTenant.TenantCode);
             if (string.IsNullOrEmpty(tenantSettings?.TokenSecret))
-                throw new UnauthorizedAccessException(Exceptions.TenantSigninException.MissingTenantTokenSecret);
+                throw new UnauthorizedAccessException(ExceptionCode.MissingTenantTokenSecret.ToString());
 
             return new[]
             {
