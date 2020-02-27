@@ -57,11 +57,11 @@ namespace IdentityIssuer.WebAPI.UnitTests.CorsTests
 
             public AllowedOriginsProvider Configure()
             {
-                AutoMock.Mock<ICacheStore>()
+                AutoMockInstance.Mock<ICacheStore>()
                     .Setup(x => x.GetOrCreateAsync(It.IsAny<string>(), It.IsAny<Func<ICacheEntry, Task<IEnumerable<string>>>>()))
                     .ReturnsAsync(allowedOrigins);
                 
-                return AutoMock.Create<AllowedOriginsProvider>();
+                return AutoMockInstance.Create<AllowedOriginsProvider>();
             }
         }
 

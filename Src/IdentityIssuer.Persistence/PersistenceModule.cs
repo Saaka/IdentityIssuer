@@ -47,7 +47,7 @@ namespace IdentityIssuer.Persistence
         public static IServiceCollection AddIdentityStore(this IServiceCollection services, IConfiguration configuration)
         {
             services
-                .AddIdentity<TenantUserEntity, IdentityRole<int>>(opt =>
+                .AddIdentityCore<TenantUserEntity>(opt =>
                 {
                     opt.User = new UserOptions
                     {

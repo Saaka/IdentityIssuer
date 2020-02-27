@@ -1,3 +1,6 @@
+using Autofac;
+using Microsoft.Extensions.Caching.Memory;
+
 namespace IdentityIssuer.UnitTests.Utils.Fixtures
 {
     /// <summary>
@@ -9,10 +12,14 @@ namespace IdentityIssuer.UnitTests.Utils.Fixtures
 
         public MemoryCacheFixture()
         {    
-            MemoryCacheProvider = new MemoryCacheProvider();
-            AutoMock.Provide(MemoryCacheProvider.MemoryCache);
+            MemoryCacheProvider = new MemoryCacheProvider(); 
         }
-        
+
+        protected override void Register(ContainerBuilder builder)
+        {
+            builder.RegisterInstance(MemoryCacheProvider.MemoryCache);
+        }
+
         public override void Dispose()
         {
             MemoryCacheProvider?.Dispose();

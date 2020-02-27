@@ -1,4 +1,5 @@
 using System;
+using Autofac;
 using Autofac.Extras.Moq;
 
 namespace IdentityIssuer.UnitTests.Utils.Fixtures
@@ -8,16 +9,20 @@ namespace IdentityIssuer.UnitTests.Utils.Fixtures
     /// </summary>
     public abstract class AutoMockFixture : IDisposable
     {
-        protected AutoMock AutoMock { get; }
+        protected AutoMock AutoMockInstance { get; }
 
         public AutoMockFixture()
         {
-            AutoMock = AutoMock.GetLoose();
+            AutoMockInstance = AutoMock.GetLoose(Register);
         }
-        
+
+        protected virtual void Register(ContainerBuilder builder)
+        {
+        }
+
         public virtual void Dispose()
         {
-            AutoMock?.Dispose();
+            AutoMockInstance?.Dispose();
         }
     }
 }

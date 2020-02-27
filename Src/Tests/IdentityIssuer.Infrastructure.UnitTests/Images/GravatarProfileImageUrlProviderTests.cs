@@ -47,11 +47,11 @@ namespace IdentityIssuer.Infrastructure.UnitTests.Images
 
             public GravatarProfileImageUrlProvider Configure()
             {
-                AutoMock.Mock<IHashGenerator>()
+                AutoMockInstance.Mock<IHashGenerator>()
                     .Setup(x => x.Generate(It.IsAny<string>()))
                     .Returns(_hash);
 
-                return AutoMock.Create<GravatarProfileImageUrlProvider>();
+                return AutoMockInstance.Create<GravatarProfileImageUrlProvider>();
             }
         }
 
