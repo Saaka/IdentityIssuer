@@ -10,7 +10,7 @@ namespace IdentityIssuer.WebAPI.Controllers.Users
     public class UsersController : BaseApiController
     {
         [Authorize]
-        [HttpPost("user/name")]
+        [HttpPost("name")]
         public async Task<IActionResult> UpdateUserDisplayName(UpdateUserDisplayNameModel model)
         {
             var currentUser = await GetUser();
