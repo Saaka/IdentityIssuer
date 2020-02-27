@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using IdentityIssuer.Common.Exceptions;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace IdentityIssuer.WebAPI.Pipeline
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class CustomExceptionFilterAttribute : ExceptionFilterAttribute
     {
-        private readonly IHostingEnvironment env;
+        private readonly IWebHostEnvironment env;
 
-        public CustomExceptionFilterAttribute(IHostingEnvironment env)
+        public CustomExceptionFilterAttribute(IWebHostEnvironment env)
         {
             this.env = env;
         }

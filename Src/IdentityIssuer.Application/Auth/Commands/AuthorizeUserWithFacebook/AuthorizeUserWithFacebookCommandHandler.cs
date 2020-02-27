@@ -116,7 +116,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
         private void ValidateTokenWithProviderSettings(
             TokenInfo tokenInfo, TenantContextData tenant, TenantProviderSettings providerSettings)
         {
-            if (tokenInfo == null || tokenInfo.ClientId != providerSettings.Identifier)
+            if (tokenInfo == null || providerSettings == null || tokenInfo.ClientId != providerSettings.Identifier)
                 throw new DomainException(ExceptionCode.InvalidProviderToken,
                     new {tenantCode = tenant.TenantCode, providerType = AuthProviderType.Google});
         }

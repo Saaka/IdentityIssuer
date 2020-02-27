@@ -1,12 +1,8 @@
-﻿using System;
-using System.Text;
-using FluentValidation.AspNetCore;
+﻿using FluentValidation.AspNetCore;
 using IdentityIssuer.Application;
-using IdentityIssuer.Application.Tenants;
 using IdentityIssuer.WebAPI.Pipeline;
 using IdentityIssuer.WebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,14 +15,12 @@ namespace IdentityIssuer.WebAPI.Configurations
         public static IServiceCollection AddMvcWithFilters(this IServiceCollection services)
         {
             services
-                .AddMvc(options =>
+                .AddControllers(options =>
                 {
                     options.Filters.Add<CustomExceptionFilterAttribute>();
                     options.Filters.Add<TenantActionFilter>();
                 })
-                .AddJsonOptions(s => s.UseCamelCasing(true))
-                .AddFluentValidation(v => v.RegisterValidatorsFromAssembly(typeof(ApplicationModule).Assembly))
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .AddFluentValidation(v => v.RegisterValidatorsFromAssembly(typeof(ApplicationModule).Assembly));
 
             services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; })
                 .AddHttpContextAccessor();

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace IdentityIssuer.WebAPI
 {
@@ -36,7 +37,7 @@ namespace IdentityIssuer.WebAPI
                 .AddJwtTokenBearerAuthentication(Configuration);
         }
 
-        public void Configure(IApplicationBuilder application, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder application, IWebHostEnvironment env)
         {
             if(env.IsProduction())
             {
@@ -48,7 +49,8 @@ namespace IdentityIssuer.WebAPI
             application
                 .UseMiddleware<TenantCorsMiddleware>()
                 .UseAuthentication()
-                .UseMvc();
+                .UseRouting()
+                .UseEndpoints(e => { e.MapControllers();});
             
             Console.WriteLine($"Welcome to IdentityIssuer. PID: {Process.GetCurrentProcess().Id.ToString()}");
         }
