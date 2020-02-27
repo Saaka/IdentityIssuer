@@ -48,8 +48,9 @@ namespace IdentityIssuer.WebAPI
 
             application
                 .UseMiddleware<TenantCorsMiddleware>()
-                .UseAuthentication()
                 .UseRouting()
+                .UseAuthentication()
+                .UseAuthorization()
                 .UseEndpoints(e => { e.MapControllers();});
             
             Console.WriteLine($"Welcome to IdentityIssuer. PID: {Process.GetCurrentProcess().Id.ToString()}");
