@@ -22,8 +22,13 @@ namespace IdentityIssuer.WebAPI.Pipeline
         public override void OnException(ExceptionContext context)
         {
             var exception = context.Exception;
+            context.HttpContext.Response.ContentType = "application/json";
+            
             switch (exception)
             {
+                case DomainException domainException:
+                    HandleDomainException(domainException, context);
+                    break;
                 case CommandValidationException validationException:
                     HandleValidationException(validationException, context);
                     break;
@@ -34,6 +39,16 @@ namespace IdentityIssuer.WebAPI.Pipeline
                     HandleApplicationExceptions(context, exception);
                     break;
             }
+        }
+
+        private void HandleDomainException(DomainException domainException, ExceptionContext context)
+        {
+            context.HttpContext.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+            context.Result = new JsonResult(new
+            {
+                Error = domainException.Message,
+                ErrorDetails = domainException.ExceptionDetails
+            });
         }
 
         private void HandleApplicationExceptions(ExceptionContext context, Exception exception)
@@ -53,7 +68,6 @@ namespace IdentityIssuer.WebAPI.Pipeline
                     break;
             }
 
-            context.HttpContext.Response.ContentType = "application/json";
             context.HttpContext.Response.StatusCode = (int) code;
             context.Result = new JsonResult(new
             {
@@ -64,7 +78,6 @@ namespace IdentityIssuer.WebAPI.Pipeline
 
         private void HandleValidationException(CommandValidationException validationException, ExceptionContext context)
         {
-            context.HttpContext.Response.ContentType = "application/json";
             context.HttpContext.Response.StatusCode = (int) HttpStatusCode.BadRequest;
             context.Result = new JsonResult(new
             {
@@ -76,7 +89,6 @@ namespace IdentityIssuer.WebAPI.Pipeline
 
         private void HandleRepositoryException(RepositoryException repositoryException, ExceptionContext context)
         {
-            context.HttpContext.Response.ContentType = "application/json";
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             context.Result = new JsonResult(new
             {

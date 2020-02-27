@@ -13,7 +13,7 @@ using MediatR;
 
 namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
 {
-    public class AuthorizeUserWithGoogleCommandHandler 
+    public class AuthorizeUserWithGoogleCommandHandler
         : IRequestHandler<AuthorizeUserWithGoogleCommand, AuthUserResult>
     {
         private readonly IGoogleApiClient googleApiClient;
@@ -72,7 +72,8 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
         private async Task<AuthUserResult> AddGoogleToExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
         {
             var user = await authRepository
-                .AddGoogleLoginToUser(requestTenant.TenantId, tokenInfo.Email, tokenInfo.ExternalUserId, tokenInfo.ImageUrl);
+                .AddGoogleLoginToUser(requestTenant.TenantId, tokenInfo.Email, tokenInfo.ExternalUserId,
+                    tokenInfo.ImageUrl);
 
             return await AuthUserResult(requestTenant, user);
         }
@@ -103,9 +104,11 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
                 .GetProviderSettings(tenant.TenantId, AuthProviderType.Google);
 
             if (providerSettings == null)
-                throw new TenantProviderSettingsNotFoundException(tenant.TenantCode, AuthProviderType.Google);
+                throw new DomainException(ExceptionCode.TenantProviderSettingsNotFound,
+                    new {tenantCode = tenant.TenantCode, providerType = AuthProviderType.Google});
             if (tokenInfo == null || tokenInfo.ClientId != providerSettings.Identifier)
-                throw new InvalidProviderTokenException(AuthProviderType.Google, tenant.TenantCode);
+                throw new DomainException(ExceptionCode.InvalidProviderToken,
+                    new {tenantCode = tenant.TenantCode, providerType = AuthProviderType.Google});
         }
     }
 }

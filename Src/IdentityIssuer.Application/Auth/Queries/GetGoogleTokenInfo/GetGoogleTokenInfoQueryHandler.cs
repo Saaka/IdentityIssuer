@@ -34,9 +34,11 @@ namespace IdentityIssuer.Application.Auth.Queries.GetGoogleTokenInfo
                 .GetProviderSettings(request.Tenant.TenantId, AuthProviderType.Google);
 
             if (providerSettings == null)
-                throw new TenantSettingsNotFoundException(request.Tenant.TenantCode);
+                throw new DomainException(ExceptionCode.TenantSettingsNotFound,
+                    new {tenantCode = request.Tenant.TenantCode});
             if (tokenInfo == null || tokenInfo.ClientId != providerSettings.Identifier)
-                throw new InvalidProviderTokenException(AuthProviderType.Google, request.Tenant.TenantCode);
+                throw new DomainException(ExceptionCode.InvalidProviderToken,
+                    new {providerType = AuthProviderType.Google, tenantCode = request.Tenant.TenantCode});
 
             var isEmailRegistered = false;
             var googleUserExists = await authRepository

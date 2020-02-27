@@ -26,5 +26,25 @@ namespace IdentityIssuer.Common.Enums
         /// Tenant header not found in request.
         /// </summary>
         TenantHeaderMissing = 6,
+        /// <summary>
+        /// Tenant provider settings were not found for given tenant and provider.
+        /// </summary>
+        TenantProviderSettingsNotFound = 7,
+        /// <summary>
+        /// Tenant settings were not found for given tenant.
+        /// </summary>
+        TenantSettingsNotFound = 8,
+        /// <summary>
+        /// Claim with user code is missing and user can't be authenticated.
+        /// </summary>
+        UserClaimMissing = 9,
+        /// <summary>
+        /// Could not find user for given criteria.
+        /// </summary>
+        UserNotFound = 10,
+        /// <summary>
+        /// Given provider security token is not valid for tenant.
+        /// </summary>
+        InvalidProviderToken
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Tenants;
@@ -55,7 +56,7 @@ namespace IdentityIssuer.WebAPI.Services
         private string GetUserCodeFromContext(HttpContext context)
         {
             if (context.User?.Claims == null || !context.User.HasClaim(x => x.Type == ClaimTypes.NameIdentifier))
-                throw new UserClaimMissingException();
+                throw new DomainException(ExceptionCode.UserClaimMissing);
 
             var userCode = context.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
             return userCode;

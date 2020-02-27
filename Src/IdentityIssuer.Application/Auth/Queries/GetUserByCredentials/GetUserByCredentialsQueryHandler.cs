@@ -6,7 +6,7 @@ using IdentityIssuer.Application.Auth.Repositories;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Application.Users.Models;
-using IdentityIssuer.Application.Users.Repositories;
+using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
 using MediatR;
 
@@ -36,11 +36,13 @@ namespace IdentityIssuer.Application.Auth.Queries.GetUserByCredentials
             var user = await authRepository.GetUserByCredentials(request.Email, request.Password,
                 request.Tenant.TenantId);
             if (user == null)
-                throw new UserNotFoundException(request.Email, request.Tenant.TenantCode);
+                throw new DomainException(ExceptionCode.UserNotFound,
+                    new { email = request.Email, tenantCode = request.Tenant.TenantCode });
 
             var settings = await tenantsRepository.GetTenantSettings(request.Tenant.TenantId);
             if (settings == null)
-                throw new TenantSettingsNotFoundException(request.Tenant.TenantCode);
+                throw new DomainException(ExceptionCode.TenantSettingsNotFound, 
+                    new { tenantCode = request.Tenant.TenantCode });
 
             var token = jwtTokenFactory.Create(user, settings, request.Tenant.TenantCode);
             return new AuthUserResult
