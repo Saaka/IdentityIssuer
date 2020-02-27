@@ -3,6 +3,7 @@ using AutoMapper;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Users.Repositories;
 using System.Linq;
+using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
 using IdentityIssuer.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -61,7 +62,8 @@ namespace IdentityIssuer.Persistence.Repositories
 
             var user = await query.FirstOrDefaultAsync();
             if (user == null)
-                throw new UserNotFoundException(guid);
+                throw new DomainException(ExceptionCode.UserNotFound, 
+                    new { userGuid = guid });
 
             return user;
         }

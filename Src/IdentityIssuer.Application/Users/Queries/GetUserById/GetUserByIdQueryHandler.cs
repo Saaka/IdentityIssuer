@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using IdentityIssuer.Application.Users.Models;
+using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
 using MediatR;
 
@@ -24,7 +25,8 @@ namespace IdentityIssuer.Application.Users.Queries.GetUserById
         {
             var user = await usersProvider.GetUser(request.UserId, request.Tenant.TenantId);
             if (user == null)
-                throw new UserNotFoundException(request.UserGuid);
+                throw new DomainException(ExceptionCode.UserNotFound, 
+                    new { userGuid = request.UserGuid });
             
             return mapper.Map<UserDto>(user);
         }

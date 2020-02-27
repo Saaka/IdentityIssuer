@@ -4,6 +4,7 @@ using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Constants;
+using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
 
 namespace IdentityIssuer.Application.Users
@@ -51,7 +52,8 @@ namespace IdentityIssuer.Application.Users
 
                     var user = await userRepository.GetUserId(guid);
                     if (user == 0)
-                        throw new UserNotFoundException(guid);
+                        throw new DomainException(ExceptionCode.UserNotFound, 
+                            new { userGuid = guid });
 
                     return user;
                 });
