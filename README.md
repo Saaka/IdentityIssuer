@@ -1,7 +1,8 @@
 # IdentityIssuer ![Build status](https://travis-ci.com/Saaka/IdentityIssuer.svg?branch=master)
 
-IdentityIssuer lets you manage user accounts for multiple application in one place.
-Create Tenants with independent users. Each of them enables multiple registration options like classic credentials or Social logins: Google, Facebook (more comming soon).
+IdentityIssuer lets you manage user accounts for multiple applications in one place.
+
+You can create Tenants with independent users. Each of them enables multiple registration options like classic credentials or social logins like Google and Facebook with more coming soon.
 
 ## Appsettings
 
@@ -23,7 +24,7 @@ Create Tenants with independent users. Each of them enables multiple registratio
     
 ## Docker 
 #### WebAPI
-Run commands to build and run Web API in docker.
+Run commands to build and run Web API in docker (from `Src` directory).
 
 `docker build -t identityissuer -f ./IdentityIssuer.WebAPI/Dockerfile .`
 
