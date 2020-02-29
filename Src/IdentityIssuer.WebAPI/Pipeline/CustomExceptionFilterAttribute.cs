@@ -72,7 +72,7 @@ namespace IdentityIssuer.WebAPI.Pipeline
             context.Result = new JsonResult(new
             {
                 Error = context.Exception.Message,
-                ErrorDetails = env.IsDevelopment() ? context.Exception.StackTrace : string.Empty
+                ErrorDetails = !env.IsProduction() ? context.Exception.StackTrace : string.Empty
             });
         }
 
