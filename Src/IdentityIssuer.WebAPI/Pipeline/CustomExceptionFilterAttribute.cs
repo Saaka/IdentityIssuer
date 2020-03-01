@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Linq;
 using System.Net;
+using System.Text.Json;
 using IdentityIssuer.Common.Exceptions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
@@ -82,8 +83,8 @@ namespace IdentityIssuer.WebAPI.Pipeline
             context.Result = new JsonResult(new
             {
                 Error = validationException.Message,
-                ErrorDetails = validationException.Failures
-                    .SelectMany(x=> x.Value).Select(ToCamelCase).ToList()
+                ErrorDetails = JsonSerializer.Serialize(validationException.Failures
+                    .SelectMany(x=> x.Value).ToList())
             });
         }
 
@@ -95,11 +96,6 @@ namespace IdentityIssuer.WebAPI.Pipeline
                 Error = repositoryException.Message,
                 ErrorDetails = repositoryException.Errors
             });
-        }
-
-        private string ToCamelCase(string input)
-        {
-            return input.Length <= 1 ? input : $"{input.ToLowerInvariant()[0]}{input.Substring(1)}";
         }
     }
 }
