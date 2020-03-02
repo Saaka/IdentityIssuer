@@ -24,4 +24,8 @@
       <ProjectReference Include="..\..\IdentityIssuer.WebAPI\IdentityIssuer.WebAPI.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Pipeline" />
+    </ItemGroup>
+
 </Project>

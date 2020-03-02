@@ -47,7 +47,8 @@ namespace IdentityIssuer.WebAPI.Pipeline
             context.HttpContext.Response.StatusCode = (int) HttpStatusCode.BadRequest;
             context.Result = new JsonResult(new
             {
-                Error = domainException.ExceptionCode,
+                Error = domainException.ExceptionCode.ToString(),
+                ErrorCode = domainException.ExceptionCode,
                 ErrorDetails = domainException.ExceptionDetails
             });
         }
