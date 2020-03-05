@@ -12,9 +12,9 @@ namespace IdentityIssuer.Infrastructure.Security.Google
 {
     public class GoogleApiClient : IGoogleApiClient
     {
-        private readonly IRestSharpClientFactory clientFactory;
-        private readonly IGoogleConfiguration googleConfiguration;
-        private readonly IMapper mapper;
+        private readonly IRestSharpClientFactory _clientFactory;
+        private readonly IGoogleConfiguration _googleConfiguration;
+        private readonly IMapper _mapper;
         private const string TokenInfoAddress = "tokeninfo?id_token=";
         private const string InvalidValueContentString = "Invalid Value";
 
@@ -23,19 +23,19 @@ namespace IdentityIssuer.Infrastructure.Security.Google
             IGoogleConfiguration googleConfiguration,
             IMapper mapper)
         {
-            this.clientFactory = restSharpClientFactory;
-            this.googleConfiguration = googleConfiguration;
-            this.mapper = mapper;
+            _clientFactory = restSharpClientFactory;
+            _googleConfiguration = googleConfiguration;
+            _mapper = mapper;
         }
 
         public async Task<TokenInfo> GetTokenInfoAsync(string token)
         {
-            var client = clientFactory.CreateClient(googleConfiguration.GoogleValidationEndpoint);
-            var request = clientFactory.CreateRequest($"{TokenInfoAddress}{token}", Method.GET);
+            var client = _clientFactory.CreateClient(_googleConfiguration.GoogleValidationEndpoint);
+            var request = _clientFactory.CreateRequest($"{TokenInfoAddress}{token}", Method.GET);
 
             var response = await client.ExecuteTaskAsync<GoogleTokenInfo>(request);
-            return response.StatusCode == System.Net.HttpStatusCode.OK
-                ? mapper.Map<TokenInfo>(response.Data)
+            return response.StatusCode == HttpStatusCode.OK
+                ? _mapper.Map<TokenInfo>(response.Data)
                 : GetInvalidResult(response);
         }
 

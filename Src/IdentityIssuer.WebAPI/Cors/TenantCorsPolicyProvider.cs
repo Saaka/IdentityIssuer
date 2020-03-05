@@ -7,11 +7,11 @@ namespace IdentityIssuer.WebAPI.Cors
 {
     public class TenantCorsPolicyProvider : ICorsPolicyProvider
     {
-        private readonly ITenantOriginProvider tenantOriginProvider;
+        private readonly ITenantOriginProvider _tenantOriginProvider;
 
         public TenantCorsPolicyProvider(ITenantOriginProvider tenantOriginProvider)
         {
-            this.tenantOriginProvider = tenantOriginProvider;
+            _tenantOriginProvider = tenantOriginProvider;
         }
 
         public async Task<CorsPolicy> GetPolicyAsync(HttpContext context, string policyName)
@@ -20,7 +20,7 @@ namespace IdentityIssuer.WebAPI.Cors
             if (policyName == PolicyConstants.PreflightPolicy)
                 origin = context.Request.Headers[IdentityIssuerHeaders.OriginHeader];
             else
-                origin = await tenantOriginProvider.GetAllowedOrigin(policyName);
+                origin = await _tenantOriginProvider.GetAllowedOrigin(policyName);
 
             return new CorsPolicyBuilder(origin)
                 .AllowCredentials()

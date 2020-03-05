@@ -5,14 +5,14 @@ namespace IdentityIssuer.WebAPI.Configurations
 {
     public class AuthSettings : ITokenConfiguration
     {
-        private readonly IConfiguration configuration;
+        private readonly IConfiguration _configuration;
 
         public AuthSettings(IConfiguration configuration)
         {
-            this.configuration = configuration;
+            _configuration = configuration;
         }
 
 
-        public string Issuer => configuration[ConfigurationProperties.Issuer];
+        public string Issuer => _configuration[ConfigurationProperties.Issuer];
     }
 }

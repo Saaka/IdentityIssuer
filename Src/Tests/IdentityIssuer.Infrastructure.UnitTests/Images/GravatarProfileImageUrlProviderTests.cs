@@ -11,17 +11,17 @@ namespace IdentityIssuer.Infrastructure.UnitTests.Images
     [Trait("Infrastructure", "Images")]
     public class GravatarProfileImageUrlProviderTests : IDisposable
     {
-        private readonly Fixture fixture;
+        private readonly Fixture _fixture;
 
         public GravatarProfileImageUrlProviderTests()
         {
-            fixture = new Fixture();
+            _fixture = new Fixture();
         }
 
         [Fact] 
         public void GetImageUrl_Should_Return_Valid_Url_With_Hash()
         {
-            var sut = fixture
+            var sut = _fixture
                 .WithHash("abcdefgh")
                 .Configure();
 
@@ -37,11 +37,10 @@ namespace IdentityIssuer.Infrastructure.UnitTests.Images
 
         private class Fixture : AutoMockFixture
         {
-            private string hash;
-
+            private string _hash;
             public Fixture WithHash(string value)
             {
-                hash = value;
+                _hash = value;
                 return this;
             }
 
@@ -49,7 +48,7 @@ namespace IdentityIssuer.Infrastructure.UnitTests.Images
             {
                 AutoMockInstance.Mock<IHashGenerator>()
                     .Setup(x => x.Generate(It.IsAny<string>()))
-                    .Returns(hash);
+                    .Returns(_hash);
 
                 return AutoMockInstance.Create<GravatarProfileImageUrlProvider>();
             }
@@ -57,7 +56,7 @@ namespace IdentityIssuer.Infrastructure.UnitTests.Images
 
         public void Dispose()
         {
-            fixture?.Dispose();
+            _fixture?.Dispose();
         }
     }
 }

@@ -13,11 +13,11 @@ namespace IdentityIssuer.WebAPI.Pipeline
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class CustomExceptionFilterAttribute : ExceptionFilterAttribute
     {
-        private readonly IWebHostEnvironment env;
+        private readonly IWebHostEnvironment _env;
 
         public CustomExceptionFilterAttribute(IWebHostEnvironment env)
         {
-            this.env = env;
+            _env = env;
         }
 
         public override void OnException(ExceptionContext context)
@@ -74,7 +74,7 @@ namespace IdentityIssuer.WebAPI.Pipeline
             context.Result = new JsonResult(new
             {
                 Error = context.Exception.Message,
-                ErrorDetails = !env.IsProduction() ? context.Exception.StackTrace : string.Empty
+                ErrorDetails = !_env.IsProduction() ? context.Exception.StackTrace : string.Empty
             });
         }
 

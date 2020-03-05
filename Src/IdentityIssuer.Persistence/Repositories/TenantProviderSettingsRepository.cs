@@ -10,21 +10,21 @@ namespace IdentityIssuer.Persistence.Repositories
 {
     public class TenantProviderSettingsRepository : ITenantProviderSettingsRepository
     {
-        private readonly AppIdentityContext context;
-        private readonly IMapper mapper;
+        private readonly AppIdentityContext _context;
+        private readonly IMapper _mapper;
 
         public TenantProviderSettingsRepository(AppIdentityContext context,
             IMapper mapper)
         {
-            this.context = context;
-            this.mapper = mapper;
+            _context = context;
+            _mapper = mapper;
         }
 
         public async Task<TenantProviderSettings> GetProviderSettings(int tenantId, AuthProviderType providerType)
         {
-            var query = from tenant in context.Tenants
-                join settings in context.TenantSettings on tenant.Id equals settings.TenantId
-                join providerSettings in context.TenantProviderSettings
+            var query = from tenant in _context.Tenants
+                join settings in _context.TenantSettings on tenant.Id equals settings.TenantId
+                join providerSettings in _context.TenantProviderSettings
                     on settings.Id equals providerSettings.TenantSettingsId
                 where tenant.Id == tenantId && 
                     providerSettings.ProviderType == providerType
@@ -32,7 +32,7 @@ namespace IdentityIssuer.Persistence.Repositories
 
             var result = await query.FirstOrDefaultAsync();
 
-            return mapper.Map<TenantProviderSettings>(result);
+            return _mapper.Map<TenantProviderSettings>(result);
         }
     }
 }

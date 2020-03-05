@@ -18,19 +18,19 @@ namespace IdentityIssuer.WebAPI.Services
 
     public class ContextDataProvider : IContextDataProvider
     {
-        readonly IUsersProvider usersProvider;
-        readonly ITenantProvider tenantProvider;
+        private readonly IUsersProvider _usersProvider;
+        private readonly ITenantProvider _tenantProvider;
 
         public ContextDataProvider(ITenantProvider tenantProvider, IUsersProvider usersProvider)
         {
-            this.tenantProvider = tenantProvider;
-            this.usersProvider = usersProvider;
+            _tenantProvider = tenantProvider;
+            _usersProvider = usersProvider;
         }
 
         public async Task<UserContextData> GetUser(HttpContext context)
         {
             var userGuid = GetUserCodeFromContext(context);
-            var userId = await usersProvider.GetUserId(userGuid);
+            var userId = await _usersProvider.GetUserId(userGuid);
             
             var tenant = await GetTenant(context);
 
@@ -47,7 +47,7 @@ namespace IdentityIssuer.WebAPI.Services
 
         private async Task<int> GetTenantId(string tenantCode)
         {
-            var tenant = await tenantProvider.GetTenantAsync(tenantCode);
+            var tenant = await _tenantProvider.GetTenantAsync(tenantCode);
             return tenant.Id;
         }
 

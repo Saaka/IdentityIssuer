@@ -14,17 +14,17 @@ namespace IdentityIssuer.WebAPI.UnitTests.CorsTests
     [Trait("WebAPI", "Cors")]
     public class TenantOriginProviderTests : IDisposable
     {
-        private readonly Fixture fixture;
+        private readonly Fixture _fixture;
 
         public TenantOriginProviderTests()
         {
-            fixture = new Fixture();
+            _fixture = new Fixture();
         }
 
         [Fact]
         public async Task GetAllowedOrigin_Should_Return_Origin_If_Tenant_Exists()
         {
-            var sut = fixture
+            var sut = _fixture
                 .WithTenant(new Tenant
                 {
                     AllowedOrigin = "http://test.com"
@@ -39,7 +39,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.CorsTests
         [Fact]
         public async Task GetAllowedOrigin_Should_Return_Null_If_Tenant_Not_Exists()
         {
-            var sut = fixture
+            var sut = _fixture
                 .Configure();
 
             var origin = await sut.GetAllowedOrigin("Code");
@@ -49,11 +49,11 @@ namespace IdentityIssuer.WebAPI.UnitTests.CorsTests
 
         public class Fixture : AutoMockFixture
         {
-            Tenant tenant;
+            private Tenant _tenant;
 
-            public Fixture WithTenant(Tenant tenant)
+            public Fixture WithTenant(Tenant value)
             {
-                this.tenant = tenant;
+                this._tenant = value;
                 return this;
             }
 
@@ -61,7 +61,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.CorsTests
             {
                 AutoMockInstance.Mock<ICacheStore>()
                     .Setup(x => x.GetOrCreateAsync(It.IsAny<string>(), It.IsAny<Func<ICacheEntry, Task<string>>>()))
-                    .ReturnsAsync(tenant?.AllowedOrigin);
+                    .ReturnsAsync(_tenant?.AllowedOrigin);
 
                 return AutoMockInstance.Create<TenantOriginProvider>();
             }
@@ -69,7 +69,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.CorsTests
 
         public void Dispose()
         {
-            fixture?.Dispose();
+            _fixture?.Dispose();
         }
     }
 }

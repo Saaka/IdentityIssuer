@@ -14,17 +14,17 @@ namespace IdentityIssuer.WebAPI.UnitTests.CorsTests
     [Trait("WebAPI", "Cors")]
     public class AllowedOriginsProviderTests : IDisposable
     {
-        private readonly Fixture fixture;
+        private readonly Fixture _fixture;
 
         public AllowedOriginsProviderTests()
         {
-            fixture = new Fixture();
+            _fixture = new Fixture();
         }
         
         [Fact]
         public async Task IsOriginAvailable_Should_Return_True_For_Allowed_Origin()
         {
-            var sut = fixture
+            var sut = _fixture
                 .WithAllowedOrigin("http://test.com")
                 .Configure();
 
@@ -36,7 +36,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.CorsTests
         [Fact]
         public async Task IsOriginAvailable_Should_Return_False_For_Not_Allowed_Origin()
         {
-            var sut = fixture
+            var sut = _fixture
                 .WithAllowedOrigin("http://test.com")
                 .Configure();
 
@@ -47,10 +47,10 @@ namespace IdentityIssuer.WebAPI.UnitTests.CorsTests
 
         public class Fixture : AutoMockFixture
         {
-            private readonly List<string> allowedOrigins = new List<string>();
+            private readonly List<string> _allowedOrigins = new List<string>();
             public Fixture WithAllowedOrigin(string origin)
             {
-                allowedOrigins.Add(origin);
+                _allowedOrigins.Add(origin);
                 return this;
             }
 
@@ -58,7 +58,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.CorsTests
             {
                 AutoMockInstance.Mock<ICacheStore>()
                     .Setup(x => x.GetOrCreateAsync(It.IsAny<string>(), It.IsAny<Func<ICacheEntry, Task<IEnumerable<string>>>>()))
-                    .ReturnsAsync(allowedOrigins);
+                    .ReturnsAsync(_allowedOrigins);
                 
                 return AutoMockInstance.Create<AllowedOriginsProvider>();
             }
@@ -66,7 +66,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.CorsTests
 
         public void Dispose()
         {
-            fixture?.Dispose();
+            _fixture?.Dispose();
         }
     }
 }

@@ -7,16 +7,16 @@ namespace IdentityIssuer.Infrastructure.Images
         private const string ServiceAddress = "https://www.gravatar.com/avatar/";
         private const string DefaultSizeParam = "?s=96";
 
-        private readonly IHashGenerator hashGenerator;
+        private readonly IHashGenerator _hashGenerator;
 
         public GravatarProfileImageUrlProvider(IHashGenerator hashGenerator)
         {
-            this.hashGenerator = hashGenerator;
+            _hashGenerator = hashGenerator;
         }
 
         public string GetImageUrl(string email)
         {
-            var emailHash = hashGenerator.Generate(email);
+            var emailHash = _hashGenerator.Generate(email);
             if (string.IsNullOrWhiteSpace(emailHash))
                 return null;
 

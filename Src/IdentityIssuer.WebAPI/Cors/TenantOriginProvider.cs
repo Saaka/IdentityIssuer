@@ -13,25 +13,25 @@ namespace IdentityIssuer.WebAPI.Cors
 
     public class TenantOriginProvider : ITenantOriginProvider
     {
-        private readonly ICacheStore cache;
-        private readonly ITenantProvider tenantProvider;
+        private readonly ICacheStore _cache;
+        private readonly ITenantProvider _tenantProvider;
 
         public TenantOriginProvider(
             ITenantProvider tenantProvider,
             ICacheStore cache)
         {
-            this.cache = cache;
-            this.tenantProvider = tenantProvider;
+            _cache = cache;
+            _tenantProvider = tenantProvider;
         }
 
         public async Task<string> GetAllowedOrigin(string tenantCode)
         {
-            var origin = await cache.GetOrCreateAsync($"{CacheConstants.OriginCachePrefix}{tenantCode}", async (ce) =>
+            var origin = await _cache.GetOrCreateAsync($"{CacheConstants.OriginCachePrefix}{tenantCode}", async (ce) =>
             {
                 ce.SlidingExpiration = TimeSpan.FromMinutes(5);
                 ce.AbsoluteExpiration = DateTime.Now.AddHours(1);
 
-                var tenant = await tenantProvider.GetTenantAsync(tenantCode);
+                var tenant = await _tenantProvider.GetTenantAsync(tenantCode);
 
                 return tenant?.AllowedOrigin;
             });

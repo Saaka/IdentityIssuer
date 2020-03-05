@@ -127,22 +127,20 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
             public Mock<IContextDataProvider> ContextDataProviderMock { get; private set; }
             public Mock<IHttpContextAccessor> HttpContextAccessorMock { get; private set; }
 
-            private TenantSettings tenantSettings;
-
+            private TenantSettings _tenantSettings;
             public Fixture WithTenantSettings(string secret)
             {
-                tenantSettings = new TenantSettings
+                _tenantSettings = new TenantSettings
                 {
                     TokenSecret = secret
                 };
                 return this;
             }
 
-            private TenantContextData tenantContextData;
-
+            private TenantContextData _tenantContextData;
             public Fixture WithContextData(string tenantCode)
             {
-                tenantContextData = new TenantContextData(1, tenantCode);
+                _tenantContextData = new TenantContextData(1, tenantCode);
                 return this;
             }
 
@@ -152,11 +150,11 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
                 {
                     TenantProviderMock = mock.Mock<ITenantProvider>();
                     TenantProviderMock.Setup(x => x.GetTenantSettings(It.IsAny<string>()))
-                        .Returns(tenantSettings);
+                        .Returns(_tenantSettings);
 
                     ContextDataProviderMock = mock.Mock<IContextDataProvider>();
                     ContextDataProviderMock.Setup(x => x.GetTenant(It.IsAny<HttpContext>()))
-                        .ReturnsAsync(tenantContextData);
+                        .ReturnsAsync(_tenantContextData);
 
                     HttpContextAccessorMock = mock.Mock<IHttpContextAccessor>();
                     HttpContextAccessorMock.Setup(x => x.HttpContext)

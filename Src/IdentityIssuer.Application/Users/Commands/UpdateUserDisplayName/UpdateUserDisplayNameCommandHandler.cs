@@ -7,16 +7,16 @@ namespace IdentityIssuer.Application.Users.Commands.UpdateUserDisplayName
 {
     public class UpdateUserDisplayNameCommandHandler : AsyncRequestHandler<UpdateUserDisplayNameCommand>
     {
-        private readonly IUserRepository userRepository;
+        private readonly IUserRepository _userRepository;
 
         public UpdateUserDisplayNameCommandHandler(IUserRepository userRepository)
         {
-            this.userRepository = userRepository;
+            _userRepository = userRepository;
         }
 
         protected override async Task Handle(UpdateUserDisplayNameCommand request, CancellationToken cancellationToken)
         {
-            await userRepository.UpdateUserDisplayName(request.UserGuid, request.Name);
+            await _userRepository.UpdateUserDisplayName(request.UserGuid, request.Name);
         }
     }
 }

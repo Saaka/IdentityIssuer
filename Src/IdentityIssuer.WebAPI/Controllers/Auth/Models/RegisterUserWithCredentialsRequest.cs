@@ -1,5 +1,3 @@
-using IdentityIssuer.WebAPI.Models;
-
 namespace IdentityIssuer.WebAPI.Controllers.Auth.Models
 {
     public class RegisterUserWithCredentialsRequest

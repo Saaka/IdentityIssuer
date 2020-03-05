@@ -13,23 +13,23 @@ namespace IdentityIssuer.Persistence.Repositories
 {
     public class AuthRepository : IAuthRepository
     {
-        private readonly AppIdentityContext context;
-        private readonly IMapper mapper;
-        private readonly UserManager<TenantUserEntity> userManager;
+        private readonly AppIdentityContext _context;
+        private readonly IMapper _mapper;
+        private readonly UserManager<TenantUserEntity> _userManager;
 
         public AuthRepository(AppIdentityContext context,
             IMapper mapper,
             UserManager<TenantUserEntity> userManager)
         {
-            this.context = context;
-            this.mapper = mapper;
-            this.userManager = userManager;
+            _context = context;
+            _mapper = mapper;
+            _userManager = userManager;
         }
 
         public async Task<bool> IsEmailRegisteredForTenant(string email, int tenantId)
         {
             var normalizedEmail = email.ToUpper();
-            var query = from u in context.Users
+            var query = from u in _context.Users
                 where u.TenantId == tenantId &&
                       u.NormalizedEmail == normalizedEmail
                 select u;
@@ -39,7 +39,7 @@ namespace IdentityIssuer.Persistence.Repositories
 
         public async Task<bool> GoogleUserExists(string externalUserId, int tenantId)
         {
-            var query = from u in context.Users
+            var query = from u in _context.Users
                 where u.TenantId == tenantId &&
                       u.GoogleId == externalUserId
                 select u.Id;
@@ -49,7 +49,7 @@ namespace IdentityIssuer.Persistence.Repositories
 
         public async Task<bool> FacebookUserExists(string externalUserId, int tenantId)
         {
-            var query = from u in context.Users
+            var query = from u in _context.Users
                 where u.TenantId == tenantId &&
                       u.FacebookId == externalUserId
                 select u.Id;
@@ -106,11 +106,11 @@ namespace IdentityIssuer.Persistence.Repositories
                 TenantId = data.TenantId
             };
 
-            var result = await userManager.CreateAsync(tenantUser, data.Password);
+            var result = await _userManager.CreateAsync(tenantUser, data.Password);
             if (!result.Succeeded)
                 throw new RepositoryException(nameof(CreateUser), result.Errors.Select(x => x.Code));
 
-            return mapper.Map<TenantUser>(tenantUser);
+            return _mapper.Map<TenantUser>(tenantUser);
         }
 
         public async Task<TenantUser> CreateGoogleUser(CreateUserDto data)
@@ -126,11 +126,11 @@ namespace IdentityIssuer.Persistence.Repositories
                 GoogleId = data.ExternalUserId
             };
 
-            var result = await userManager.CreateAsync(tenantUser);
+            var result = await _userManager.CreateAsync(tenantUser);
             if (!result.Succeeded)
                 throw new RepositoryException(nameof(CreateGoogleUser), result.Errors.Select(x => x.Code));
 
-            return mapper.Map<TenantUser>(tenantUser);
+            return _mapper.Map<TenantUser>(tenantUser);
         }
 
         public async Task<TenantUser> CreateFacebookUser(CreateUserDto data)
@@ -146,25 +146,25 @@ namespace IdentityIssuer.Persistence.Repositories
                 FacebookId = data.ExternalUserId
             };
 
-            var result = await userManager.CreateAsync(tenantUser);
+            var result = await _userManager.CreateAsync(tenantUser);
             if (!result.Succeeded)
                 throw new RepositoryException(nameof(CreateFacebookUser), result.Errors.Select(x => x.Code));
 
-            return mapper.Map<TenantUser>(tenantUser);
+            return _mapper.Map<TenantUser>(tenantUser);
         }
 
         public async Task<TenantUser> GetUserByCredentials(string email, string password, int tenantId)
         {
             var normalizedEmail = email.ToUpper();
-            var query = from u in context.Users
+            var query = from u in _context.Users
                 where u.NormalizedEmail == normalizedEmail
                       && u.TenantId == tenantId
                 select u;
 
             var user = await query.FirstOrDefaultAsync();
 
-            if (await userManager.CheckPasswordAsync(user, password))
-                return mapper.Map<TenantUser>(user);
+            if (await _userManager.CheckPasswordAsync(user, password))
+                return _mapper.Map<TenantUser>(user);
 
             return null;
         }
@@ -172,7 +172,7 @@ namespace IdentityIssuer.Persistence.Repositories
         private async Task<TenantUserEntity> GetUserForTenant(string email, int tenantId)
         {
             var normalizedEmail = email.ToUpper();
-            var query = from u in context.Users
+            var query = from u in _context.Users
                 where u.NormalizedEmail == normalizedEmail
                       && u.TenantId == tenantId
                 select u;
@@ -187,9 +187,9 @@ namespace IdentityIssuer.Persistence.Repositories
 
         private async Task<TenantUser> UpdateUser(TenantUserEntity user, string method)
         {
-            var result = await userManager.UpdateAsync(user);
+            var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
-                return mapper.Map<TenantUser>(user);
+                return _mapper.Map<TenantUser>(user);
             else
                 throw new RepositoryException(method, result.Errors.Select(x => x.Code));
         }

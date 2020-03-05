@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using IdentityIssuer.Application.Configuration;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Services;
@@ -14,23 +13,20 @@ namespace IdentityIssuer.Infrastructure.Security.Facebook
 {
     public class FacebookApiClient : IFacebookApiClient
     {
-        private readonly IRestSharpClientFactory clientFactory;
-        private readonly IFacebookConfiguration facebookConfiguration;
-        private readonly IMapper mapper;
+        private readonly IRestSharpClientFactory _clientFactory;
+        private readonly IFacebookConfiguration _facebookConfiguration;
 
         public FacebookApiClient(
             IRestSharpClientFactory clientFactory,
-            IFacebookConfiguration facebookConfiguration,
-            IMapper mapper)
+            IFacebookConfiguration facebookConfiguration)
         {
-            this.clientFactory = clientFactory;
-            this.facebookConfiguration = facebookConfiguration;
-            this.mapper = mapper;
+            _clientFactory = clientFactory;
+            _facebookConfiguration = facebookConfiguration;
         }
 
         public async Task<TokenInfo> GetTokenInfoAsync(string token, string appId, string appSecret)
         {
-            var client = clientFactory.CreateClient(facebookConfiguration.FacebookValidationEndpoint);
+            var client = _clientFactory.CreateClient(_facebookConfiguration.FacebookValidationEndpoint);
             var appAccessToken = await GetAppAccessToken(client, appId, appSecret);
 
             var verifyTokenResult = await VerifyToken(client, token, appAccessToken);
@@ -50,7 +46,7 @@ namespace IdentityIssuer.Infrastructure.Security.Facebook
 
         private async Task<FbUserDataResponse> GetUserData(IRestClient client, string token, string userId)
         {
-            var request = clientFactory.CreateRequest(
+            var request = _clientFactory.CreateRequest(
                 $"{userId}" +
                 $"?fields=id,name,email,picture" +
                 $"&access_token={token}", Method.GET);
@@ -64,7 +60,7 @@ namespace IdentityIssuer.Infrastructure.Security.Facebook
 
         private async Task<FbVerifyTokenResultData> VerifyToken(IRestClient client, string token, string appAccessToken)
         {
-            var request = clientFactory.CreateRequest(
+            var request = _clientFactory.CreateRequest(
                 $"debug_token?" +
                 $"input_token={token}" +
                 $"&access_token={appAccessToken}", Method.GET);
@@ -78,7 +74,7 @@ namespace IdentityIssuer.Infrastructure.Security.Facebook
 
         private async Task<string> GetAppAccessToken(IRestClient client, string appId, string appSecret)
         {
-            var request = clientFactory.CreateRequest(
+            var request = _clientFactory.CreateRequest(
                 $"oauth/access_token?" +
                 $"client_id={appId}" +
                 $"&client_secret={appSecret}" +

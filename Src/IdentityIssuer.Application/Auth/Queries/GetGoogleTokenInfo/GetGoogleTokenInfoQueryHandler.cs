@@ -12,25 +12,25 @@ namespace IdentityIssuer.Application.Auth.Queries.GetGoogleTokenInfo
     public class
         GetGoogleTokenInfoQueryHandler : IRequestHandler<GetGoogleTokenInfoQuery, GetGoogleTokenInfoQueryResult>
     {
-        private readonly IGoogleApiClient googleApiClient;
-        private readonly ITenantProviderSettingsRepository providerSettingsRepository;
-        private readonly IAuthRepository authRepository;
+        private readonly IGoogleApiClient _googleApiClient;
+        private readonly ITenantProviderSettingsRepository _providerSettingsRepository;
+        private readonly IAuthRepository _authRepository;
 
         public GetGoogleTokenInfoQueryHandler(
             IGoogleApiClient googleApiClient,
             ITenantProviderSettingsRepository providerSettingsRepository,
             IAuthRepository authRepository)
         {
-            this.googleApiClient = googleApiClient;
-            this.providerSettingsRepository = providerSettingsRepository;
-            this.authRepository = authRepository;
+            _googleApiClient = googleApiClient;
+            _providerSettingsRepository = providerSettingsRepository;
+            _authRepository = authRepository;
         }
 
         public async Task<GetGoogleTokenInfoQueryResult> Handle(GetGoogleTokenInfoQuery request,
             CancellationToken cancellationToken)
         {
-            var tokenInfo = await googleApiClient.GetTokenInfoAsync(request.Token);
-            var providerSettings = await providerSettingsRepository
+            var tokenInfo = await _googleApiClient.GetTokenInfoAsync(request.Token);
+            var providerSettings = await _providerSettingsRepository
                 .GetProviderSettings(request.Tenant.TenantId, AuthProviderType.Google);
 
             if (providerSettings == null)
@@ -41,12 +41,12 @@ namespace IdentityIssuer.Application.Auth.Queries.GetGoogleTokenInfo
                     new {providerType = AuthProviderType.Google, tenantCode = request.Tenant.TenantCode});
 
             var isEmailRegistered = false;
-            var googleUserExists = await authRepository
+            var googleUserExists = await _authRepository
                 .GoogleUserExists(tokenInfo.ExternalUserId, request.Tenant.TenantId);
             if (googleUserExists)
                 isEmailRegistered = true;
             else
-                isEmailRegistered = await authRepository
+                isEmailRegistered = await _authRepository
                     .IsEmailRegisteredForTenant(tokenInfo.Email, request.Tenant.TenantId);
 
             return new GetGoogleTokenInfoQueryResult

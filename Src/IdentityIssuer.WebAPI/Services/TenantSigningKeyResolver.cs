@@ -19,18 +19,18 @@ namespace IdentityIssuer.WebAPI.Services
 
     public class TenantSigningKeyResolver : ITenantSigningKeyResolver
     {
-        private readonly ITenantProvider tenantProvider;
-        private readonly IHttpContextAccessor httpContextAccessor;
-        private readonly IContextDataProvider contextDataProvider;
+        private readonly ITenantProvider _tenantProvider;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IContextDataProvider _contextDataProvider;
 
         public TenantSigningKeyResolver(
             ITenantProvider tenantProvider,
             IHttpContextAccessor httpContextAccessor,
             IContextDataProvider contextDataProvider)
         {
-            this.tenantProvider = tenantProvider;
-            this.httpContextAccessor = httpContextAccessor;
-            this.contextDataProvider = contextDataProvider;
+            _tenantProvider = tenantProvider;
+            _httpContextAccessor = httpContextAccessor;
+            _contextDataProvider = contextDataProvider;
         }
 
         public IEnumerable<SecurityKey> ResolveSecurityKey(
@@ -39,13 +39,13 @@ namespace IdentityIssuer.WebAPI.Services
             string kid,
             TokenValidationParameters validationParameters)
         {
-            var currentTenant = contextDataProvider.GetTenant(httpContextAccessor.HttpContext).Result;
+            var currentTenant = _contextDataProvider.GetTenant(_httpContextAccessor.HttpContext).Result;
             if (currentTenant == null)
                 throw new UnauthorizedAccessException(ExceptionCode.MissingTenantContextData.ToString());
             if (currentTenant.TenantCode != kid)
                 throw new UnauthorizedAccessException(ExceptionCode.KidMissmatch.ToString());
 
-            var tenantSettings = tenantProvider.GetTenantSettings(currentTenant.TenantCode);
+            var tenantSettings = _tenantProvider.GetTenantSettings(currentTenant.TenantCode);
             if (string.IsNullOrEmpty(tenantSettings?.TokenSecret))
                 throw new UnauthorizedAccessException(ExceptionCode.MissingTenantTokenSecret.ToString());
 

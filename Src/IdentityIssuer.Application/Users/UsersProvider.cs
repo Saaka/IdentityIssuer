@@ -17,25 +17,25 @@ namespace IdentityIssuer.Application.Users
 
     public class UsersProvider : IUsersProvider
     {
-        private readonly IUserRepository userRepository;
-        private readonly ICacheStore cache;
+        private readonly IUserRepository _userRepository;
+        private readonly ICacheStore _cache;
 
         public UsersProvider(IUserRepository userRepository,
             ICacheStore cache)
         {
-            this.userRepository = userRepository;
-            this.cache = cache;
+            _userRepository = userRepository;
+            _cache = cache;
         }
 
         public async Task<TenantUser> GetUser(int id, int tenantId)
         {
-            var result = await cache.GetOrCreateAsync($"{CacheConstants.UserCachePrefix}{id}_{tenantId}",
+            var result = await _cache.GetOrCreateAsync($"{CacheConstants.UserCachePrefix}{id}_{tenantId}",
                 async (ce) =>
                 {
                     ce.SlidingExpiration = TimeSpan.FromMinutes(5);
                     ce.AbsoluteExpiration = DateTime.Now.AddHours(1);
 
-                    var user = await userRepository.GetUser(id, tenantId);
+                    var user = await _userRepository.GetUser(id, tenantId);
 
                     return user;
                 });
@@ -44,13 +44,13 @@ namespace IdentityIssuer.Application.Users
 
         public async Task<int> GetUserId(string guid)
         {
-            var result = await cache.GetOrCreateAsync($"{CacheConstants.UserIdCachePrefix}{guid}",
+            var result = await _cache.GetOrCreateAsync($"{CacheConstants.UserIdCachePrefix}{guid}",
                 async (ce) =>
                 {
                     ce.SlidingExpiration = TimeSpan.FromMinutes(5);
                     ce.AbsoluteExpiration = DateTime.Now.AddHours(1);
 
-                    var user = await userRepository.GetUserId(guid);
+                    var user = await _userRepository.GetUserId(guid);
                     if (user == 0)
                         throw new DomainException(ExceptionCode.UserNotFound, 
                             new { userGuid = guid });

@@ -12,30 +12,30 @@ namespace IdentityIssuer.Persistence.Repositories
 {
     public class UsersRepository : IUserRepository
     {
-        private readonly AppIdentityContext context;
-        private readonly IMapper mapper;
+        private readonly AppIdentityContext _context;
+        private readonly IMapper _mapper;
 
         public UsersRepository(AppIdentityContext context,
             IMapper mapper)
         {
-            this.context = context;
-            this.mapper = mapper;
+            _context = context;
+            _mapper = mapper;
         }
 
         public async Task<TenantUser> GetUser(int userId, int tenantId)
         {
-            var query = from u in context.Users
+            var query = from u in _context.Users
                 where u.Id == userId && u.TenantId == tenantId
                 select u;
 
             var result = await query.FirstOrDefaultAsync();
 
-            return mapper.Map<TenantUser>(result);
+            return _mapper.Map<TenantUser>(result);
         }
 
         public async Task<int> GetUserId(string guid)
         {
-            var query = from u in context.Users
+            var query = from u in _context.Users
                 where u.UserGuid == guid
                 select u.Id;
 
@@ -49,14 +49,14 @@ namespace IdentityIssuer.Persistence.Repositories
             var user = await GetUser(userGuid);
 
             user.DisplayName = name;
-            await  context.SaveChangesAsync();
+            await  _context.SaveChangesAsync();
 
-            return mapper.Map<TenantUser>(user);
+            return _mapper.Map<TenantUser>(user);
         }
 
         private async Task<TenantUserEntity> GetUser(string guid)
         {
-            var query = from u in context.Users
+            var query = from u in _context.Users
                 where u.UserGuid == guid
                 select u;
 

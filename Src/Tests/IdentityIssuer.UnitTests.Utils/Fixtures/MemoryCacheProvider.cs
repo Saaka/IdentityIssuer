@@ -10,21 +10,21 @@ namespace IdentityIssuer.UnitTests.Utils.Fixtures
     public class MemoryCacheProvider : IDisposable
     {
         public IMemoryCache MemoryCache { get; }
-        private readonly ServiceProvider serviceProvider;
+        private readonly ServiceProvider _serviceProvider;
 
         public MemoryCacheProvider()
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddMemoryCache();
             
-            serviceProvider = serviceCollection.BuildServiceProvider();
+            _serviceProvider = serviceCollection.BuildServiceProvider();
 
-            MemoryCache = serviceProvider.GetService<IMemoryCache>();
+            MemoryCache = _serviceProvider.GetService<IMemoryCache>();
         }
         
         public void Dispose()
         {
-            serviceProvider?.Dispose();
+            _serviceProvider?.Dispose();
         }
     }
 }

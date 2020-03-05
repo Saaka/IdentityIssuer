@@ -13,11 +13,11 @@ namespace IdentityIssuer.Infrastructure.Security
 {
     public class JwtTokenFactory : IJwtTokenFactory
     {
-        private readonly ITokenConfiguration tokenConfiguration;
+        private readonly ITokenConfiguration _tokenConfiguration;
 
         public JwtTokenFactory(ITokenConfiguration tokenConfiguration)
         {
-            this.tokenConfiguration = tokenConfiguration;
+            _tokenConfiguration = tokenConfiguration;
         }
 
         public string Create(TenantUser user, TenantSettings settings, string tenantCode)
@@ -38,7 +38,7 @@ namespace IdentityIssuer.Infrastructure.Security
                 SigningCredentials =
                     new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 Expires = DateTime.Now.AddMinutes(settings.TokenExpirationInMinutes),
-                Issuer = tokenConfiguration.Issuer,
+                Issuer = _tokenConfiguration.Issuer,
             };
             var jwt = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
             jwt.Header.Add(JwtHeaderParameterNames.Kid, tenantCode);

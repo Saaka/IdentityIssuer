@@ -9,22 +9,22 @@ namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
 {
     public class RegisterUserWithCredentialsCommandHandler : AsyncRequestHandler<RegisterUserWithCredentialsCommand>
     {
-        private readonly IAuthRepository authRepository;
-        private readonly IProfileImageUrlProvider profileImageUrlProvider;
+        private readonly IAuthRepository _authRepository;
+        private readonly IProfileImageUrlProvider _profileImageUrlProvider;
 
         public RegisterUserWithCredentialsCommandHandler(
             IAuthRepository authRepository,
             IProfileImageUrlProvider profileImageUrlProvider)
         {
-            this.authRepository = authRepository;
-            this.profileImageUrlProvider = profileImageUrlProvider;
+            _authRepository = authRepository;
+            _profileImageUrlProvider = profileImageUrlProvider;
         }
 
         protected override async Task Handle(RegisterUserWithCredentialsCommand request,
             CancellationToken cancellationToken)
         {
-            var imageUrl = profileImageUrlProvider.GetImageUrl(request.Email);
-            await authRepository.CreateUser(new CreateUserDto
+            var imageUrl = _profileImageUrlProvider.GetImageUrl(request.Email);
+            await _authRepository.CreateUser(new CreateUserDto
             {
                 Email = request.Email,
                 Password = request.Password,

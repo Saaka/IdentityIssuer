@@ -7,11 +7,11 @@ namespace IdentityIssuer.WebAPI.Pipeline
 {
     public class TenantActionFilter : IAsyncActionFilter
     {
-        private readonly IContextDataProvider contextDataProvider;
+        private readonly IContextDataProvider _contextDataProvider;
 
         public TenantActionFilter(IContextDataProvider contextDataProvider)
         {
-            this.contextDataProvider = contextDataProvider;
+            _contextDataProvider = contextDataProvider;
         }
         
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -20,7 +20,7 @@ namespace IdentityIssuer.WebAPI.Pipeline
             {
                 if (!(argument is ITenantRequest request)) continue;
                 
-                var tenant = await contextDataProvider.GetTenant(context.HttpContext);
+                var tenant = await _contextDataProvider.GetTenant(context.HttpContext);
                 request.TenantId = tenant.TenantId;
             }
             

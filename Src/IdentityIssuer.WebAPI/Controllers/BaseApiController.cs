@@ -11,16 +11,15 @@ namespace IdentityIssuer.WebAPI.Controllers
     [ApiController]
     public abstract class BaseApiController : ControllerBase
     {
-        private IMediator mediator;
-        private IGuid guid;
-        private IContextDataProvider contextDataProvider;
+        private IMediator _mediator;
+        private IGuid _guid;
+        private IContextDataProvider _contextDataProvider;
 
-        protected IMediator Mediator => mediator ?? (mediator = HttpContext.RequestServices.GetService<IMediator>());
-        protected IGuid GuidProvider => guid ?? (guid = HttpContext.RequestServices.GetService<IGuid>());
+        protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
+        protected IGuid GuidProvider => _guid ??= HttpContext.RequestServices.GetService<IGuid>();
 
         protected IContextDataProvider ContextDataProvider =>
-            contextDataProvider ??
-            (contextDataProvider = HttpContext.RequestServices.GetService<IContextDataProvider>());
+            _contextDataProvider ??= HttpContext.RequestServices.GetService<IContextDataProvider>();
 
         protected async Task<TenantContextData> GetTenant()
         {

@@ -8,11 +8,11 @@ namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
 {
     public class RegisterUserWithCredentialsCommandValidator : AbstractValidator<RegisterUserWithCredentialsCommand>
     {
-        private readonly IAuthRepository authRepository;
+        private readonly IAuthRepository _authRepository;
 
         public RegisterUserWithCredentialsCommandValidator(IAuthRepository authRepository)
         {
-            this.authRepository = authRepository;
+            _authRepository = authRepository;
             
             RuleFor(x => x.DisplayName)
                 .Length(UserConstants.MinDisplayNameLength, UserConstants.MaxDisplayNameLength)
@@ -35,7 +35,7 @@ namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
         private async Task<bool> HaveUniqueEmailForTenant(RegisterUserWithCredentialsCommand command,
             CancellationToken cancellationToken)
         {
-            return !(await authRepository.IsEmailRegisteredForTenant(command.Email, command.Tenant.TenantId));
+            return !(await _authRepository.IsEmailRegisteredForTenant(command.Email, command.Tenant.TenantId));
         }
     }
 }

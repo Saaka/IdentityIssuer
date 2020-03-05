@@ -5,17 +5,17 @@ namespace IdentityIssuer.WebAPI.Configurations
 {
     public class ProvidersSettings : IGoogleConfiguration, IFacebookConfiguration
     {
-        private readonly IConfiguration configuration;
+        private readonly IConfiguration _configuration;
 
         public ProvidersSettings(IConfiguration configuration)
         {
-            this.configuration = configuration;
+            _configuration = configuration;
         }
 
         public string GoogleValidationEndpoint => 
-            configuration[ConfigurationProperties.GoogleValidationEndpointProperty];
+            _configuration[ConfigurationProperties.GoogleValidationEndpointProperty];
 
         public string FacebookValidationEndpoint =>
-            configuration[ConfigurationProperties.FacebookValidationEndpointProperty];
+            _configuration[ConfigurationProperties.FacebookValidationEndpointProperty];
     }
 }
