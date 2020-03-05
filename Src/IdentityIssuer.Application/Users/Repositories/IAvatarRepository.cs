@@ -6,8 +6,7 @@ namespace IdentityIssuer.Application.Users.Repositories
 {
     public interface IAvatarRepository
     {
-        Task AddAvatar(int userId, AvatarType type, string imageUrl);
-        Task UpdateAvatar(int userId, AvatarType type, string imageUrl);
+        Task StoreAvatar(int userId, AvatarType type, string imageUrl);
         Task<TenantUserAvatar> GetAvatar(int userId, AvatarType type);
     }
 }

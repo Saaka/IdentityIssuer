@@ -17,18 +17,7 @@ namespace IdentityIssuer.Persistence.Repositories
             _context = context;
         }
 
-        public async Task AddAvatar(int userId, AvatarType type, string imageUrl)
-        {
-            _context.UserAvatars.Add(new TenantUserAvatarEntity
-            {
-                TenantUserId = userId,
-                AvatarType = type,
-                Url = imageUrl,
-            });
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdateAvatar(int userId, AvatarType type, string imageUrl)
+        public async Task StoreAvatar(int userId, AvatarType type, string imageUrl)
         {
             var avatar = await GetAvatarEntity(userId, type);
             if (avatar == null)
@@ -38,6 +27,17 @@ namespace IdentityIssuer.Persistence.Repositories
             }
 
             avatar.Url = imageUrl;
+            await _context.SaveChangesAsync();
+        }
+
+        private async Task AddAvatar(int userId, AvatarType type, string imageUrl)
+        {
+            _context.UserAvatars.Add(new TenantUserAvatarEntity
+            {
+                TenantUserId = userId,
+                AvatarType = type,
+                Url = imageUrl,
+            });
             await _context.SaveChangesAsync();
         }
 
