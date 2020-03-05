@@ -57,23 +57,20 @@ namespace IdentityIssuer.Persistence.Repositories
             return await query.AnyAsync();
         }
 
-        public async Task<TenantUser> AddGoogleLoginToUser(
-            int tenantId, string email, string externalUserId, string imageUrl)
+        public async Task<TenantUser> AddGoogleLoginToUser(int tenantId, string email, string externalUserId)
         {
             var user = await GetUserForTenant(email, tenantId);
 
             user.GoogleId = externalUserId;
-            user.ImageUrl = imageUrl;
 
             return await UpdateUser(user, nameof(AddGoogleLoginToUser));
         }
 
-        public async Task<TenantUser> AddFacebookLoginToUser(int tenantId, string email, string externalUserId, string imageUrl)
+        public async Task<TenantUser> AddFacebookLoginToUser(int tenantId, string email, string externalUserId)
         {
             var user = await GetUserForTenant(email, tenantId);
 
             user.FacebookId = externalUserId;
-            user.ImageUrl = imageUrl;
 
             return await UpdateUser(user, nameof(AddFacebookLoginToUser));
         }
@@ -168,6 +165,12 @@ namespace IdentityIssuer.Persistence.Repositories
                 return _mapper.Map<TenantUser>(user);
 
             return null;
+        }
+
+        public async Task<TenantUser> GetUserByEmail(string email, int tenantId)
+        {
+            var user = await GetUserForTenant(email, tenantId);
+            return _mapper.Map<TenantUser>(user);
         }
 
         private async Task<TenantUserEntity> GetUserForTenant(string email, int tenantId)

@@ -7,6 +7,7 @@ using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Application.Users.Models;
+using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
 using MediatR;
@@ -21,6 +22,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
         private readonly ITenantsRepository _tenantsRepository;
         private readonly IAuthRepository _authRepository;
         private readonly IJwtTokenFactory _jwtTokenFactory;
+        private readonly IAvatarRepository _avatarRepository;
         private readonly IGuid _guid;
         private readonly IMapper _mapper;
 
@@ -30,6 +32,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
             ITenantsRepository tenantsRepository,
             IAuthRepository authRepository,
             IJwtTokenFactory jwtTokenFactory,
+            IAvatarRepository avatarRepository,
             IGuid guid,
             IMapper mapper)
         {
@@ -38,6 +41,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
             _tenantsRepository = tenantsRepository;
             _authRepository = authRepository;
             _jwtTokenFactory = jwtTokenFactory;
+            _avatarRepository = avatarRepository;
             _guid = guid;
             _mapper = mapper;
         }
@@ -70,6 +74,8 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
             userData.AvatarType = AvatarType.Facebook;
             
             var user = await _authRepository.CreateFacebookUser(userData);
+            await _avatarRepository
+                .StoreAvatar(user.Id, AvatarType.Facebook, tokenInfo.ImageUrl);
             return await AuthUserResult(requestTenant, user);
         }
 
@@ -77,8 +83,9 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
             TenantContextData requestTenant)
         {
             var user = await _authRepository
-                .AddFacebookLoginToUser(requestTenant.TenantId, tokenInfo.Email, tokenInfo.ExternalUserId,
-                    tokenInfo.ImageUrl);
+                .AddFacebookLoginToUser(requestTenant.TenantId, tokenInfo.Email, tokenInfo.ExternalUserId);
+            await _avatarRepository
+                .StoreAvatar(user.Id, AvatarType.Facebook, tokenInfo.ImageUrl);
 
             return await AuthUserResult(requestTenant, user);
         }
@@ -86,8 +93,10 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
         private async Task<AuthUserResult> UpdateExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
         {
             var user = await _authRepository
-                .UpdateExistingFacebookUser(requestTenant.TenantId, tokenInfo.Email, tokenInfo.ImageUrl);
-
+                .GetUserByEmail(tokenInfo.Email, requestTenant.TenantId);
+            await _avatarRepository
+                .StoreAvatar(user.Id, AvatarType.Facebook, tokenInfo.ImageUrl);
+            
             return await AuthUserResult(requestTenant, user);
         }
 

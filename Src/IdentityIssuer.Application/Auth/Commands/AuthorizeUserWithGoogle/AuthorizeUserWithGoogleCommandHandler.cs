@@ -7,6 +7,7 @@ using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Application.Users.Models;
+using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
 using MediatR;
@@ -20,6 +21,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
         private readonly ITenantProviderSettingsRepository _providerSettingsRepository;
         private readonly ITenantsRepository _tenantsRepository;
         private readonly IAuthRepository _authRepository;
+        private readonly IAvatarRepository _avatarRepository;
         private readonly IJwtTokenFactory _jwtTokenFactory;
         private readonly IGuid _guid;
         private readonly IMapper _mapper;
@@ -29,6 +31,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
             ITenantProviderSettingsRepository providerSettingsRepository,
             ITenantsRepository tenantsRepository,
             IAuthRepository authRepository,
+            IAvatarRepository avatarRepository,
             IJwtTokenFactory jwtTokenFactory,
             IGuid guid,
             IMapper mapper)
@@ -37,6 +40,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
             _providerSettingsRepository = providerSettingsRepository;
             _tenantsRepository = tenantsRepository;
             _authRepository = authRepository;
+            _avatarRepository = avatarRepository;
             _jwtTokenFactory = jwtTokenFactory;
             _guid = guid;
             _mapper = mapper;
@@ -67,14 +71,17 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
             userData.AvatarType = AvatarType.Google;
 
             var user = await _authRepository.CreateGoogleUser(userData);
+            await _avatarRepository
+                .StoreAvatar(user.Id, AvatarType.Google, tokenInfo.ImageUrl);
             return await AuthUserResult(requestTenant, user);
         }
 
         private async Task<AuthUserResult> AddGoogleToExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
         {
             var user = await _authRepository
-                .AddGoogleLoginToUser(requestTenant.TenantId, tokenInfo.Email, tokenInfo.ExternalUserId,
-                    tokenInfo.ImageUrl);
+                .AddGoogleLoginToUser(requestTenant.TenantId, tokenInfo.Email, tokenInfo.ExternalUserId);
+            await _avatarRepository
+                .StoreAvatar(user.Id, AvatarType.Google, tokenInfo.ImageUrl);
 
             return await AuthUserResult(requestTenant, user);
         }
@@ -82,7 +89,9 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
         private async Task<AuthUserResult> UpdateExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
         {
             var user = await _authRepository
-                .UpdateExistingGoogleUser(requestTenant.TenantId, tokenInfo.Email, tokenInfo.ImageUrl);
+                .GetUserByEmail(tokenInfo.Email, requestTenant.TenantId);
+            await _avatarRepository
+                .StoreAvatar(user.Id, AvatarType.Google, tokenInfo.ImageUrl);
 
             return await AuthUserResult(requestTenant, user);
         }
