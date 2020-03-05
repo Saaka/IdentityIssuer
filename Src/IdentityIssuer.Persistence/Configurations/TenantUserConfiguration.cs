@@ -51,7 +51,8 @@ namespace IdentityIssuer.Persistence.Configurations
                 .IsRequired()
                 .HasConversion(
                     v => (byte) v,
-                    v => (AvatarType) v);
+                    v => (AvatarType) v)
+                .HasDefaultValue(AvatarType.Gravatar);
         }
     }
 }

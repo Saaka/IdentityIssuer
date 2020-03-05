@@ -1,3 +1,5 @@
+using IdentityIssuer.Common.Enums;
+
 namespace IdentityIssuer.Application.Auth.Models
 {
     public class CreateUserDto
@@ -9,5 +11,6 @@ namespace IdentityIssuer.Application.Auth.Models
         public string ImageUrl { get; set; }
         public string ExternalUserId { get; set; }
         public int TenantId { get; set; }
+        public AvatarType AvatarType { get; set; }
     }
 }

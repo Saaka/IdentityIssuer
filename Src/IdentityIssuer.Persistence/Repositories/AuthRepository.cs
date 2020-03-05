@@ -103,7 +103,8 @@ namespace IdentityIssuer.Persistence.Repositories
                 DisplayName = data.DisplayName,
                 UserGuid = data.UserGuid,
                 ImageUrl = data.ImageUrl,
-                TenantId = data.TenantId
+                TenantId = data.TenantId,
+                SelectedAvatarType = data.AvatarType
             };
 
             var result = await _userManager.CreateAsync(tenantUser, data.Password);

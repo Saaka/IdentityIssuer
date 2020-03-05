@@ -64,11 +64,12 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
         {
             var userGuid = _guid.GetNormalizedGuid();
 
-            var userProperties = _mapper.Map<CreateUserDto>(tokenInfo);
-            userProperties.UserGuid = userGuid;
-            userProperties.TenantId = requestTenant.TenantId;
-
-            var user = await _authRepository.CreateFacebookUser(userProperties);
+            var userData = _mapper.Map<CreateUserDto>(tokenInfo);
+            userData.UserGuid = userGuid;
+            userData.TenantId = requestTenant.TenantId;
+            userData.AvatarType = AvatarType.Facebook;
+            
+            var user = await _authRepository.CreateFacebookUser(userData);
             return await AuthUserResult(requestTenant, user);
         }
 

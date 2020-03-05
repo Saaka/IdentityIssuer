@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using IdentityIssuer.Application.Auth.Models;
 using IdentityIssuer.Application.Auth.Repositories;
 using IdentityIssuer.Application.Services;
+using IdentityIssuer.Common.Enums;
 using MediatR;
 
 namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
@@ -31,7 +32,8 @@ namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
                 DisplayName = request.DisplayName,
                 ImageUrl = imageUrl,
                 TenantId = request.Tenant.TenantId,
-                UserGuid = request.UserGuid
+                UserGuid = request.UserGuid,
+                AvatarType = AvatarType.Gravatar,
             });
         }
     }

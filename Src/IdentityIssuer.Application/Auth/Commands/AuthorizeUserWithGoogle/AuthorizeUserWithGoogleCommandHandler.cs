@@ -61,11 +61,12 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
         {
             var userGuid = _guid.GetNormalizedGuid();
 
-            var userProperties = _mapper.Map<CreateUserDto>(tokenInfo);
-            userProperties.UserGuid = userGuid;
-            userProperties.TenantId = requestTenant.TenantId;
+            var userData = _mapper.Map<CreateUserDto>(tokenInfo);
+            userData.UserGuid = userGuid;
+            userData.TenantId = requestTenant.TenantId;
+            userData.AvatarType = AvatarType.Google;
 
-            var user = await _authRepository.CreateGoogleUser(userProperties);
+            var user = await _authRepository.CreateGoogleUser(userData);
             return await AuthUserResult(requestTenant, user);
         }
 
