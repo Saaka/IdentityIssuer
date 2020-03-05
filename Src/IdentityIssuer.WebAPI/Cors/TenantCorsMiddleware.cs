@@ -9,12 +9,12 @@ namespace IdentityIssuer.WebAPI.Cors
 {
     public class TenantCorsMiddleware
     {
-        private readonly RequestDelegate _next;
+        private RequestDelegate Next { get; }
 
         public TenantCorsMiddleware(
             RequestDelegate next)
         {
-            _next = next ?? throw new ArgumentNullException(nameof(next));
+            Next = next ?? throw new ArgumentNullException(nameof(next));
         }
 
         public async Task Invoke(HttpContext context,
@@ -42,7 +42,7 @@ namespace IdentityIssuer.WebAPI.Cors
                 }
             }
 
-            await _next(context);
+            await Next(context);
         }
 
         private async Task<CorsPolicy> GetPolicy(HttpContext context, bool isPreflight, ICorsPolicyProvider policyProvider, IAllowedOriginsProvider allowedOriginsProvider)

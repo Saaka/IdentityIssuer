@@ -1,6 +1,4 @@
-using System;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Tenants;

@@ -24,7 +24,7 @@ namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
             CancellationToken cancellationToken)
         {
             var imageUrl = profileImageUrlProvider.GetImageUrl(request.Email);
-            var user = await authRepository.CreateUser(new CreateUserDto
+            await authRepository.CreateUser(new CreateUserDto
             {
                 Email = request.Email,
                 Password = request.Password,

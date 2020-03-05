@@ -1,4 +1,3 @@
-using System;
 using IdentityIssuer.Application.Models;
 
 namespace IdentityIssuer.Application.Auth.Commands

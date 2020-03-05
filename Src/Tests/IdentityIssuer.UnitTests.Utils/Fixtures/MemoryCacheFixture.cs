@@ -1,5 +1,4 @@
 using Autofac;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace IdentityIssuer.UnitTests.Utils.Fixtures
 {

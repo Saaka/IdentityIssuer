@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Autofac.Extras.Moq;
 using FluentAssertions;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.UnitTests.Utils.Fixtures;

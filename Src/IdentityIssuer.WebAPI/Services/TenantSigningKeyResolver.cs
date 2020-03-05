@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using IdentityIssuer.Application.Tenants;
-using IdentityIssuer.Common.Constants;
 using IdentityIssuer.Common.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;

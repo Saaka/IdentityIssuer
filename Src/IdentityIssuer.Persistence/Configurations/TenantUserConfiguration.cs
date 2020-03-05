@@ -37,7 +37,7 @@ namespace IdentityIssuer.Persistence.Configurations
 
             builder
                 .Property(e => e.DisplayName)
-                .IsRequired(true)
+                .IsRequired()
                 .HasMaxLength(128);
 
             builder

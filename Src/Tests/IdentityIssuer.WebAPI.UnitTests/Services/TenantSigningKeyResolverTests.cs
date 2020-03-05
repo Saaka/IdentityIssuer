@@ -3,7 +3,6 @@ using Autofac.Extras.Moq;
 using FluentAssertions;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Tenants;
-using IdentityIssuer.Common.Constants;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.WebAPI.Services;
 using Microsoft.AspNetCore.Http;
@@ -45,7 +44,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
                 .WithContextData(tenantCode: "TST");
             var sut = fixture.Configure();
 
-            var result = sut.Invoking(x => x.ResolveSecurityKey(
+            sut.Invoking(x => x.ResolveSecurityKey(
                     null,
                     null,
                     "ABC",
@@ -65,7 +64,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
                 .WithContextData(tenantCode: "TST");
             var sut = fixture.Configure();
 
-            var result = sut.Invoking(x => x.ResolveSecurityKey(
+            sut.Invoking(x => x.ResolveSecurityKey(
                     null,
                     null,
                     "TST",
@@ -88,7 +87,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
                 .WithContextData(tenantCode: "TST");
             var sut = fixture.Configure();
 
-            var result = sut.Invoking(x => x.ResolveSecurityKey(
+            sut.Invoking(x => x.ResolveSecurityKey(
                     null,
                     null,
                     "TST",
@@ -108,7 +107,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
                 .WithTenantSettings("123");
             var sut = fixture.Configure();
 
-            var result = sut.Invoking(x => x.ResolveSecurityKey(
+            sut.Invoking(x => x.ResolveSecurityKey(
                     null,
                     null,
                     "TST",

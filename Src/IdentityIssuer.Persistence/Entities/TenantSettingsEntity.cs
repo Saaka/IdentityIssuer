@@ -4,11 +4,6 @@ namespace IdentityIssuer.Persistence.Entities
 {
     public class TenantSettingsEntity
     {
-        public TenantSettingsEntity()
-        {
-            TenantProviders = new List<TenantProviderSettingsEntity>();
-        }
-        
         public int Id { get; set; }
         public int TenantId { get; set; }
         public string TokenSecret { get; set; }
@@ -18,6 +13,6 @@ namespace IdentityIssuer.Persistence.Entities
         public bool EnableFacebookLogin { get; set; }
 
         public virtual TenantEntity Tenant { get; set; }
-        public virtual ICollection<TenantProviderSettingsEntity> TenantProviders { get; set; }
+        public virtual ICollection<TenantProviderSettingsEntity> TenantProviders { get; set; } = new List<TenantProviderSettingsEntity>();
     }
 }

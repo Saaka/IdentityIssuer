@@ -7,8 +7,6 @@ namespace IdentityIssuer.Persistence
 {
     public class AppIdentityContextFactory : IDesignTimeDbContextFactory<AppIdentityContext>
     {
-        public AppIdentityContextFactory() { }
-
         public AppIdentityContext CreateDbContext(string[] args)
         {
             var environment = Environment.GetEnvironmentVariable(PersistenceConstants.AspNetCoreEnvironment);

@@ -37,11 +37,11 @@ namespace IdentityIssuer.Infrastructure.UnitTests.Images
 
         private class Fixture : AutoMockFixture
         {
-            private string _hash;
+            private string hash;
 
             public Fixture WithHash(string value)
             {
-                _hash = value;
+                hash = value;
                 return this;
             }
 
@@ -49,7 +49,7 @@ namespace IdentityIssuer.Infrastructure.UnitTests.Images
             {
                 AutoMockInstance.Mock<IHashGenerator>()
                     .Setup(x => x.Generate(It.IsAny<string>()))
-                    .Returns(_hash);
+                    .Returns(hash);
 
                 return AutoMockInstance.Create<GravatarProfileImageUrlProvider>();
             }
