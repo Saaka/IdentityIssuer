@@ -1,4 +1,5 @@
 ﻿using IdentityIssuer.Common.Constants;
+using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -44,6 +45,13 @@ namespace IdentityIssuer.Persistence.Configurations
                 .Property(e => e.ImageUrl)
                 .IsRequired(false)
                 .HasMaxLength(1024);
+            
+            builder
+                .Property(x => x.SelectedAvatarType)
+                .IsRequired()
+                .HasConversion(
+                    v => (byte) v,
+                    v => (AvatarType) v);
         }
     }
 }

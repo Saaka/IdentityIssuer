@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Collections.Generic;
+using IdentityIssuer.Common.Enums;
+using Microsoft.AspNetCore.Identity;
 
 namespace IdentityIssuer.Persistence.Entities
 {
@@ -10,7 +12,10 @@ namespace IdentityIssuer.Persistence.Entities
         public string GoogleId { get; set; }
         public string FacebookId { get; set; }
         public string ImageUrl { get; set; }
+        public AvatarType SelectedAvatarType { get; set; }
 
         public virtual TenantEntity Tenant { get; set; }
+
+        public virtual ICollection<TenantUserAvatarEntity> Avatars { get; set; } = new List<TenantUserAvatarEntity>();
     }
 }
