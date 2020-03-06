@@ -4,6 +4,7 @@ using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Constants;
 using IdentityIssuer.Persistence.Entities;
 using IdentityIssuer.Persistence.Repositories;
+using IdentityIssuer.Persistence.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,9 @@ namespace IdentityIssuer.Persistence
                 .AddTransient<ITenantProviderSettingsRepository, TenantProviderSettingsRepository>()
                 .AddTransient<IUserRepository, UsersRepository>()
                 .AddTransient<IAuthRepository, AuthRepository>()
-                .AddTransient<IAvatarRepository, AvatarRepository>();
+                .AddTransient<IAvatarRepository, AvatarRepository>()
+                
+                .AddTransient<IDbInitializer, DbInitializer>();
 
             return services;
         }
