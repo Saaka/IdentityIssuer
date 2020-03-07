@@ -6,6 +6,8 @@
 #Custom
 appsettings.*.json
 
+.config/
+
 # User-specific files
 *.suo
 *.user
