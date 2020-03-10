@@ -31,3 +31,7 @@ Run commands to build and run Web API in docker (from `Src` directory).
 Change `ASPNETCORE_ENVIRONMENT` value depending on your needs.
 
 `docker run -p 8080:80 -e ASPNETCORE_ENVIRONMENT=Development identityissuer`
+
+You can add environmental variable to override connection string from configuration files:
+
+`-e ASPNETCORE_ConnectionStrings_AppConnectionString="AppConnectionString": "Server=localhost,1433;Database=IdentityIssuer;Integrated Security=false;User id=sa;Password=admin;MultipleActiveResultSets=true" `
