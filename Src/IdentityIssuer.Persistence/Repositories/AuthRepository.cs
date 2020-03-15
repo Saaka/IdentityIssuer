@@ -96,7 +96,7 @@ namespace IdentityIssuer.Persistence.Repositories
             var tenantUser = new TenantUserEntity
             {
                 Email = data.Email,
-                UserName = data.UserGuid,
+                UserName = data.UserGuid.ToString(),
                 DisplayName = data.DisplayName,
                 UserGuid = data.UserGuid,
                 ImageUrl = data.ImageUrl,
@@ -116,7 +116,7 @@ namespace IdentityIssuer.Persistence.Repositories
             var tenantUser = new TenantUserEntity
             {
                 Email = data.Email,
-                UserName = data.UserGuid,
+                UserName = data.UserGuid.ToString(),
                 DisplayName = data.DisplayName,
                 UserGuid = data.UserGuid,
                 ImageUrl = data.ImageUrl,
@@ -136,7 +136,7 @@ namespace IdentityIssuer.Persistence.Repositories
             var tenantUser = new TenantUserEntity
             {
                 Email = data.Email,
-                UserName = data.UserGuid,
+                UserName = data.UserGuid.ToString(),
                 DisplayName = data.DisplayName,
                 UserGuid = data.UserGuid,
                 ImageUrl = data.ImageUrl,

@@ -1,3 +1,4 @@
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Models;
@@ -51,13 +52,13 @@ namespace IdentityIssuer.WebAPI.Services
             return tenant.Id;
         }
 
-        private string GetUserCodeFromContext(HttpContext context)
+        private Guid GetUserCodeFromContext(HttpContext context)
         {
             if (context.User?.Claims == null || !context.User.HasClaim(x => x.Type == ClaimTypes.NameIdentifier))
                 throw new DomainException(ExceptionCode.UserClaimMissing);
 
             var userCode = context.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
-            return userCode;
+            return new Guid(userCode);
         }
 
         private string GetTenantCodeFromContext(HttpContext context)

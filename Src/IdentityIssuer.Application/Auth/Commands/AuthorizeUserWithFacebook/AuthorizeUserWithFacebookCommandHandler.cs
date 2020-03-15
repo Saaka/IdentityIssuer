@@ -66,7 +66,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
 
         private async Task<AuthUserResult> CreateNewFacebookUser(TokenInfo tokenInfo, TenantContextData requestTenant)
         {
-            var userGuid = _guid.GetNormalizedGuid();
+            var userGuid = _guid.GetGuid();
 
             var userData = _mapper.Map<CreateUserDto>(tokenInfo);
             userData.UserGuid = userGuid;

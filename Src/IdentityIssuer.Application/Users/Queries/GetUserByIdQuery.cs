@@ -1,5 +1,6 @@
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Users.Models;
+using System;
 
 namespace IdentityIssuer.Application.Users.Queries
 {
@@ -7,7 +8,7 @@ namespace IdentityIssuer.Application.Users.Queries
     {
         public GetUserByIdQuery(
             int userId,
-            string userGuid,
+            Guid userGuid,
             TenantContextData tenant)
         {
             UserId = userId;
@@ -16,7 +17,7 @@ namespace IdentityIssuer.Application.Users.Queries
         }
 
         public int UserId { get; }
-        public string UserGuid { get; }
+        public Guid UserGuid { get; }
         public TenantContextData Tenant { get; }
     }
 }

@@ -1,4 +1,5 @@
 using IdentityIssuer.Application.Models;
+using System;
 
 namespace IdentityIssuer.Application.Users.Commands
 {
@@ -6,7 +7,7 @@ namespace IdentityIssuer.Application.Users.Commands
     {
         public UpdateUserDisplayNameCommand(
             string name,
-            string userGuid,
+            Guid userGuid,
             UserContextData tenant)
         {
             Name = name;
@@ -15,7 +16,7 @@ namespace IdentityIssuer.Application.Users.Commands
         }
 
         public string Name { get; }
-        public string UserGuid { get; }
+        public Guid UserGuid { get; }
         public UserContextData User { get; }
     }
 }

@@ -12,7 +12,7 @@ namespace IdentityIssuer.Application.Users
     public interface IUsersProvider
     {
         Task<TenantUser> GetUser(int id, int tenantId);
-        Task<int> GetUserId(string guid);
+        Task<int> GetUserId(Guid guid);
     }
 
     public class UsersProvider : IUsersProvider
@@ -42,7 +42,7 @@ namespace IdentityIssuer.Application.Users
             return result;
         }
 
-        public async Task<int> GetUserId(string guid)
+        public async Task<int> GetUserId(Guid guid)
         {
             var result = await _cache.GetOrCreateAsync($"{CacheConstants.UserIdCachePrefix}{guid}",
                 async (ce) =>

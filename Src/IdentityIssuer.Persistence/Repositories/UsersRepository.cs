@@ -7,6 +7,7 @@ using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
 using IdentityIssuer.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace IdentityIssuer.Persistence.Repositories
 {
@@ -33,7 +34,7 @@ namespace IdentityIssuer.Persistence.Repositories
             return _mapper.Map<TenantUser>(result);
         }
 
-        public async Task<int> GetUserId(string guid)
+        public async Task<int> GetUserId(Guid guid)
         {
             var query = from u in _context.Users
                 where u.UserGuid == guid
@@ -44,7 +45,7 @@ namespace IdentityIssuer.Persistence.Repositories
             return result;
         }
 
-        public async Task<TenantUser> UpdateUserDisplayName(string userGuid, string name)
+        public async Task<TenantUser> UpdateUserDisplayName(Guid userGuid, string name)
         {
             var user = await GetUser(userGuid);
 
@@ -54,7 +55,7 @@ namespace IdentityIssuer.Persistence.Repositories
             return _mapper.Map<TenantUser>(user);
         }
 
-        private async Task<TenantUserEntity> GetUser(string guid)
+        private async Task<TenantUserEntity> GetUser(Guid guid)
         {
             var query = from u in _context.Users
                 where u.UserGuid == guid

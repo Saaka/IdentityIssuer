@@ -14,7 +14,7 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterUserWithCredentialsRequest request)
         {
-            var guid = GuidProvider.GetNormalizedGuid();
+            var guid = GuidProvider.GetGuid();
             await Mediator.Send(new RegisterUserWithCredentialsCommand(
                 userGuid: guid,
                 email: request.Email,

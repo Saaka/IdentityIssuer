@@ -1,11 +1,12 @@
 using IdentityIssuer.Application.Models;
+using System;
 
 namespace IdentityIssuer.Application.Auth.Commands
 {
     public class RegisterUserWithCredentialsCommand : CommandBase
     {
         public RegisterUserWithCredentialsCommand(
-            string userGuid, 
+            Guid userGuid, 
             string email, 
             string displayName, 
             string password, 
@@ -18,7 +19,7 @@ namespace IdentityIssuer.Application.Auth.Commands
             Tenant = tenant;
         }
 
-        public string UserGuid { get;  }
+        public Guid UserGuid { get;  }
         public string Email { get;  }
         public string DisplayName { get;  }
         public string Password { get;  }

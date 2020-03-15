@@ -1,10 +1,12 @@
+using System;
+
 namespace IdentityIssuer.Application.Models
 {
     public class UserContextData
     {
         public UserContextData(
             int userId,
-            string userGuid,
+            Guid userGuid,
             TenantContextData tenant)
         {
             UserId = userId;
@@ -13,7 +15,7 @@ namespace IdentityIssuer.Application.Models
         }
 
         public int UserId { get; }
-        public string UserGuid { get; }
+        public Guid UserGuid { get; }
         public TenantContextData Tenant { get; }
     }
 }

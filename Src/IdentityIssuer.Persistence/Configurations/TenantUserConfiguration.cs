@@ -18,13 +18,12 @@ namespace IdentityIssuer.Persistence.Configurations
 
             builder
                 .HasIndex(x => x.UserGuid)
-                .HasName("IX_UserGuid")
+                .HasName("IX_Users_UserGuid")
                 .IsUnique();
 
             builder
                 .Property(x => x.UserGuid)
-                .IsRequired()
-                .HasMaxLength(ValidationConstants.GuidMaxLength);
+                .IsRequired();
 
             builder
                 .Property(e => e.GoogleId)
