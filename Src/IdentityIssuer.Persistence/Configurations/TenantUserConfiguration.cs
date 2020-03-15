@@ -19,6 +19,7 @@ namespace IdentityIssuer.Persistence.Configurations
             builder
                 .HasIndex(x => x.UserGuid)
                 .HasName("IX_Users_UserGuid")
+                .IncludeProperties(x=> x.Id)
                 .IsUnique();
 
             builder
