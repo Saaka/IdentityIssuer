@@ -16,6 +16,8 @@ namespace IdentityIssuer.WebAPI.Configurations
             _configuration[AdminTenantConfigurationProperties.Name];
         public string Code  => 
             _configuration[AdminTenantConfigurationProperties.Code];
+        public string UserDisplayName=> 
+            _configuration[AdminTenantConfigurationProperties.UserDisplayName];
         public string Email=> 
             _configuration[AdminTenantConfigurationProperties.Email];
         public string Password => 

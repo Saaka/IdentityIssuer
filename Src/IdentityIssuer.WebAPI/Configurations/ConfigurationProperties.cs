@@ -11,6 +11,7 @@ namespace IdentityIssuer.WebAPI.Configurations
     {
         public const string Name = "AdminTenant:Name";
         public const string Code = "AdminTenant:Code";
+        public const string UserDisplayName = "AdminTenant:UserDisplayName";
         public const string Email = "AdminTenant:Email";
         public const string Password = "AdminTenant:Password";
         public const string AllowedOrigin = "AdminTenant:AllowedOrigin";

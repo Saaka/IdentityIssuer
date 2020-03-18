@@ -39,14 +39,6 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
 
             var tenant = await _tenantsRepository
                 .CreateTenant(new CreateTenantDto(request.Name, request.Code, request.AllowedOrigin));
-
-            var createUserCommand = new RegisterUserWithCredentialsCommand(
-                userGuid: _guid.GetGuid(),
-                email: request.AdminEmail,
-                displayName: request.AdminEmail,
-                password: request.AdminPassword,
-                tenant: new TenantContextData(tenant.Id, tenant.Code));
-            await _mediator.Send(createUserCommand);
             
             return new CreateTenantResult(true, tenant);
         }
