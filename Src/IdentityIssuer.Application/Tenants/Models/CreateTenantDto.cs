@@ -1,4 +1,4 @@
-namespace IdentityIssuer.Application.Tenants.Commands.Models
+namespace IdentityIssuer.Application.Tenants.Models
 {
     public class CreateTenantDto
     {

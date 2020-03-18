@@ -1,6 +1,6 @@
 using IdentityIssuer.Application.Models;
 
-namespace IdentityIssuer.Application.Tenants.Commands.Models
+namespace IdentityIssuer.Application.Tenants.Models
 {
     public class CreateTenantResult : CommandResult
     {

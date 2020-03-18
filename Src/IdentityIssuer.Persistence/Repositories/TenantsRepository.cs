@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using IdentityIssuer.Application.Models;
-using IdentityIssuer.Application.Tenants.Commands.Models;
+using IdentityIssuer.Application.Tenants.Models;
 using IdentityIssuer.Persistence.Entities;
 
 namespace IdentityIssuer.Persistence.Repositories

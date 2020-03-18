@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using IdentityIssuer.Application.Auth.Commands;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Services;
-using IdentityIssuer.Application.Tenants.Commands.Models;
+using IdentityIssuer.Application.Tenants.Models;
 using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Enums;

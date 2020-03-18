@@ -1,4 +1,4 @@
-using IdentityIssuer.Application.Tenants.Commands.Models;
+using IdentityIssuer.Application.Tenants.Models;
 
 namespace IdentityIssuer.Application.Tenants.Commands
 {
