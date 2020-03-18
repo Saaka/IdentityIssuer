@@ -27,4 +27,14 @@ namespace IdentityIssuer.Application
 
         public Guid CommandUuid { get; }
     }
+
+    public class CommandResult
+    {
+        public CommandResult(bool isSuccessful = true)
+        {
+            IsSuccessful = isSuccessful;
+        }
+
+        public bool IsSuccessful { get; }
+    }
 }

@@ -45,6 +45,10 @@ namespace IdentityIssuer.Common.Enums
         /// <summary>
         /// Given provider security token is not valid for tenant.
         /// </summary>
-        InvalidProviderToken
+        InvalidProviderToken = 11,
+        /// <summary>
+        /// Tenant with given code already exists
+        /// </summary>
+        TenantAlreadyExistsForCode = 12
     }
 }

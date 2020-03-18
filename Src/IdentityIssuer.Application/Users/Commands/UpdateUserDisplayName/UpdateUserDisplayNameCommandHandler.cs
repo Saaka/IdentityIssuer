@@ -17,6 +17,7 @@ namespace IdentityIssuer.Application.Users.Commands.UpdateUserDisplayName
         protected override async Task Handle(UpdateUserDisplayNameCommand request, CancellationToken cancellationToken)
         {
             await _userRepository.UpdateUserDisplayName(request.UserGuid, request.Name);
+            
         }
     }
 }

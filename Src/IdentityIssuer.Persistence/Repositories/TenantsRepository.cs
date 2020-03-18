@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using IdentityIssuer.Application.Models;
+using IdentityIssuer.Application.Tenants.Commands.Models;
+using IdentityIssuer.Persistence.Entities;
 
 namespace IdentityIssuer.Persistence.Repositories
 {
@@ -72,6 +74,25 @@ namespace IdentityIssuer.Persistence.Repositories
             var result = await query.FirstOrDefaultAsync();
 
             return _mapper.Map<TenantSettings>(result);
+        }
+
+        public Task<bool> TenantCodeExists(string code)
+        {
+            return _context.Tenants.AnyAsync(x => x.Code == code);
+        }
+
+        public async Task<Tenant> CreateTenant(CreateTenantDto model)
+        {
+            var tenantEntity = new TenantEntity
+            {
+                Code = model.Code,
+                Name = model.Name,
+                AllowedOrigin = model.AllowedOrigin
+            };
+            _context.Tenants.Add(tenantEntity);
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<Tenant>(tenantEntity);
         }
     }
 }

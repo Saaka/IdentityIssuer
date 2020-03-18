@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Models;
+using IdentityIssuer.Application.Tenants.Commands.Models;
 
 namespace IdentityIssuer.Application.Tenants.Repositories
 {
@@ -11,5 +12,7 @@ namespace IdentityIssuer.Application.Tenants.Repositories
         Task<TenantSettings> GetTenantSettingsAsync(string code);
         TenantSettings GetTenantSettings(string code);
         Task<TenantSettings> GetTenantSettings(int tenantId);
+        Task<bool> TenantCodeExists(string code);
+        Task<Tenant> CreateTenant(CreateTenantDto model);
     }
 }

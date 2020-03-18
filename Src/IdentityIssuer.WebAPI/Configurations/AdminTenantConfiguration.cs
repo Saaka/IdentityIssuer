@@ -12,6 +12,8 @@ namespace IdentityIssuer.WebAPI.Configurations
             _configuration = configuration;
         }
 
+        public string Name   => 
+            _configuration[AdminTenantConfigurationProperties.Name];
         public string Code  => 
             _configuration[AdminTenantConfigurationProperties.Code];
         public string Email=> 
