@@ -9,7 +9,7 @@ using MediatR;
 
 namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
 {
-    public class RegisterUserWithCredentialsCommandHandler : AsyncRequestHandler<RegisterUserWithCredentialsCommand>
+    public class RegisterUserWithCredentialsCommandHandler : IRequestHandler<RegisterUserWithCredentialsCommand, RegisterUserWithCredentialsResult>
     {
         private readonly IAuthRepository _authRepository;
         private readonly IAvatarRepository _avatarRepository;
@@ -25,7 +25,7 @@ namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
             _profileImageUrlProvider = profileImageUrlProvider;
         }
 
-        protected override async Task Handle(RegisterUserWithCredentialsCommand request,
+        public async Task<RegisterUserWithCredentialsResult> Handle(RegisterUserWithCredentialsCommand request,
             CancellationToken cancellationToken)
         {
             var imageUrl = _profileImageUrlProvider.GetImageUrl(request.Email);
@@ -41,6 +41,8 @@ namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
             });
             await _avatarRepository
                 .StoreAvatar(user.Id, AvatarType.Gravatar, imageUrl);
+            
+            return new RegisterUserWithCredentialsResult(true, user);
         }
     }
 }
