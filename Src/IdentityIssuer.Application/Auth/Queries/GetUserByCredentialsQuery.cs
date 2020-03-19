@@ -1,9 +1,10 @@
 using IdentityIssuer.Application.Auth.Models;
 using IdentityIssuer.Application.Models;
+using IdentityIssuer.Application.Requests;
 
 namespace IdentityIssuer.Application.Auth.Queries
 {
-    public class GetUserByCredentialsQuery : QueryBase<AuthUserResult>
+    public class GetUserByCredentialsQuery : Request<AuthUserResult>
     {
         public GetUserByCredentialsQuery(
             string email, 

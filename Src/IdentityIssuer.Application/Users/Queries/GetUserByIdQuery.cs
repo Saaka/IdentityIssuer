@@ -1,10 +1,11 @@
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Users.Models;
 using System;
+using IdentityIssuer.Application.Requests;
 
 namespace IdentityIssuer.Application.Users.Queries
 {
-    public class GetUserByIdQuery: QueryBase<UserDto>
+    public class GetUserByIdQuery: Request<UserDto>
     {
         public GetUserByIdQuery(
             int userId,
