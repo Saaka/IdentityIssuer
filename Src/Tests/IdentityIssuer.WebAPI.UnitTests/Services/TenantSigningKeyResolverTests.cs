@@ -54,7 +54,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
                 .And
                 .Message
                 .Should()
-                .Be(ExceptionCode.KidMissmatch.ToString());
+                .Be(ErrorCode.KidMissmatch.ToString());
         }
 
         [Fact]
@@ -74,7 +74,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
                 .And
                 .Message
                 .Should()
-                .Be(ExceptionCode.MissingTenantTokenSecret.ToString());
+                .Be(ErrorCode.MissingTenantTokenSecret.ToString());
         }
 
         [Theory]
@@ -97,7 +97,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
                 .And
                 .Message
                 .Should()
-                .Be(ExceptionCode.MissingTenantTokenSecret.ToString());
+                .Be(ErrorCode.MissingTenantTokenSecret.ToString());
         }
 
         [Fact]
@@ -117,7 +117,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
                 .And
                 .Message
                 .Should()
-                .Be(ExceptionCode.MissingTenantContextData.ToString());
+                .Be(ErrorCode.MissingTenantContextData.ToString());
         }
 
         private class Fixture

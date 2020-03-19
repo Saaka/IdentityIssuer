@@ -35,7 +35,7 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
         public async Task<CreateTenantResult> Handle(CreateTenantCommand request, CancellationToken cancellationToken)
         {
             if (await _tenantsRepository.TenantCodeExists(request.Code))
-                throw new DomainException(ExceptionCode.TenantAlreadyExistsForCode, new {Code = request.Code});
+                throw new DomainException(ErrorCode.TenantAlreadyExistsForCode, new {Code = request.Code});
 
             var tenant = await _tenantsRepository
                 .CreateTenant(new CreateTenantDto(request.Name, request.Code, request.AllowedOrigin));

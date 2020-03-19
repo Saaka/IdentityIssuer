@@ -1,6 +1,6 @@
 namespace IdentityIssuer.Common.Enums
 {
-    public enum ExceptionCode
+    public enum ErrorCode
     {
         /// <summary>
         /// Facebook token is missing email permission.

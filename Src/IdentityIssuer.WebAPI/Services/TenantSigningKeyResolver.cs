@@ -41,13 +41,13 @@ namespace IdentityIssuer.WebAPI.Services
         {
             var currentTenant = _contextDataProvider.GetTenant(_httpContextAccessor.HttpContext).Result;
             if (currentTenant == null)
-                throw new UnauthorizedAccessException(ExceptionCode.MissingTenantContextData.ToString());
+                throw new UnauthorizedAccessException(ErrorCode.MissingTenantContextData.ToString());
             if (currentTenant.TenantCode != kid)
-                throw new UnauthorizedAccessException(ExceptionCode.KidMissmatch.ToString());
+                throw new UnauthorizedAccessException(ErrorCode.KidMissmatch.ToString());
 
             var tenantSettings = _tenantProvider.GetTenantSettings(currentTenant.TenantCode);
             if (string.IsNullOrEmpty(tenantSettings?.TokenSecret))
-                throw new UnauthorizedAccessException(ExceptionCode.MissingTenantTokenSecret.ToString());
+                throw new UnauthorizedAccessException(ErrorCode.MissingTenantTokenSecret.ToString());
 
             return new[]
             {

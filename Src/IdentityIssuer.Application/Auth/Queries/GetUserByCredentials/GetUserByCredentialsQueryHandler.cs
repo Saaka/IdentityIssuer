@@ -36,12 +36,12 @@ namespace IdentityIssuer.Application.Auth.Queries.GetUserByCredentials
             var user = await _authRepository.GetUserByCredentials(request.Email, request.Password,
                 request.Tenant.TenantId);
             if (user == null)
-                throw new DomainException(ExceptionCode.UserNotFound,
+                throw new DomainException(ErrorCode.UserNotFound,
                     new { email = request.Email, tenantCode = request.Tenant.TenantCode });
 
             var settings = await _tenantsRepository.GetTenantSettings(request.Tenant.TenantId);
             if (settings == null)
-                throw new DomainException(ExceptionCode.TenantSettingsNotFound, 
+                throw new DomainException(ErrorCode.TenantSettingsNotFound, 
                     new { tenantCode = request.Tenant.TenantCode });
 
             var token = _jwtTokenFactory.Create(user, settings, request.Tenant.TenantCode);

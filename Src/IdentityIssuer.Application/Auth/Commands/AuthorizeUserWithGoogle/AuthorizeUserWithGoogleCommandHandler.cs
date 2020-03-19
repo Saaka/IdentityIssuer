@@ -114,10 +114,10 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
                 .GetProviderSettings(tenant.TenantId, AuthProviderType.Google);
 
             if (providerSettings == null)
-                throw new DomainException(ExceptionCode.TenantProviderSettingsNotFound,
+                throw new DomainException(ErrorCode.TenantProviderSettingsNotFound,
                     new {tenantCode = tenant.TenantCode, providerType = AuthProviderType.Google});
             if (tokenInfo == null || tokenInfo.ClientId != providerSettings.Identifier)
-                throw new DomainException(ExceptionCode.InvalidProviderToken,
+                throw new DomainException(ErrorCode.InvalidProviderToken,
                     new {tenantCode = tenant.TenantCode, providerType = AuthProviderType.Google});
         }
     }

@@ -25,7 +25,7 @@ namespace IdentityIssuer.Application.Users.Queries.GetUserById
         {
             var user = await _usersProvider.GetUser(request.UserId, request.Tenant.TenantId);
             if (user == null)
-                throw new DomainException(ExceptionCode.UserNotFound, 
+                throw new DomainException(ErrorCode.UserNotFound, 
                     new { userGuid = request.UserGuid });
             
             return _mapper.Map<UserDto>(user);

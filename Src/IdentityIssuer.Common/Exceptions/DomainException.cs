@@ -5,14 +5,14 @@ namespace IdentityIssuer.Common.Exceptions
 {
     public class DomainException : ArgumentException
     {
-        public ExceptionCode ExceptionCode { get; }
-        public object ExceptionDetails { get; }
+        public ErrorCode ErrorCode { get; }
+        public object ErrorDetails { get; }
 
-        public DomainException(ExceptionCode code, object details = null)
+        public DomainException(ErrorCode code, object details = null)
             : base(code.ToString())
         {
-            ExceptionCode = code;
-            ExceptionDetails = details;
+            ErrorCode = code;
+            ErrorDetails = details;
         }
     }
 }

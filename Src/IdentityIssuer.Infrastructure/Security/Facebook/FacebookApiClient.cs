@@ -31,7 +31,7 @@ namespace IdentityIssuer.Infrastructure.Security.Facebook
 
             var verifyTokenResult = await VerifyToken(client, token, appAccessToken);
             if (!verifyTokenResult.Scopes.Contains("email"))
-                throw new DomainException(ExceptionCode.FacebookTokenEmailPermissionRequired);
+                throw new DomainException(ErrorCode.FacebookTokenEmailPermissionRequired);
             var userData = await GetUserData(client, token, verifyTokenResult.UserId);
 
             return new TokenInfo

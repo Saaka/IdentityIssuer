@@ -38,7 +38,7 @@ namespace IdentityIssuer.Application.Tenants
 
                     var tenant = await _tenantsRepository.GetTenantAsync(tenantCode);
                     if (tenant == null)
-                        throw new DomainException(ExceptionCode.TenantNotFound, new { tenantCode });
+                        throw new DomainException(ErrorCode.TenantNotFound, new { tenantCode });
 
                     return tenant;
                 });

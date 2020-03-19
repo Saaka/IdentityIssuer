@@ -63,7 +63,7 @@ namespace IdentityIssuer.Persistence.Repositories
 
             var user = await query.FirstOrDefaultAsync();
             if (user == null)
-                throw new DomainException(ExceptionCode.UserNotFound, 
+                throw new DomainException(ErrorCode.UserNotFound, 
                     new { userGuid = guid });
 
             return user;

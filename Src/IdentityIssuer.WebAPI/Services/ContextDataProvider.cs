@@ -55,7 +55,7 @@ namespace IdentityIssuer.WebAPI.Services
         private Guid GetUserCodeFromContext(HttpContext context)
         {
             if (context.User?.Claims == null || !context.User.HasClaim(x => x.Type == ClaimTypes.NameIdentifier))
-                throw new DomainException(ExceptionCode.UserClaimMissing);
+                throw new DomainException(ErrorCode.UserClaimMissing);
 
             var userCode = context.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
             return new Guid(userCode);
@@ -64,7 +64,7 @@ namespace IdentityIssuer.WebAPI.Services
         private string GetTenantCodeFromContext(HttpContext context)
         {
             if (!context.Request.Headers.ContainsKey(IdentityIssuerHeaders.TenantHeader))
-                throw new DomainException(ExceptionCode.TenantHeaderMissing);
+                throw new DomainException(ErrorCode.TenantHeaderMissing);
 
             return context.Request.Headers[IdentityIssuerHeaders.TenantHeader];
         }

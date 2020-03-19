@@ -117,7 +117,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
             var providerSettings = await _providerSettingsRepository
                 .GetProviderSettings(tenant.TenantId, AuthProviderType.Facebook);
             if (providerSettings == null)
-                throw new DomainException(ExceptionCode.TenantProviderSettingsNotFound,
+                throw new DomainException(ErrorCode.TenantProviderSettingsNotFound,
                     new {tenantCode = tenant.TenantCode, providerType = AuthProviderType.Facebook});
 
             return providerSettings;
@@ -127,7 +127,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
             TokenInfo tokenInfo, TenantContextData tenant, TenantProviderSettings providerSettings)
         {
             if (tokenInfo == null || providerSettings == null || tokenInfo.ClientId != providerSettings.Identifier)
-                throw new DomainException(ExceptionCode.InvalidProviderToken,
+                throw new DomainException(ErrorCode.InvalidProviderToken,
                     new {tenantCode = tenant.TenantCode, providerType = AuthProviderType.Google});
         }
     }

@@ -52,7 +52,7 @@ namespace IdentityIssuer.Application.Users
 
                     var user = await _userRepository.GetUserId(guid);
                     if (user == 0)
-                        throw new DomainException(ExceptionCode.UserNotFound, 
+                        throw new DomainException(ErrorCode.UserNotFound, 
                             new { userGuid = guid });
 
                     return user;
