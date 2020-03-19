@@ -4,7 +4,7 @@ using IdentityIssuer.Application.Requests;
 
 namespace IdentityIssuer.Application.Auth.Queries
 {
-    public class GetUserByCredentialsQuery : Request<AuthUserResult>
+    public class GetUserByCredentialsQuery : Request<AuthorizationData>
     {
         public GetUserByCredentialsQuery(
             string email, 

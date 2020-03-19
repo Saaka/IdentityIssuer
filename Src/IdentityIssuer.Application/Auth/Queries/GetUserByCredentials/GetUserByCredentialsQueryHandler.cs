@@ -11,7 +11,7 @@ using IdentityIssuer.Common.Enums;
 
 namespace IdentityIssuer.Application.Auth.Queries.GetUserByCredentials
 {
-    public class GetUserByCredentialsQueryHandler : RequestHandler<GetUserByCredentialsQuery, AuthUserResult>
+    public class GetUserByCredentialsQueryHandler : RequestHandler<GetUserByCredentialsQuery, AuthorizationData>
     {
         private readonly IAuthRepository _authRepository;
         private readonly IJwtTokenFactory _jwtTokenFactory;
@@ -30,24 +30,24 @@ namespace IdentityIssuer.Application.Auth.Queries.GetUserByCredentials
             _mapper = mapper;
         }
 
-        public override async Task<RequestResult<AuthUserResult>> Handle(GetUserByCredentialsQuery request,
+        public override async Task<RequestResult<AuthorizationData>> Handle(GetUserByCredentialsQuery request,
             CancellationToken cancellationToken)
         {
             var user = await _authRepository.GetUserByCredentials(request.Email, request.Password,
                 request.Tenant.TenantId);
             if (user == null)
-                return RequestResult<AuthUserResult>.Failure(ErrorCode.UserNotFound,
+                return RequestResult<AuthorizationData>.Failure(ErrorCode.UserNotFound,
                     new {email = request.Email, tenantCode = request.Tenant.TenantCode});
 
             var settings = await _tenantsRepository.GetTenantSettings(request.Tenant.TenantId);
             if (settings == null)
-                return RequestResult<AuthUserResult>.Failure(ErrorCode.TenantSettingsNotFound,
+                return RequestResult<AuthorizationData>.Failure(ErrorCode.TenantSettingsNotFound,
                     new {tenantCode = request.Tenant.TenantCode});
 
             var token = _jwtTokenFactory.Create(user, settings, request.Tenant.TenantCode);
             
-            return RequestResult<AuthUserResult>
-                .Success(new AuthUserResult
+            return RequestResult<AuthorizationData>
+                .Success(new AuthorizationData
                 {
                     Token = token,
                     User = _mapper.Map<UserDto>(user)

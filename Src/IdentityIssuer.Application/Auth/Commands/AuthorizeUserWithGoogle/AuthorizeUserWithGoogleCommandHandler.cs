@@ -15,7 +15,7 @@ using MediatR;
 namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
 {
     public class AuthorizeUserWithGoogleCommandHandler
-        : IRequestHandler<AuthorizeUserWithGoogleCommand, AuthUserResult>
+        : IRequestHandler<AuthorizeUserWithGoogleCommand, AuthorizationData>
     {
         private readonly IGoogleApiClient _googleApiClient;
         private readonly ITenantProviderSettingsRepository _providerSettingsRepository;
@@ -46,7 +46,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
             _mapper = mapper;
         }
 
-        public async Task<AuthUserResult> Handle(AuthorizeUserWithGoogleCommand request,
+        public async Task<AuthorizationData> Handle(AuthorizeUserWithGoogleCommand request,
             CancellationToken cancellationToken)
         {
             var tokenInfo = await _googleApiClient.GetTokenInfoAsync(request.Token);
@@ -61,7 +61,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
             return await CreateNewGoogleUser(tokenInfo, request.Tenant);
         }
 
-        private async Task<AuthUserResult> CreateNewGoogleUser(TokenInfo tokenInfo, TenantContextData requestTenant)
+        private async Task<AuthorizationData> CreateNewGoogleUser(TokenInfo tokenInfo, TenantContextData requestTenant)
         {
             var userGuid = _guid.GetGuid();
 
@@ -76,7 +76,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
             return await AuthUserResult(requestTenant, user);
         }
 
-        private async Task<AuthUserResult> AddGoogleToExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
+        private async Task<AuthorizationData> AddGoogleToExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
         {
             var user = await _authRepository
                 .AddGoogleLoginToUser(requestTenant.TenantId, tokenInfo.Email, tokenInfo.ExternalUserId);
@@ -86,7 +86,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
             return await AuthUserResult(requestTenant, user);
         }
 
-        private async Task<AuthUserResult> UpdateExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
+        private async Task<AuthorizationData> UpdateExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
         {
             var user = await _authRepository
                 .GetUserByEmail(tokenInfo.Email, requestTenant.TenantId);
@@ -96,12 +96,12 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
             return await AuthUserResult(requestTenant, user);
         }
 
-        private async Task<AuthUserResult> AuthUserResult(TenantContextData requestTenant, TenantUser user)
+        private async Task<AuthorizationData> AuthUserResult(TenantContextData requestTenant, TenantUser user)
         {
             var tenantSettings = await _tenantsRepository.GetTenantSettings(requestTenant.TenantId);
             var token = _jwtTokenFactory.Create(user, tenantSettings, requestTenant.TenantCode);
 
-            return new AuthUserResult
+            return new AuthorizationData
             {
                 Token = token,
                 User = _mapper.Map<UserDto>(user)

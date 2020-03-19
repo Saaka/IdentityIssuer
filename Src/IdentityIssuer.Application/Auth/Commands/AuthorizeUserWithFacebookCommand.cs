@@ -3,7 +3,7 @@ using IdentityIssuer.Application.Models;
 
 namespace IdentityIssuer.Application.Auth.Commands
 {
-    public class AuthorizeUserWithFacebookCommand : CommandBase<AuthUserResult>
+    public class AuthorizeUserWithFacebookCommand : CommandBase<AuthorizationData>
     {
         public AuthorizeUserWithFacebookCommand(
             string token, 

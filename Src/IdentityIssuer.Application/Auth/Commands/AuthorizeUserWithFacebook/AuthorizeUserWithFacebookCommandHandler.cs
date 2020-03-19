@@ -15,7 +15,7 @@ using MediatR;
 namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
 {
     public class AuthorizeUserWithFacebookCommandHandler
-        : IRequestHandler<AuthorizeUserWithFacebookCommand, AuthUserResult>
+        : IRequestHandler<AuthorizeUserWithFacebookCommand, AuthorizationData>
     {
         private readonly IFacebookApiClient _facebookApiClient;
         private readonly ITenantProviderSettingsRepository _providerSettingsRepository;
@@ -46,7 +46,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
             _mapper = mapper;
         }
 
-        public async Task<AuthUserResult> Handle(AuthorizeUserWithFacebookCommand request,
+        public async Task<AuthorizationData> Handle(AuthorizeUserWithFacebookCommand request,
             CancellationToken cancellationToken)
         {
             var providerSettings = await GetTenantProviderSettings(request.Tenant);
@@ -64,7 +64,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
             return await CreateNewFacebookUser(tokenInfo, request.Tenant);
         }
 
-        private async Task<AuthUserResult> CreateNewFacebookUser(TokenInfo tokenInfo, TenantContextData requestTenant)
+        private async Task<AuthorizationData> CreateNewFacebookUser(TokenInfo tokenInfo, TenantContextData requestTenant)
         {
             var userGuid = _guid.GetGuid();
 
@@ -79,7 +79,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
             return await AuthUserResult(requestTenant, user);
         }
 
-        private async Task<AuthUserResult> AddFacebookToExistingUser(TokenInfo tokenInfo,
+        private async Task<AuthorizationData> AddFacebookToExistingUser(TokenInfo tokenInfo,
             TenantContextData requestTenant)
         {
             var user = await _authRepository
@@ -90,7 +90,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
             return await AuthUserResult(requestTenant, user);
         }
 
-        private async Task<AuthUserResult> UpdateExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
+        private async Task<AuthorizationData> UpdateExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
         {
             var user = await _authRepository
                 .GetUserByEmail(tokenInfo.Email, requestTenant.TenantId);
@@ -100,12 +100,12 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
             return await AuthUserResult(requestTenant, user);
         }
 
-        private async Task<AuthUserResult> AuthUserResult(TenantContextData requestTenant, TenantUser user)
+        private async Task<AuthorizationData> AuthUserResult(TenantContextData requestTenant, TenantUser user)
         {
             var tenantSettings = await _tenantsRepository.GetTenantSettings(requestTenant.TenantId);
             var token = _jwtTokenFactory.Create(user, tenantSettings, requestTenant.TenantCode);
 
-            return new AuthUserResult
+            return new AuthorizationData
             {
                 Token = token,
                 User = _mapper.Map<UserDto>(user)

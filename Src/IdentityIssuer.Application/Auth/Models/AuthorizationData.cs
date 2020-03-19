@@ -2,7 +2,7 @@ using IdentityIssuer.Application.Users.Models;
 
 namespace IdentityIssuer.Application.Auth.Models
 {
-    public class AuthUserResult
+    public class AuthorizationData
     {
         public UserDto User { get; set; }
         public string Token { get; set; }

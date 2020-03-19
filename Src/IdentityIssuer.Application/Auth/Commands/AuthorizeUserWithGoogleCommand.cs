@@ -3,7 +3,7 @@ using IdentityIssuer.Application.Models;
 
 namespace IdentityIssuer.Application.Auth.Commands
 {
-    public class AuthorizeUserWithGoogleCommand : CommandBase<AuthUserResult>
+    public class AuthorizeUserWithGoogleCommand : CommandBase<AuthorizationData>
     {
         public AuthorizeUserWithGoogleCommand(
             string token, 
