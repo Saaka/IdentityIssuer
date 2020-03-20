@@ -3,7 +3,12 @@ using MediatR;
 
 namespace IdentityIssuer.Application.Requests
 {
-    public abstract class Request<TResult> : IRequest<RequestResult<TResult>>
+    public interface IRequestBase
+    {
+        Guid RequestGuid { get; }
+    }
+    
+    public abstract class Request<TResult> : IRequest<RequestResult<TResult>>, IRequestBase
     {
         public Guid RequestGuid { get; private set; }
 
@@ -19,8 +24,13 @@ namespace IdentityIssuer.Application.Requests
         }
     }
 
-    public abstract class Request : Request<RequestResult>
+    public abstract class Request : IRequest<RequestResult>, IRequestBase
     {
-        
+        public Guid RequestGuid { get; private set; }
+
+        protected Request()
+        {
+            RequestGuid = Guid.NewGuid();
+        }
     }
 }

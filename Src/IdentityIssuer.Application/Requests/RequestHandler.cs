@@ -5,7 +5,7 @@ using MediatR;
 namespace IdentityIssuer.Application.Requests
 {
     public abstract class RequestHandler<TRequest> : IRequestHandler<TRequest, RequestResult>
-        where TRequest : Request<RequestResult>
+        where TRequest : Request
     {
         public abstract Task<RequestResult> Handle(TRequest request, CancellationToken cancellationToken);
     }
