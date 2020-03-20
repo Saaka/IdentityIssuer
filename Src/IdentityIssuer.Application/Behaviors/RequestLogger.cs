@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 namespace IdentityIssuer.Application.Behaviors
 {
     public class RequestLogger<TRequest, TResponse> : MediatR.IPipelineBehavior<TRequest, TResponse>
-        where TRequest : Request<TResponse>
+//        where TRequest : Request // See: https://github.com/jbogard/MediatR/issues/305
     {
         private readonly ILogger _logger;
 
