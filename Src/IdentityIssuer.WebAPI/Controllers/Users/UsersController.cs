@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Users.Commands;
 using IdentityIssuer.WebAPI.Controllers.Users.Models;
@@ -11,12 +12,12 @@ namespace IdentityIssuer.WebAPI.Controllers.Users
     {
         [Authorize]
         [HttpPost("name")]
-        public async Task<IActionResult> UpdateUserDisplayName(UpdateUserDisplayNameModel model)
+        public async Task<ActionResult<Guid>> UpdateUserDisplayName(UpdateUserDisplayNameModel model)
         {
             var currentUser = await GetUser();
-            await Mediator.Send(new UpdateUserDisplayNameCommand(model.Name, model.UserGuid, currentUser));
-            
-            return Ok();
+            var result = await Mediator.Send(new UpdateUserDisplayNameCommand(model.Name, model.UserGuid, currentUser));
+
+            return GetResponse(result);
         }
     }
 }

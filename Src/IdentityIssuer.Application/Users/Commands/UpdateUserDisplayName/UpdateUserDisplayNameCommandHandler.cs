@@ -10,7 +10,8 @@ namespace IdentityIssuer.Application.Users.Commands.UpdateUserDisplayName
     {
         private readonly IUserRepository _userRepository;
 
-        public UpdateUserDisplayNameCommandHandler(IUserRepository userRepository)
+        public UpdateUserDisplayNameCommandHandler(
+            IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }

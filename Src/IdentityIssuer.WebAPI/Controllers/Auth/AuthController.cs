@@ -1,6 +1,9 @@
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Auth.Commands;
+using IdentityIssuer.Application.Auth.Models;
 using IdentityIssuer.Application.Auth.Queries;
+using IdentityIssuer.Application.Models;
+using IdentityIssuer.Application.Users.Models;
 using IdentityIssuer.Application.Users.Queries;
 using IdentityIssuer.WebAPI.Controllers.Auth.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -12,10 +15,10 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
     public class AuthController : BaseApiController
     {
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterUserWithCredentialsRequest request)
+        public async Task<ActionResult<UserDto>> Register(RegisterUserWithCredentialsRequest request)
         {
             var guid = GuidProvider.GetGuid();
-            await Mediator.Send(new RegisterUserWithCredentialsCommand(
+            var result = await Mediator.Send(new RegisterUserWithCredentialsCommand(
                 userGuid: guid,
                 email: request.Email,
                 displayName: request.DisplayName,
@@ -23,11 +26,11 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
                 tenant: await GetTenant()
             ));
 
-            return Ok(guid);
+            return GetResponse(result);
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginUserWithCredentialsRequest request)
+        public async Task<ActionResult<AuthorizationData>> Login(LoginUserWithCredentialsRequest request)
         {
             var result = await Mediator.Send(new GetUserByCredentialsQuery(
                 email: request.Email,
@@ -35,34 +38,34 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
                 tenant: await GetTenant()
             ));
 
-            return Ok(result);
+            return GetResponse(result);
         }
 
         [HttpPost("google")]
-        public async Task<IActionResult> AuthorizeWithGoogle(AuthorizeUserWithGoogleRequest request)
+        public async Task<ActionResult<AuthorizationData>> AuthorizeWithGoogle(AuthorizeUserWithGoogleRequest request)
         {
             var tenant = await GetTenant();
             var tokenResult = await Mediator.Send(new AuthorizeUserWithGoogleCommand(
                 token: request.GoogleToken,
                 tenant: tenant));
             
-            return Ok(tokenResult);
+            return GetResponse(tokenResult);
         }
 
         [HttpPost("facebook")]
-        public async Task<IActionResult> AuthorizeWithFacebook(AuthorizeUserWithFacebookRequest request)
+        public async Task<ActionResult<AuthorizationData>> AuthorizeWithFacebook(AuthorizeUserWithFacebookRequest request)
         {
             var tenant = await GetTenant();
             var tokenResult = await Mediator.Send(new AuthorizeUserWithFacebookCommand(
                 token: request.FacebookToken,
                 tenant: tenant));
             
-            return Ok(tokenResult);
+            return GetResponse(tokenResult);
         }
 
         [Authorize]
         [HttpGet("user")]
-        public async Task<IActionResult> GetUserData()
+        public async Task<ActionResult<UserDto>> GetUserData()
         {
             var user = await GetUser();
             var result = await Mediator.Send(new GetUserByIdQuery(
@@ -70,7 +73,7 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
                 user.UserGuid,
                 user.Tenant));
 
-            return Ok(result);
+            return GetResponse(result);
         }
     }
 }

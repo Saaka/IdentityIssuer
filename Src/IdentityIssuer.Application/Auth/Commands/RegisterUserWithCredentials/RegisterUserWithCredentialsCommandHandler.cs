@@ -4,13 +4,15 @@ using IdentityIssuer.Application.Auth.Models;
 using IdentityIssuer.Application.Auth.Repositories;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Services;
+using IdentityIssuer.Application.Users.Models;
 using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Requests;
 
 namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
 {
-    public class RegisterUserWithCredentialsCommandHandler : RequestHandler<RegisterUserWithCredentialsCommand, TenantUser>
+    public class
+        RegisterUserWithCredentialsCommandHandler : RequestHandler<RegisterUserWithCredentialsCommand, UserDto>
     {
         private readonly IAuthRepository _authRepository;
         private readonly IAvatarRepository _avatarRepository;
@@ -26,7 +28,7 @@ namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
             _profileImageUrlProvider = profileImageUrlProvider;
         }
 
-        public override async Task<RequestResult<TenantUser>> Handle(RegisterUserWithCredentialsCommand request,
+        public override async Task<RequestResult<UserDto>> Handle(RegisterUserWithCredentialsCommand request,
             CancellationToken cancellationToken)
         {
             var imageUrl = _profileImageUrlProvider.GetImageUrl(request.Email);
@@ -43,8 +45,15 @@ namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
             await _avatarRepository
                 .StoreAvatar(user.Id, AvatarType.Gravatar, imageUrl);
 
-            return RequestResult<TenantUser>
-                .Success(user);
+            return RequestResult<UserDto>
+                .Success(new UserDto
+                {
+                    UserGuid = user.UserGuid,
+                    Email = user.Email,
+                    DisplayName = user.DisplayName,
+                    ImageUrl = user.ImageUrl,
+                    IsAdmin = user.IsAdmin
+                });
         }
     }
 }
