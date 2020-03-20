@@ -1,8 +1,8 @@
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using IdentityIssuer.Application.Auth.Models;
 using IdentityIssuer.Application.Auth.Repositories;
-using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Users.Models;
 using IdentityIssuer.Application.Users.Repositories;
@@ -17,15 +17,18 @@ namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
         private readonly IAuthRepository _authRepository;
         private readonly IAvatarRepository _avatarRepository;
         private readonly IProfileImageUrlProvider _profileImageUrlProvider;
+        private readonly IMapper _mapper;
 
         public RegisterUserWithCredentialsCommandHandler(
             IAuthRepository authRepository,
             IAvatarRepository avatarRepository,
-            IProfileImageUrlProvider profileImageUrlProvider)
+            IProfileImageUrlProvider profileImageUrlProvider,
+            IMapper mapper)
         {
             _authRepository = authRepository;
             _avatarRepository = avatarRepository;
             _profileImageUrlProvider = profileImageUrlProvider;
+            _mapper = mapper;
         }
 
         public override async Task<RequestResult<UserDto>> Handle(RegisterUserWithCredentialsCommand request,
@@ -46,14 +49,7 @@ namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
                 .StoreAvatar(user.Id, AvatarType.Gravatar, imageUrl);
 
             return RequestResult<UserDto>
-                .Success(new UserDto
-                {
-                    UserGuid = user.UserGuid,
-                    Email = user.Email,
-                    DisplayName = user.DisplayName,
-                    ImageUrl = user.ImageUrl,
-                    IsAdmin = user.IsAdmin
-                });
+                .Success(_mapper.Map<UserDto>(user));
         }
     }
 }
