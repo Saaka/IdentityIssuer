@@ -4,18 +4,18 @@ using AutoMapper;
 using IdentityIssuer.Application.Auth.Models;
 using IdentityIssuer.Application.Auth.Repositories;
 using IdentityIssuer.Application.Models;
+using IdentityIssuer.Application.Requests;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Application.Users.Models;
 using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
-using MediatR;
 
 namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
 {
     public class AuthorizeUserWithFacebookCommandHandler
-        : IRequestHandler<AuthorizeUserWithFacebookCommand, AuthorizationData>
+        : RequestHandler<AuthorizeUserWithFacebookCommand, AuthorizationData>
     {
         private readonly IFacebookApiClient _facebookApiClient;
         private readonly ITenantProviderSettingsRepository _providerSettingsRepository;
@@ -46,14 +46,16 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
             _mapper = mapper;
         }
 
-        public async Task<AuthorizationData> Handle(AuthorizeUserWithFacebookCommand request,
+        public override async Task<RequestResult<AuthorizationData>> Handle(AuthorizeUserWithFacebookCommand request,
             CancellationToken cancellationToken)
         {
             var providerSettings = await GetTenantProviderSettings(request.Tenant);
-
             var tokenInfo = await _facebookApiClient
                 .GetTokenInfoAsync(request.Token, providerSettings.Identifier, providerSettings.Key);
-            ValidateTokenWithProviderSettings(tokenInfo, request.Tenant, providerSettings);
+            
+            var (hasError, result) = ValidateTokenWithProviderSettings(tokenInfo, request.Tenant, providerSettings);
+            if (hasError)
+                return result;
 
             if (await _authRepository.FacebookUserExists(tokenInfo.ExternalUserId, request.Tenant.TenantId))
                 return await UpdateExistingUser(tokenInfo, request.Tenant);
@@ -64,7 +66,8 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
             return await CreateNewFacebookUser(tokenInfo, request.Tenant);
         }
 
-        private async Task<AuthorizationData> CreateNewFacebookUser(TokenInfo tokenInfo, TenantContextData requestTenant)
+        private async Task<RequestResult<AuthorizationData>> CreateNewFacebookUser(TokenInfo tokenInfo,
+            TenantContextData requestTenant)
         {
             var userGuid = _guid.GetGuid();
 
@@ -72,14 +75,14 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
             userData.UserGuid = userGuid;
             userData.TenantId = requestTenant.TenantId;
             userData.AvatarType = AvatarType.Facebook;
-            
+
             var user = await _authRepository.CreateFacebookUser(userData);
             await _avatarRepository
                 .StoreAvatar(user.Id, AvatarType.Facebook, tokenInfo.ImageUrl);
-            return await AuthUserResult(requestTenant, user);
+            return await GetAuthorizationDataResult(requestTenant, user);
         }
 
-        private async Task<AuthorizationData> AddFacebookToExistingUser(TokenInfo tokenInfo,
+        private async Task<RequestResult<AuthorizationData>> AddFacebookToExistingUser(TokenInfo tokenInfo,
             TenantContextData requestTenant)
         {
             var user = await _authRepository
@@ -87,29 +90,33 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
             await _avatarRepository
                 .StoreAvatar(user.Id, AvatarType.Facebook, tokenInfo.ImageUrl);
 
-            return await AuthUserResult(requestTenant, user);
+            return await GetAuthorizationDataResult(requestTenant, user);
         }
 
-        private async Task<AuthorizationData> UpdateExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
+        private async Task<RequestResult<AuthorizationData>> UpdateExistingUser(TokenInfo tokenInfo,
+            TenantContextData requestTenant)
         {
             var user = await _authRepository
                 .GetUserByEmail(tokenInfo.Email, requestTenant.TenantId);
             await _avatarRepository
                 .StoreAvatar(user.Id, AvatarType.Facebook, tokenInfo.ImageUrl);
-            
-            return await AuthUserResult(requestTenant, user);
+
+            return await GetAuthorizationDataResult(requestTenant, user);
         }
 
-        private async Task<AuthorizationData> AuthUserResult(TenantContextData requestTenant, TenantUser user)
+        private async Task<RequestResult<AuthorizationData>> GetAuthorizationDataResult(TenantContextData requestTenant,
+            TenantUser user)
         {
             var tenantSettings = await _tenantsRepository.GetTenantSettings(requestTenant.TenantId);
             var token = _jwtTokenFactory.Create(user, tenantSettings, requestTenant.TenantCode);
 
-            return new AuthorizationData
-            {
-                Token = token,
-                User = _mapper.Map<UserDto>(user)
-            };
+            return RequestResult<AuthorizationData>
+                .Success(
+                    new AuthorizationData
+                    {
+                        Token = token,
+                        User = _mapper.Map<UserDto>(user)
+                    });
         }
 
         private async Task<TenantProviderSettings> GetTenantProviderSettings(TenantContextData tenant)
@@ -123,12 +130,18 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
             return providerSettings;
         }
 
-        private void ValidateTokenWithProviderSettings(
+        private (bool hasError, RequestResult<AuthorizationData> result) ValidateTokenWithProviderSettings(
             TokenInfo tokenInfo, TenantContextData tenant, TenantProviderSettings providerSettings)
         {
             if (tokenInfo == null || providerSettings == null || tokenInfo.ClientId != providerSettings.Identifier)
-                throw new DomainException(ErrorCode.InvalidProviderToken,
-                    new {tenantCode = tenant.TenantCode, providerType = AuthProviderType.Google});
+            {
+                var result = RequestResult<AuthorizationData>
+                    .Failure(ErrorCode.InvalidProviderToken,
+                        new {tenantCode = tenant.TenantCode, providerType = AuthProviderType.Google});
+                return (true, result);
+            }
+
+            return (false, null);
         }
     }
 }

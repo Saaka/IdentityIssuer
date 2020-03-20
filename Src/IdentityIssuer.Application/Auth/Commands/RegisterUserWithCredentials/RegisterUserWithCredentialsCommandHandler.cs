@@ -2,14 +2,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Auth.Models;
 using IdentityIssuer.Application.Auth.Repositories;
+using IdentityIssuer.Application.Models;
+using IdentityIssuer.Application.Requests;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Enums;
-using MediatR;
 
 namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
 {
-    public class RegisterUserWithCredentialsCommandHandler : IRequestHandler<RegisterUserWithCredentialsCommand, RegisterUserWithCredentialsResult>
+    public class RegisterUserWithCredentialsCommandHandler : RequestHandler<RegisterUserWithCredentialsCommand, TenantUser>
     {
         private readonly IAuthRepository _authRepository;
         private readonly IAvatarRepository _avatarRepository;
@@ -25,7 +26,7 @@ namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
             _profileImageUrlProvider = profileImageUrlProvider;
         }
 
-        public async Task<RegisterUserWithCredentialsResult> Handle(RegisterUserWithCredentialsCommand request,
+        public override async Task<RequestResult<TenantUser>> Handle(RegisterUserWithCredentialsCommand request,
             CancellationToken cancellationToken)
         {
             var imageUrl = _profileImageUrlProvider.GetImageUrl(request.Email);
@@ -41,8 +42,9 @@ namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
             });
             await _avatarRepository
                 .StoreAvatar(user.Id, AvatarType.Gravatar, imageUrl);
-            
-            return new RegisterUserWithCredentialsResult(true, user);
+
+            return RequestResult<TenantUser>
+                .Success(user);
         }
     }
 }

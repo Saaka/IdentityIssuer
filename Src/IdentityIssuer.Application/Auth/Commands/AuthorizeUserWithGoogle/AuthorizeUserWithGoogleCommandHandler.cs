@@ -4,18 +4,18 @@ using AutoMapper;
 using IdentityIssuer.Application.Auth.Models;
 using IdentityIssuer.Application.Auth.Repositories;
 using IdentityIssuer.Application.Models;
+using IdentityIssuer.Application.Requests;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Application.Users.Models;
 using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
-using MediatR;
 
 namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
 {
     public class AuthorizeUserWithGoogleCommandHandler
-        : IRequestHandler<AuthorizeUserWithGoogleCommand, AuthorizationData>
+        : RequestHandler<AuthorizeUserWithGoogleCommand, AuthorizationData>
     {
         private readonly IGoogleApiClient _googleApiClient;
         private readonly ITenantProviderSettingsRepository _providerSettingsRepository;
@@ -46,12 +46,14 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
             _mapper = mapper;
         }
 
-        public async Task<AuthorizationData> Handle(AuthorizeUserWithGoogleCommand request,
+        public override async Task<RequestResult<AuthorizationData>> Handle(AuthorizeUserWithGoogleCommand request,
             CancellationToken cancellationToken)
         {
             var tokenInfo = await _googleApiClient.GetTokenInfoAsync(request.Token);
-            await ValidateTokenWithProviderSettings(tokenInfo, request.Tenant);
-
+            var (hasError, result) = await ValidateTokenWithProviderSettings(tokenInfo, request.Tenant);
+            if (hasError)
+                return result;
+            
             if (await _authRepository.GoogleUserExists(tokenInfo.ExternalUserId, request.Tenant.TenantId))
                 return await UpdateExistingUser(tokenInfo, request.Tenant);
 
@@ -61,7 +63,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
             return await CreateNewGoogleUser(tokenInfo, request.Tenant);
         }
 
-        private async Task<AuthorizationData> CreateNewGoogleUser(TokenInfo tokenInfo, TenantContextData requestTenant)
+        private async Task<RequestResult<AuthorizationData>> CreateNewGoogleUser(TokenInfo tokenInfo, TenantContextData requestTenant)
         {
             var userGuid = _guid.GetGuid();
 
@@ -73,30 +75,37 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
             var user = await _authRepository.CreateGoogleUser(userData);
             await _avatarRepository
                 .StoreAvatar(user.Id, AvatarType.Google, tokenInfo.ImageUrl);
-            return await AuthUserResult(requestTenant, user);
+            
+            var data = await GetAuthorizationData(requestTenant, user);
+            return RequestResult<AuthorizationData>
+                .Success(data);
         }
 
-        private async Task<AuthorizationData> AddGoogleToExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
+        private async Task<RequestResult<AuthorizationData>> AddGoogleToExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
         {
             var user = await _authRepository
                 .AddGoogleLoginToUser(requestTenant.TenantId, tokenInfo.Email, tokenInfo.ExternalUserId);
             await _avatarRepository
                 .StoreAvatar(user.Id, AvatarType.Google, tokenInfo.ImageUrl);
 
-            return await AuthUserResult(requestTenant, user);
+            var data = await GetAuthorizationData(requestTenant, user);
+            return RequestResult<AuthorizationData>
+                .Success(data);
         }
 
-        private async Task<AuthorizationData> UpdateExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
+        private async Task<RequestResult<AuthorizationData>> UpdateExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
         {
             var user = await _authRepository
                 .GetUserByEmail(tokenInfo.Email, requestTenant.TenantId);
             await _avatarRepository
                 .StoreAvatar(user.Id, AvatarType.Google, tokenInfo.ImageUrl);
 
-            return await AuthUserResult(requestTenant, user);
+            var data = await GetAuthorizationData(requestTenant, user);
+            return RequestResult<AuthorizationData>
+                .Success(data);
         }
 
-        private async Task<AuthorizationData> AuthUserResult(TenantContextData requestTenant, TenantUser user)
+        private async Task<AuthorizationData> GetAuthorizationData(TenantContextData requestTenant, TenantUser user)
         {
             var tenantSettings = await _tenantsRepository.GetTenantSettings(requestTenant.TenantId);
             var token = _jwtTokenFactory.Create(user, tenantSettings, requestTenant.TenantCode);
@@ -108,17 +117,27 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
             };
         }
 
-        private async Task ValidateTokenWithProviderSettings(TokenInfo tokenInfo, TenantContextData tenant)
+        private async Task<(bool hasError, RequestResult<AuthorizationData> result)> ValidateTokenWithProviderSettings(TokenInfo tokenInfo, TenantContextData tenant)
         {
             var providerSettings = await _providerSettingsRepository
                 .GetProviderSettings(tenant.TenantId, AuthProviderType.Google);
 
             if (providerSettings == null)
-                throw new DomainException(ErrorCode.TenantProviderSettingsNotFound,
-                    new {tenantCode = tenant.TenantCode, providerType = AuthProviderType.Google});
+            {
+                var result = RequestResult<AuthorizationData>
+                    .Failure(ErrorCode.TenantProviderSettingsNotFound,
+                        new {tenantCode = tenant.TenantCode, providerType = AuthProviderType.Google});
+                return (true, result);
+            }
             if (tokenInfo == null || tokenInfo.ClientId != providerSettings.Identifier)
-                throw new DomainException(ErrorCode.InvalidProviderToken,
-                    new {tenantCode = tenant.TenantCode, providerType = AuthProviderType.Google});
+            {
+                var result = RequestResult<AuthorizationData>
+                    .Failure(ErrorCode.InvalidProviderToken,
+                        new {tenantCode = tenant.TenantCode, providerType = AuthProviderType.Google});
+                return (true, result);
+            }
+
+            return (false, null);
         }
     }
 }

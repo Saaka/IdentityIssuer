@@ -18,4 +18,9 @@ namespace IdentityIssuer.Application.Requests
             return this;
         }
     }
+
+    public abstract class Request : Request<RequestResult>
+    {
+        
+    }
 }

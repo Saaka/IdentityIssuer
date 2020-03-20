@@ -1,9 +1,10 @@
 using IdentityIssuer.Application.Models;
 using System;
+using IdentityIssuer.Application.Requests;
 
 namespace IdentityIssuer.Application.Users.Commands
 {
-    public class UpdateUserDisplayNameCommand : CommandBase
+    public class UpdateUserDisplayNameCommand : Request
     {
         public UpdateUserDisplayNameCommand(
             string name,

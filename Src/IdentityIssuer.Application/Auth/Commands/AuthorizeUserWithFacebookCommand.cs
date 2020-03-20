@@ -1,9 +1,10 @@
 using IdentityIssuer.Application.Auth.Models;
 using IdentityIssuer.Application.Models;
+using IdentityIssuer.Application.Requests;
 
 namespace IdentityIssuer.Application.Auth.Commands
 {
-    public class AuthorizeUserWithFacebookCommand : CommandBase<AuthorizationData>
+    public class AuthorizeUserWithFacebookCommand : Request<AuthorizationData>
     {
         public AuthorizeUserWithFacebookCommand(
             string token, 

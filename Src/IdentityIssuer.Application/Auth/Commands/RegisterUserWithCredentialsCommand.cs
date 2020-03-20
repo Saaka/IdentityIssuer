@@ -1,10 +1,10 @@
 using IdentityIssuer.Application.Models;
 using System;
-using IdentityIssuer.Application.Auth.Models;
+using IdentityIssuer.Application.Requests;
 
 namespace IdentityIssuer.Application.Auth.Commands
 {
-    public class RegisterUserWithCredentialsCommand : CommandBase<RegisterUserWithCredentialsResult>
+    public class RegisterUserWithCredentialsCommand : Request<TenantUser>
     {
         public RegisterUserWithCredentialsCommand(
             Guid userGuid, 

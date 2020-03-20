@@ -1,8 +1,9 @@
-using IdentityIssuer.Application.Tenants.Models;
+using IdentityIssuer.Application.Models;
+using IdentityIssuer.Application.Requests;
 
 namespace IdentityIssuer.Application.Tenants.Commands
 {
-    public class CreateTenantCommand : CommandBase<CreateTenantResult>
+    public class CreateTenantCommand : Request<Tenant>
     {
         protected CreateTenantCommand
             (string name, string code, string allowedOrigin)
