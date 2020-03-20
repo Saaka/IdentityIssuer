@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using IdentityIssuer.Application.Auth.Models;
 using IdentityIssuer.Application.Auth.Repositories;
 using IdentityIssuer.Application.Models;
-using IdentityIssuer.Application.Requests;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Enums;
+using IdentityIssuer.Common.Requests;
 
 namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
 {

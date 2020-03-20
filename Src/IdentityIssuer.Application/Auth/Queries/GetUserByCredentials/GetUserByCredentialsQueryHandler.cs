@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using AutoMapper;
 using IdentityIssuer.Application.Auth.Models;
 using IdentityIssuer.Application.Auth.Repositories;
-using IdentityIssuer.Application.Requests;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Application.Users.Models;
 using IdentityIssuer.Common.Enums;
+using IdentityIssuer.Common.Requests;
 
 namespace IdentityIssuer.Application.Auth.Queries.GetUserByCredentials
 {

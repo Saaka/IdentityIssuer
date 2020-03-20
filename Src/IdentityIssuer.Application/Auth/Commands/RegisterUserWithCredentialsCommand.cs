@@ -1,6 +1,6 @@
 using IdentityIssuer.Application.Models;
 using System;
-using IdentityIssuer.Application.Requests;
+using IdentityIssuer.Common.Requests;
 
 namespace IdentityIssuer.Application.Auth.Commands
 {

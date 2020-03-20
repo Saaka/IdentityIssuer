@@ -1,8 +1,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using IdentityIssuer.Application.Requests;
 using IdentityIssuer.Application.Users.Repositories;
+using IdentityIssuer.Common.Requests;
 
 namespace IdentityIssuer.Application.Users.Commands.UpdateUserDisplayName
 {

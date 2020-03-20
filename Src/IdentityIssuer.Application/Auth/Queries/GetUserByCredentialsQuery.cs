@@ -1,6 +1,6 @@
 using IdentityIssuer.Application.Auth.Models;
 using IdentityIssuer.Application.Models;
-using IdentityIssuer.Application.Requests;
+using IdentityIssuer.Common.Requests;
 
 namespace IdentityIssuer.Application.Auth.Queries
 {

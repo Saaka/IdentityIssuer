@@ -1,7 +1,7 @@
 using System;
 using MediatR;
 
-namespace IdentityIssuer.Application.Requests
+namespace IdentityIssuer.Common.Requests
 {
     public interface IRequestBase
     {

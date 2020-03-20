@@ -1,13 +1,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Models;
-using IdentityIssuer.Application.Requests;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Tenants.Models;
 using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
+using IdentityIssuer.Common.Requests;
 
 namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
 {

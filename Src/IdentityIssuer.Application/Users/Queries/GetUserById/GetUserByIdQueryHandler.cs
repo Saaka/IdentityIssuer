@@ -1,9 +1,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using IdentityIssuer.Application.Requests;
 using IdentityIssuer.Application.Users.Models;
 using IdentityIssuer.Common.Enums;
+using IdentityIssuer.Common.Requests;
 
 namespace IdentityIssuer.Application.Users.Queries.GetUserById
 {

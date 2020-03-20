@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
-using IdentityIssuer.Application.Requests;
 using IdentityIssuer.Common.Exceptions;
+using IdentityIssuer.Common.Requests;
 using Microsoft.Extensions.Logging;
 
 namespace IdentityIssuer.Application.Behaviors

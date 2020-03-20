@@ -1,7 +1,7 @@
 using System;
 using IdentityIssuer.Common.Enums;
 
-namespace IdentityIssuer.Application.Requests
+namespace IdentityIssuer.Common.Requests
 {
     public abstract class RequestResult
     {

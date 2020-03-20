@@ -1,5 +1,5 @@
 using IdentityIssuer.Application.Models;
-using IdentityIssuer.Application.Requests;
+using IdentityIssuer.Common.Requests;
 
 namespace IdentityIssuer.Application.Tenants.Commands
 {
