@@ -24,13 +24,7 @@ namespace IdentityIssuer.Application.Requests
         }
     }
 
-    public abstract class Request : IRequest<RequestResult>, IRequestBase
+    public abstract class Request : Request<Guid>
     {
-        public Guid RequestGuid { get; private set; }
-
-        protected Request()
-        {
-            RequestGuid = Guid.NewGuid();
-        }
     }
 }
