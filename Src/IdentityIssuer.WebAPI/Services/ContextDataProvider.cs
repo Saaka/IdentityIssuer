@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Models;
@@ -68,7 +69,9 @@ namespace IdentityIssuer.WebAPI.Services
 
         private Guid GetUserGuidFromContext(HttpContext context)
         {
-            if (context.User?.Claims == null || !context.User.HasClaim(x => x.Type == ClaimTypes.NameIdentifier))
+            if (context.User?.Claims == null || !(context.User?.Claims).Any())
+                throw new DomainException(ErrorCode.TenantHeaderMissing);
+            else if (!context.User.HasClaim(x => x.Type == ClaimTypes.NameIdentifier))
                 throw new DomainException(ErrorCode.UserClaimMissing);
 
             var guid = context.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
