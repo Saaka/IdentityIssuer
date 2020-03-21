@@ -19,5 +19,12 @@ namespace IdentityIssuer.Application
             return ruleBuilder
                 .SetValidator(new UserContextDataValidator());
         }
+        
+        public static IRuleBuilderOptions<T, AdminContextData> IsValid<T>(
+            this IRuleBuilder<T, AdminContextData> ruleBuilder)
+        {
+            return ruleBuilder
+                .SetValidator(new AdminContextDataValidator());
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System.Data;
 using FluentValidation;
 using IdentityIssuer.Common.Constants;
 
@@ -18,6 +19,9 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
 
             RuleFor(x => x.AllowedOrigin)
                 .NotEmpty();
+
+            RuleFor(x => x.AdminContextData)
+                .IsValid();
         }
     }
 }
