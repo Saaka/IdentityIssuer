@@ -14,6 +14,7 @@ namespace IdentityIssuer.Persistence.Entities
         public string FacebookId { get; set; }
         public string ImageUrl { get; set; }
         public AvatarType SelectedAvatarType { get; set; }
+        public bool IsAdmin { get; set; }
 
         public virtual TenantEntity Tenant { get; set; }
 

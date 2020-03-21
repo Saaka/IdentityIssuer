@@ -19,7 +19,7 @@ namespace IdentityIssuer.Persistence.Configurations
             builder
                 .HasIndex(x => x.UserGuid)
                 .HasName("IX_Users_UserGuid")
-                .IncludeProperties(x=> x.Id)
+                .IncludeProperties(x => x.Id)
                 .IsUnique();
 
             builder
@@ -45,7 +45,7 @@ namespace IdentityIssuer.Persistence.Configurations
                 .Property(e => e.ImageUrl)
                 .IsRequired(false)
                 .HasMaxLength(1024);
-            
+
             builder
                 .Property(x => x.SelectedAvatarType)
                 .IsRequired()
@@ -53,6 +53,11 @@ namespace IdentityIssuer.Persistence.Configurations
                     v => (byte) v,
                     v => (AvatarType) v)
                 .HasDefaultValue(AvatarType.Gravatar);
+
+            builder
+                .Property(x => x.IsAdmin)
+                .IsRequired()
+                .HasDefaultValue(false);
         }
     }
 }
