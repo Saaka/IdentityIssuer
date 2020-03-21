@@ -33,11 +33,11 @@ namespace IdentityIssuer.WebAPI.Services
         public async Task<UserContextData> GetUser(HttpContext context)
         {
             var userGuid = GetUserGuidFromContext(context);
-            var userId = await _usersProvider.GetUserId(userGuid);
+            var user = await _usersProvider.GetUser(userGuid);
 
             var tenant = await GetTenant(context);
 
-            return new UserContextData(userId, userGuid, tenant);
+            return new UserContextData(user.Id, userGuid, user.IsAdmin, tenant);
         }
 
         public async Task<TenantContextData> GetTenant(HttpContext context)

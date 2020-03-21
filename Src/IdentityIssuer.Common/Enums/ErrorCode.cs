@@ -54,5 +54,9 @@ namespace IdentityIssuer.Common.Enums
         /// Update of user properties failed
         /// </summary>
         UserUpdateFailed = 13,
+        /// <summary>
+        /// Current user does not have privileges to perform current operation.
+        /// </summary>
+        ActionNotAllowedByUser = 14
     }
 }
