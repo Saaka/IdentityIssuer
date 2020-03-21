@@ -23,7 +23,7 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
                 email: request.Email,
                 displayName: request.DisplayName,
                 password: request.Password,
-                tenant: await GetTenant()
+                tenant: await GetTenantAsync()
             ));
 
             return GetResponse(result);
@@ -35,7 +35,7 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
             var result = await Mediator.Send(new GetUserByCredentialsQuery(
                 email: request.Email,
                 password: request.Password,
-                tenant: await GetTenant()
+                tenant: await GetTenantAsync()
             ));
 
             return GetResponse(result);
@@ -44,7 +44,7 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
         [HttpPost("google")]
         public async Task<ActionResult<AuthorizationData>> AuthorizeWithGoogle(AuthorizeUserWithGoogleRequest request)
         {
-            var tenant = await GetTenant();
+            var tenant = await GetTenantAsync();
             var tokenResult = await Mediator.Send(new AuthorizeUserWithGoogleCommand(
                 token: request.GoogleToken,
                 tenant: tenant));
@@ -55,7 +55,7 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
         [HttpPost("facebook")]
         public async Task<ActionResult<AuthorizationData>> AuthorizeWithFacebook(AuthorizeUserWithFacebookRequest request)
         {
-            var tenant = await GetTenant();
+            var tenant = await GetTenantAsync();
             var tokenResult = await Mediator.Send(new AuthorizeUserWithFacebookCommand(
                 token: request.FacebookToken,
                 tenant: tenant));
@@ -67,7 +67,7 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
         [HttpGet("user")]
         public async Task<ActionResult<UserDto>> GetUserData()
         {
-            var user = await GetUser();
+            var user = await GetUserAsync();
             var result = await Mediator.Send(new GetUserByIdQuery(
                 user.UserId, 
                 user.UserGuid,

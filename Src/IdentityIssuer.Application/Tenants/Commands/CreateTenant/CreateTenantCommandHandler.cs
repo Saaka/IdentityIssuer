@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Tenants.Models;
@@ -11,24 +12,25 @@ using IdentityIssuer.Common.Requests;
 
 namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
 {
-    public class CreateTenantCommandHandler : RequestHandler<CreateTenantCommand, Tenant>
+    public class CreateTenantCommandHandler : RequestHandler<CreateTenantCommand, TenantDto>
     {
         private readonly ITenantsRepository _tenantsRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IGuid _guid;
+        private readonly IMapper _mapper;
 
 
         public CreateTenantCommandHandler(
             ITenantsRepository tenantsRepository,
             IUserRepository userRepository,
-            IGuid guid)
+            IMapper mapper)
         {
             _tenantsRepository = tenantsRepository;
             _userRepository = userRepository;
-            _guid = guid;
+            _mapper = mapper;
         }
 
-        public override async Task<RequestResult<Tenant>> Handle(CreateTenantCommand request, CancellationToken cancellationToken)
+        public override async Task<RequestResult<TenantDto>> Handle(CreateTenantCommand request,
+            CancellationToken cancellationToken)
         {
             if (await _tenantsRepository.TenantCodeExists(request.Code))
                 throw new DomainException(ErrorCode.TenantAlreadyExistsForCode, new {Code = request.Code});
@@ -36,8 +38,8 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
             var tenant = await _tenantsRepository
                 .CreateTenant(new CreateTenantDto(request.Name, request.Code, request.AllowedOrigin));
 
-            return RequestResult<Tenant>
-                .Success(tenant);
+            return RequestResult<TenantDto>
+                .Success(_mapper.Map<TenantDto>(tenant));
         }
     }
 }

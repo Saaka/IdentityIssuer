@@ -23,14 +23,19 @@ namespace IdentityIssuer.WebAPI.Controllers
         protected IContextDataProvider ContextDataProvider =>
             _contextDataProvider ??= HttpContext.RequestServices.GetService<IContextDataProvider>();
 
-        protected async Task<TenantContextData> GetTenant()
+        protected Task<TenantContextData> GetTenantAsync()
         {
-            return await ContextDataProvider.GetTenant(HttpContext);
+            return ContextDataProvider.GetTenant(HttpContext);
         }
 
-        protected async Task<UserContextData> GetUser()
+        protected Task<UserContextData> GetUserAsync()
         {
-            return await ContextDataProvider.GetUser(HttpContext);
+            return ContextDataProvider.GetUser(HttpContext);
+        }
+
+        protected Task<AdminContextData> GetAdminAsync()
+        {
+            return ContextDataProvider.GetAdmin(HttpContext);
         }
 
         protected ActionResult<TResponseType> GetResponse<TResponseType>(RequestResult<TResponseType> result)

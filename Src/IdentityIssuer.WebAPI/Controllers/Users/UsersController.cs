@@ -14,7 +14,7 @@ namespace IdentityIssuer.WebAPI.Controllers.Users
         [HttpPost("name")]
         public async Task<ActionResult<Guid>> UpdateUserDisplayName(UpdateUserDisplayNameModel model)
         {
-            var currentUser = await GetUser();
+            var currentUser = await GetUserAsync();
             var result = await Mediator.Send(new UpdateUserDisplayNameCommand(model.Name, model.UserGuid, currentUser));
 
             return GetResponse(result);
