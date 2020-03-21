@@ -57,14 +57,12 @@ namespace IdentityIssuer.Persistence.Repositories
             return result;
         }
 
-        public async Task<TenantUser> UpdateUserDisplayName(Guid userGuid, string name)
+        public async Task<bool> UpdateUserDisplayName(Guid userGuid, string name)
         {
             var user = await GetUserEntity(userGuid);
 
             user.DisplayName = name;
-            await  _context.SaveChangesAsync();
-
-            return _mapper.Map<TenantUser>(user);
+            return (await _context.SaveChangesAsync()) > 0;
         }
 
         public async Task<bool> SetUserAdminValue(Guid userGuid, bool isAdmin)
