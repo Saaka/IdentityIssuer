@@ -34,6 +34,13 @@ namespace IdentityIssuer.Persistence.Repositories
             return _mapper.Map<TenantUser>(result);
         }
 
+        public async Task<TenantUser> GetUser(Guid guid)
+        {
+            var user = await GetUserEntity(guid);
+
+            return _mapper.Map<TenantUser>(user);
+        }
+
         public async Task<int> GetUserId(Guid guid)
         {
             var query = from u in _context.Users
@@ -47,7 +54,7 @@ namespace IdentityIssuer.Persistence.Repositories
 
         public async Task<TenantUser> UpdateUserDisplayName(Guid userGuid, string name)
         {
-            var user = await GetUser(userGuid);
+            var user = await GetUserEntity(userGuid);
 
             user.DisplayName = name;
             await  _context.SaveChangesAsync();
@@ -55,16 +62,13 @@ namespace IdentityIssuer.Persistence.Repositories
             return _mapper.Map<TenantUser>(user);
         }
 
-        private async Task<TenantUserEntity> GetUser(Guid guid)
+        private async Task<TenantUserEntity> GetUserEntity(Guid guid)
         {
             var query = from u in _context.Users
                 where u.UserGuid == guid
                 select u;
 
             var user = await query.FirstOrDefaultAsync();
-            if (user == null)
-                throw new DomainException(ErrorCode.UserNotFound, 
-                    new { userGuid = guid });
 
             return user;
         }

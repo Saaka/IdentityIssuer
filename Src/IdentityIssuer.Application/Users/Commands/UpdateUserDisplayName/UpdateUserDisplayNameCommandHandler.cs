@@ -19,6 +19,7 @@ namespace IdentityIssuer.Application.Users.Commands.UpdateUserDisplayName
         public override async Task<RequestResult<Guid>> Handle(UpdateUserDisplayNameCommand request,
             CancellationToken cancellationToken)
         {
+            //TODO Check user existence
             await _userRepository.UpdateUserDisplayName(request.UserGuid, request.Name);
 
             return RequestResult

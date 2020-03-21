@@ -7,6 +7,7 @@ namespace IdentityIssuer.Application.Users.Repositories
     public interface IUserRepository
     {
         Task<TenantUser> GetUser(int userId, int tenantId);
+        Task<TenantUser> GetUser(Guid guid);
         Task<int> GetUserId(Guid guid);
         Task<TenantUser> UpdateUserDisplayName(Guid userGuid, string name);
     }
