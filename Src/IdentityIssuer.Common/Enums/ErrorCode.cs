@@ -49,6 +49,10 @@ namespace IdentityIssuer.Common.Enums
         /// <summary>
         /// Tenant with given code already exists
         /// </summary>
-        TenantAlreadyExistsForCode = 12
+        TenantAlreadyExistsForCode = 12,
+        /// <summary>
+        /// Update of user properties failed
+        /// </summary>
+        UserUpdateFailed = 13,
     }
 }

@@ -6,9 +6,11 @@ namespace IdentityIssuer.Application.Users.Repositories
 {
     public interface IUserRepository
     {
+        Task<bool> UserExistsAsync(Guid guid);
         Task<TenantUser> GetUser(int userId, int tenantId);
         Task<TenantUser> GetUser(Guid guid);
         Task<int> GetUserId(Guid guid);
         Task<TenantUser> UpdateUserDisplayName(Guid userGuid, string name);
+        Task<bool> SetUserAdminValue(Guid userGuid, bool isAdmin);
     }
 }

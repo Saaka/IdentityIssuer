@@ -23,6 +23,11 @@ namespace IdentityIssuer.Persistence.Repositories
             _mapper = mapper;
         }
 
+        public Task<bool> UserExistsAsync(Guid guid)
+        {
+            return _context.Users.AnyAsync(x => x.UserGuid == guid);
+        }
+
         public async Task<TenantUser> GetUser(int userId, int tenantId)
         {
             var query = from u in _context.Users
@@ -60,6 +65,14 @@ namespace IdentityIssuer.Persistence.Repositories
             await  _context.SaveChangesAsync();
 
             return _mapper.Map<TenantUser>(user);
+        }
+
+        public async Task<bool> SetUserAdminValue(Guid userGuid, bool isAdmin)
+        {
+            var user = await GetUserEntity(userGuid);
+            user.IsAdmin = isAdmin;
+
+            return (await _context.SaveChangesAsync()) > 0;
         }
 
         private async Task<TenantUserEntity> GetUserEntity(Guid guid)
