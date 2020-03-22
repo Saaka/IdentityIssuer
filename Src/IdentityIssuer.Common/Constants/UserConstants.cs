@@ -4,7 +4,7 @@ namespace IdentityIssuer.Common.Constants
     {
         public const int MinPasswordLength = 6;
         public const int MaxPasswordLength = 128;
-        public const int MinDisplayNameLength = 4;
+        public const int MinDisplayNameLength = 3;
         public const int MaxDisplayNameLength = 20;
         public const int MinEmailLength = 5;
         public const int MaxEmailLength = 256;
