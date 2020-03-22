@@ -1,5 +1,6 @@
 using System;
 using IdentityIssuer.Common.Enums;
+using IdentityIssuer.Common.Requests;
 
 namespace IdentityIssuer.Common.Exceptions
 {
@@ -10,9 +11,11 @@ namespace IdentityIssuer.Common.Exceptions
 
         public DomainException(ErrorCode code, object details = null)
             : base(code.ToString())
+            => (ErrorCode, ErrorDetails) = (code, details);
+
+        public DomainException(RequestResult requestResult)
+            : this(requestResult.Error, requestResult.ErrorDetails)
         {
-            ErrorCode = code;
-            ErrorDetails = details;
         }
     }
 }
