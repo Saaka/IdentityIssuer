@@ -20,7 +20,12 @@ namespace IdentityIssuer.WebAPI.Configurations
                     options.Filters.Add<CustomExceptionFilterAttribute>();
                     options.Filters.Add<TenantActionFilter>();
                 })
-                .AddFluentValidation(v => v.RegisterValidatorsFromAssembly(typeof(ApplicationModule).Assembly));
+                .AddFluentValidation(v =>
+                {
+                    v.RegisterValidatorsFromAssembly(typeof(ApplicationModule).Assembly);
+                    v.LocalizationEnabled = false;
+                    v.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+                });
 
             services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; })
                 .AddHttpContextAccessor();
