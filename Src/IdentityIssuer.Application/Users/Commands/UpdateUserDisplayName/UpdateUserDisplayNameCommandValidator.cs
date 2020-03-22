@@ -16,7 +16,7 @@ namespace IdentityIssuer.Application.Users.Commands.UpdateUserDisplayName
 
             RuleFor(x => x.UserGuid)
                 .Equal(x => x.User.UserGuid)
-                .WithErrorCode(ErrorCode.UserClaimMissing.ToString())
+                .WithMessage(ErrorCode.ActionNotAllowedByUser.ToString())
                 .When(x=> !x.User.IsAdmin);
         }
     }
