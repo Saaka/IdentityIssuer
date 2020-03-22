@@ -18,7 +18,7 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .WithMessageCode(ValidationErrorCode.TenantNameRequired)
-                .Length(TenantConstants.TenantNameMaxLength)
+                .MaximumLength(TenantConstants.TenantNameMaxLength)
                 .WithMessageCode(ValidationErrorCode.TenantNameInvalid);
 
             RuleFor(x => x.AllowedOrigin)
