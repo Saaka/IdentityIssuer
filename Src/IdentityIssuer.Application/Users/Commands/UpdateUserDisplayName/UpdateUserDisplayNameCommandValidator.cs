@@ -11,7 +11,7 @@ namespace IdentityIssuer.Application.Users.Commands.UpdateUserDisplayName
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .WithMessageCode(ValidationErrorCode.UserNameRequired)
-                .Length(UserConstants.MinPasswordLength, UserConstants.MaxDisplayNameLength)
+                .Length(UserConstants.MinDisplayNameLength, UserConstants.MaxDisplayNameLength)
                 .WithMessageCode(ValidationErrorCode.UserNameInvalid);
 
             RuleFor(x => x.UserGuid)
