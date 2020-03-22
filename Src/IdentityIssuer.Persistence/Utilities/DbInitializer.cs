@@ -5,7 +5,7 @@ namespace IdentityIssuer.Persistence.Utilities
 {
     public interface IDbInitializer
     {
-        Task Execute();
+        Task ExecuteAsync();
     }
     
     public class DbInitializer : IDbInitializer
@@ -17,7 +17,7 @@ namespace IdentityIssuer.Persistence.Utilities
             this._context = context;
         }
 
-        public async Task Execute()
+        public async Task ExecuteAsync()
         {
             await _context.Database.MigrateAsync();
         }
