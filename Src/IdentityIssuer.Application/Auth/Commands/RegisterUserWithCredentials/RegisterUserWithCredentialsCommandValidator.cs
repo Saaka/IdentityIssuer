@@ -29,6 +29,7 @@ namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
                 .NotEmpty()
                 .WithMessageCode(ValidationErrorCode.UserEmailRequired)
                 .EmailAddress()
+                .WithMessageCode(ValidationErrorCode.UserEmailInvalid)
                 .Length(UserConstants.MinEmailLength, UserConstants.MaxPasswordLength)
                 .WithMessageCode(ValidationErrorCode.UserEmailInvalid);
             RuleFor(x => x.Tenant)
