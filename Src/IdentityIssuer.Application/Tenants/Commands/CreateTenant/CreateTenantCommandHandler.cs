@@ -38,8 +38,11 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
             var tenant = await _tenantsRepository
                 .CreateTenant(new CreateTenantDto(request.Name, request.Code, request.AllowedOrigin));
 
-            return RequestResult<TenantDto>
-                .Success(_mapper.Map<TenantDto>(tenant));
+            if (tenant != null)
+                return RequestResult<TenantDto>
+                    .Success(_mapper.Map<TenantDto>(tenant));
+            
+            return RequestResult<TenantDto>.Failure(ErrorCode.CreateTenantFailed);
         }
     }
 }
