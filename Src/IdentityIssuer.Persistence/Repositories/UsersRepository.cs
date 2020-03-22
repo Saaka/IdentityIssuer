@@ -8,6 +8,7 @@ using IdentityIssuer.Common.Exceptions;
 using IdentityIssuer.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace IdentityIssuer.Persistence.Repositories
 {
@@ -15,12 +16,15 @@ namespace IdentityIssuer.Persistence.Repositories
     {
         private readonly AppIdentityContext _context;
         private readonly IMapper _mapper;
+        private readonly ILogger<UsersRepository> _logger;
 
         public UsersRepository(AppIdentityContext context,
-            IMapper mapper)
+            IMapper mapper,
+            ILogger<UsersRepository> logger)
         {
             _context = context;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public Task<bool> UserExistsAsync(Guid guid)
@@ -59,18 +63,38 @@ namespace IdentityIssuer.Persistence.Repositories
 
         public async Task<bool> UpdateUserDisplayName(Guid userGuid, string name)
         {
-            var user = await GetUserEntity(userGuid);
+            try
+            {
+                var user = await GetUserEntity(userGuid);
 
-            user.DisplayName = name;
-            return (await _context.SaveChangesAsync()) > 0;
+                user.DisplayName = name;
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (DbUpdateException e)
+            {
+                _logger.LogError(e.Message);
+                return false;
+            }
         }
 
         public async Task<bool> SetUserAdminValue(Guid userGuid, bool isAdmin)
         {
-            var user = await GetUserEntity(userGuid);
-            user.IsAdmin = isAdmin;
+            try
+            {
+                var user = await GetUserEntity(userGuid);
+                user.IsAdmin = isAdmin;
 
-            return (await _context.SaveChangesAsync()) > 0;
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (DbUpdateException e)
+            {
+                _logger.LogError(e.Message);
+                return false;
+            }
         }
 
         private async Task<TenantUserEntity> GetUserEntity(Guid guid)
