@@ -15,7 +15,7 @@ namespace IdentityIssuer.Persistence.Configurations
             builder
                 .Property(x => x.TokenSecret)
                 .IsRequired()
-                .HasMaxLength(ValidationConstants.TokenSecretMaxLength);
+                .HasMaxLength(TenantConstants.TokenSecretMaxLength);
 
             builder
                 .Property(x => x.TokenExpirationInMinutes)

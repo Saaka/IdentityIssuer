@@ -15,12 +15,12 @@ namespace IdentityIssuer.Persistence.Configurations
             builder
                 .Property(x => x.Name)
                 .IsRequired()
-                .HasMaxLength(ValidationConstants.TenantNameMaxLength);
+                .HasMaxLength(TenantConstants.TenantNameMaxLength);
 
             builder
                 .Property(x => x.Code)
                 .IsRequired()
-                .HasMaxLength(ValidationConstants.TenantCodeMaxLength);
+                .HasMaxLength(TenantConstants.TenantCodeMaxLength);
 
             builder
                 .HasIndex(x => x.Code)
@@ -30,7 +30,7 @@ namespace IdentityIssuer.Persistence.Configurations
             builder
                 .Property(x => x.AllowedOrigin)
                 .IsRequired()
-                .HasMaxLength(ValidationConstants.TenantAllowedOriginMaxLength);
+                .HasMaxLength(TenantConstants.TenantAllowedOriginMaxLength);
 
             builder
                 .HasMany(x => x.Users)

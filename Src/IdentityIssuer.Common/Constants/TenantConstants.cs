@@ -1,6 +1,6 @@
 ﻿namespace IdentityIssuer.Common.Constants
 {
-    public class ValidationConstants
+    public static class TenantConstants
     {
         public const int ProviderIdentifierMaxLength = 128;
         public const int ProviderKeyMaxLength = 128;

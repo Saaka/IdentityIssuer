@@ -1,6 +1,6 @@
 namespace IdentityIssuer.Common.Constants
 {
-    public class UserConstants
+    public static class UserConstants
     {
         public const int MinPasswordLength = 6;
         public const int MaxPasswordLength = 128;

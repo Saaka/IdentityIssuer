@@ -12,13 +12,13 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
             RuleFor(x => x.Code)
                 .NotEmpty()
                 .WithMessageCode(ValidationErrorCode.TenantCodeRequired)
-                .Length(ValidationConstants.TenantCodeMaxLength, ValidationConstants.TenantCodeMaxLength)
+                .Length(TenantConstants.TenantCodeMaxLength, TenantConstants.TenantCodeMaxLength)
                 .WithMessageCode(ValidationErrorCode.TenantCodeInvalid);
 
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .WithMessageCode(ValidationErrorCode.TenantNameRequired)
-                .Length(ValidationConstants.TenantNameMaxLength)
+                .Length(TenantConstants.TenantNameMaxLength)
                 .WithMessageCode(ValidationErrorCode.TenantNameInvalid);
 
             RuleFor(x => x.AllowedOrigin)

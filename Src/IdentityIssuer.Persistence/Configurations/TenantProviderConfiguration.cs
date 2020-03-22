@@ -23,12 +23,12 @@ namespace IdentityIssuer.Persistence.Configurations
             builder
                 .Property(x => x.Identifier)
                 .IsRequired()
-                .HasMaxLength(ValidationConstants.ProviderIdentifierMaxLength);
+                .HasMaxLength(TenantConstants.ProviderIdentifierMaxLength);
             
             builder
                 .Property(x => x.Key)
                 .IsRequired()
-                .HasMaxLength(ValidationConstants.ProviderKeyMaxLength);
+                .HasMaxLength(TenantConstants.ProviderKeyMaxLength);
         }
     }
 }
