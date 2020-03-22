@@ -1,4 +1,5 @@
-﻿using IdentityIssuer.WebAPI.Services;
+﻿using System.Threading.Tasks;
+using IdentityIssuer.WebAPI.Services;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
@@ -6,11 +7,11 @@ namespace IdentityIssuer.WebAPI
 {
     public static class Program
     {
-        public static void Main(string[] args)
+        public  static async Task Main(string[] args)
         {
             var host = CreateWebHostBuilder(args).Build();
-            WebApplicationInitializer.Initialize(host);
-            host.Run();
+            await WebApplicationInitializer.InitializeAsync(host);
+            await host.RunAsync();
         }
 
         private static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
