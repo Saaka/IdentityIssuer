@@ -1,4 +1,5 @@
 using FluentValidation;
+using IdentityIssuer.Common.Enums;
 
 namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
 {
@@ -7,7 +8,9 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
         public AuthorizeUserWithFacebookCommandValidator()
         {
             RuleFor(x => x.Token)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessageCode(ValidationErrorCode.ProviderTokenRequired);
+            
             RuleFor(x => x.Tenant)
                 .IsValid();
         }   

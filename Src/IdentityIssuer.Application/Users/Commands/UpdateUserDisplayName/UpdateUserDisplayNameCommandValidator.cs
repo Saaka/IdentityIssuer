@@ -10,18 +10,18 @@ namespace IdentityIssuer.Application.Users.Commands.UpdateUserDisplayName
         {
             RuleFor(x => x.Name)
                 .NotEmpty()
-                .WithMessageCode(ErrorCode.UserNameRequired)
-                .MinimumLength(4)
-                .WithMessage("MinNameLen");
+                .WithMessageCode(ValidationErrorCode.UserNameRequired)
+                .Length(UserConstants.MinPasswordLength, UserConstants.MaxDisplayNameLength)
+                .WithMessageCode(ValidationErrorCode.UserNameInvalid);
 
             RuleFor(x => x.UserGuid)
                 .NotEmpty()
-                .WithMessageCode(ErrorCode.UserGuidMissing);
+                .WithMessageCode(ValidationErrorCode.UserGuidRequired);
 
             RuleFor(x => x.UserGuid)
                 .Equal(x => x.User.UserGuid)
-                .WithMessageCode(ErrorCode.ActionNotAllowedByUser)
-                .When(x => !x.User.IsAdmin);
+                .When(x => !x.User.IsAdmin)
+                .WithMessageCode(ValidationErrorCode.UserActionNotAllowed);
 
             RuleFor(x => x.User)
                 .IsValid();

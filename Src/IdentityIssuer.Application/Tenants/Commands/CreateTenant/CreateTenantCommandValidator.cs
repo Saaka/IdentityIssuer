@@ -1,6 +1,7 @@
 using System.Data;
 using FluentValidation;
 using IdentityIssuer.Common.Constants;
+using IdentityIssuer.Common.Enums;
 
 namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
 {
@@ -10,15 +11,19 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
         {
             RuleFor(x => x.Code)
                 .NotEmpty()
-                .MaximumLength(ValidationConstants.TenantCodeMaxLength)
-                .MinimumLength(ValidationConstants.TenantCodeMaxLength);
+                .WithMessageCode(ValidationErrorCode.TenantCodeRequired)
+                .Length(ValidationConstants.TenantCodeMaxLength, ValidationConstants.TenantCodeMaxLength)
+                .WithMessageCode(ValidationErrorCode.TenantCodeInvalid);
 
             RuleFor(x => x.Name)
                 .NotEmpty()
-                .MaximumLength(ValidationConstants.TenantNameMaxLength);
+                .WithMessageCode(ValidationErrorCode.TenantNameRequired)
+                .Length(ValidationConstants.TenantNameMaxLength)
+                .WithMessageCode(ValidationErrorCode.TenantNameInvalid);
 
             RuleFor(x => x.AllowedOrigin)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessageCode(ValidationErrorCode.TenantAllowedOriginRequired);
 
             RuleFor(x => x.AdminContextData)
                 .IsValid();

@@ -55,20 +55,8 @@ namespace IdentityIssuer.Common.Enums
         /// </summary>
         UserUpdateFailed = 13,
         /// <summary>
-        /// Current user does not have privileges to perform current operation.
-        /// </summary>
-        ActionNotAllowedByUser = 14,
-        /// <summary>
-        /// User name is required
-        /// </summary>
-        UserNameRequired = 15,
-        /// <summary>
-        /// User guid is required
-        /// </summary>
-        UserGuidMissing = 16,
-        /// <summary>
         /// There was an error while validating the request. Usually linked with other, more specific error code.
         /// </summary>
-        ValidationError = 17,
+        ValidationError,
     }
 }

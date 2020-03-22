@@ -1,5 +1,6 @@
 using FluentValidation;
 using IdentityIssuer.Application.Models;
+using IdentityIssuer.Common.Enums;
 
 namespace IdentityIssuer.Application.Validators.FluentValidation
 {
@@ -8,11 +9,14 @@ namespace IdentityIssuer.Application.Validators.FluentValidation
         public TenantContextDataValidator()
         {
             RuleFor(x => x)
-                .NotNull();
+                .NotNull()
+                .WithMessageCode(ValidationErrorCode.TenantContextRequired);
             RuleFor(x => x.TenantCode)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessageCode(ValidationErrorCode.TenantContextRequired);
             RuleFor(x=> x.TenantId)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessageCode(ValidationErrorCode.TenantContextRequired);
         }
     }
 }

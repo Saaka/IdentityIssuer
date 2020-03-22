@@ -1,4 +1,5 @@
 using FluentValidation;
+using IdentityIssuer.Common.Enums;
 
 namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
 {
@@ -7,7 +8,8 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
         public AuthorizeUserWithGoogleCommandValidator()
         {
             RuleFor(x => x.Token)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessageCode(ValidationErrorCode.ProviderTokenRequired);;
             RuleFor(x => x.Tenant)
                 .IsValid();
         }   

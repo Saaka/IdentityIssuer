@@ -1,5 +1,6 @@
 using System.Data;
 using FluentValidation;
+using IdentityIssuer.Common.Enums;
 
 namespace IdentityIssuer.Application.Users.Commands.MakeUserAdmin
 {
@@ -8,7 +9,8 @@ namespace IdentityIssuer.Application.Users.Commands.MakeUserAdmin
         public MakeUserAdminCommandValidator()
         {
             RuleFor(x => x.UserGuid)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessageCode(ValidationErrorCode.UserGuidRequired);
             RuleFor(x => x.AdminContextData)
                 .IsValid();
         }

@@ -1,8 +1,4 @@
-using System;
 using FluentValidation;
-using FluentValidation.Internal;
-using FluentValidation.Resources;
-using FluentValidation.Validators;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Validators.FluentValidation;
 using IdentityIssuer.Common.Enums;
@@ -33,7 +29,7 @@ namespace IdentityIssuer.Application
         }
 
         public static IRuleBuilderOptions<T, TProperty> WithMessageCode<T, TProperty>(
-            this IRuleBuilderOptions<T, TProperty> rule, ErrorCode code)
+            this IRuleBuilderOptions<T, TProperty> rule, ValidationErrorCode code)
         {
             return rule
                 .WithMessage(code.ToString());

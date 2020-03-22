@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using FluentValidation;
 using IdentityIssuer.Application.Auth.Repositories;
 using IdentityIssuer.Common.Constants;
+using IdentityIssuer.Common.Enums;
 
 namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
 {
@@ -16,20 +17,26 @@ namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
             
             RuleFor(x => x.DisplayName)
                 .Length(UserConstants.MinDisplayNameLength, UserConstants.MaxDisplayNameLength)
-                .NotEmpty();
+                .WithMessageCode(ValidationErrorCode.UserNameInvalid)
+                .NotEmpty()
+                .WithMessageCode(ValidationErrorCode.UserNameRequired);
             RuleFor(x => x.Password)
                 .Length(UserConstants.MinPasswordLength, UserConstants.MaxPasswordLength)
-                .NotEmpty();
+                .WithMessageCode(ValidationErrorCode.UserPasswordInvalid)
+                .NotEmpty()
+                .WithMessageCode(ValidationErrorCode.UserPasswordRequired);
             RuleFor(x => x.Email)
                 .NotEmpty()
+                .WithMessageCode(ValidationErrorCode.UserEmailRequired)
                 .EmailAddress()
-                .Length(UserConstants.MinEmailLength, UserConstants.MaxPasswordLength);
+                .Length(UserConstants.MinEmailLength, UserConstants.MaxPasswordLength)
+                .WithMessageCode(ValidationErrorCode.UserEmailInvalid);
             RuleFor(x => x.Tenant)
                 .IsValid();
             RuleFor(x => x)
                 .MustAsync(HaveUniqueEmailForTenant)
-                .WithMessage(ValidationErrors.EmailNotUniqueForTenant)
-                .OverridePropertyName(nameof(RegisterUserWithCredentialsCommand.Email));
+                .OverridePropertyName(nameof(RegisterUserWithCredentialsCommand.Email))
+                .WithMessageCode(ValidationErrorCode.UserEmailNotUnique);
         }
 
         private async Task<bool> HaveUniqueEmailForTenant(RegisterUserWithCredentialsCommand command,
