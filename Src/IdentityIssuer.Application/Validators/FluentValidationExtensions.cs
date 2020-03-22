@@ -1,6 +1,11 @@
+using System;
 using FluentValidation;
+using FluentValidation.Internal;
+using FluentValidation.Resources;
+using FluentValidation.Validators;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Validators.FluentValidation;
+using IdentityIssuer.Common.Enums;
 
 namespace IdentityIssuer.Application
 {
@@ -25,6 +30,13 @@ namespace IdentityIssuer.Application
         {
             return ruleBuilder
                 .SetValidator(new AdminContextDataValidator());
+        }
+
+        public static IRuleBuilderOptions<T, TProperty> WithMessageCode<T, TProperty>(
+            this IRuleBuilderOptions<T, TProperty> rule, ErrorCode code)
+        {
+            return rule
+                .WithMessage(code.ToString());
         }
     }
 }
