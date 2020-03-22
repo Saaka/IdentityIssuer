@@ -1,4 +1,5 @@
 using FluentValidation;
+using IdentityIssuer.Common.Constants;
 using IdentityIssuer.Common.Enums;
 
 namespace IdentityIssuer.Application.Users.Commands.UpdateUserDisplayName
@@ -8,16 +9,22 @@ namespace IdentityIssuer.Application.Users.Commands.UpdateUserDisplayName
         public UpdateUserDisplayNameCommandValidator()
         {
             RuleFor(x => x.Name)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessageCode(ErrorCode.UserNameRequired)
+                .MinimumLength(4)
+                .WithMessage("MinNameLen");
+
             RuleFor(x => x.UserGuid)
-                .NotEmpty();
-            RuleFor(x => x.User)
-                .IsValid();
+                .NotEmpty()
+                .WithMessageCode(ErrorCode.UserGuidMissing);
 
             RuleFor(x => x.UserGuid)
                 .Equal(x => x.User.UserGuid)
-                .WithMessage(ErrorCode.ActionNotAllowedByUser.ToString())
-                .When(x=> !x.User.IsAdmin);
+                .WithMessageCode(ErrorCode.ActionNotAllowedByUser)
+                .When(x => !x.User.IsAdmin);
+
+            RuleFor(x => x.User)
+                .IsValid();
         }
     }
 }

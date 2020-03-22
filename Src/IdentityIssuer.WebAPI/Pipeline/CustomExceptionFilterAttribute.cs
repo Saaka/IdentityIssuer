@@ -4,7 +4,9 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
+using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
+using IdentityIssuer.WebAPI.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -24,7 +26,7 @@ namespace IdentityIssuer.WebAPI.Pipeline
         {
             var exception = context.Exception;
             context.HttpContext.Response.ContentType = "application/json";
-            
+
             switch (exception)
             {
                 case DomainException domainException:
@@ -81,17 +83,16 @@ namespace IdentityIssuer.WebAPI.Pipeline
         private void HandleValidationException(CommandValidationException validationException, ExceptionContext context)
         {
             context.HttpContext.Response.StatusCode = (int) HttpStatusCode.BadRequest;
-            context.Result = new JsonResult(new
-            {
-                Error = validationException.Message,
-                ErrorDetails = JsonSerializer.Serialize(validationException.Failures
-                    .SelectMany(x=> x.Value).ToList())
-            });
+            context.Result = new JsonResult(new ErrorResponse(
+                code: ErrorCode.ValidationError,
+                details: validationException.Failures
+                    .Select(f => new {field = f.Key, errors = f.Value}))
+            );
         }
 
         private void HandleRepositoryException(RepositoryException repositoryException, ExceptionContext context)
         {
-            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            context.HttpContext.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
             context.Result = new JsonResult(new
             {
                 Error = repositoryException.Message,

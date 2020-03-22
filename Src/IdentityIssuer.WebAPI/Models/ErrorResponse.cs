@@ -6,9 +6,9 @@ namespace IdentityIssuer.WebAPI.Models
     {
         public string Error => ErrorCode.ToString();
         public ErrorCode ErrorCode { get; }
-        public string ErrorDetails { get; }
+        public object ErrorDetails { get; }
 
-        public ErrorResponse(ErrorCode code, string details = null)
+        public ErrorResponse(ErrorCode code, object details = null)
             => (ErrorCode, ErrorDetails) = (code, details);
     }
 }
