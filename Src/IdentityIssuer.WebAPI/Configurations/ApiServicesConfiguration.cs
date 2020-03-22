@@ -21,6 +21,7 @@ namespace IdentityIssuer.WebAPI.Configurations
                 
                 .AddTransient<IGoogleConfiguration, ProvidersSettings>()
                 .AddTransient<IFacebookConfiguration, ProvidersSettings>()
+                .AddTransient<IAdminTenantConfiguration, AdminTenantConfiguration>()
                 
                 .AddTransient<ITenantSigningKeyResolver, TenantSigningKeyResolver>();
 

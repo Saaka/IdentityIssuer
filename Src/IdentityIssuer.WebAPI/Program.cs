@@ -9,7 +9,7 @@ namespace IdentityIssuer.WebAPI
         public static void Main(string[] args)
         {
             var host = CreateWebHostBuilder(args).Build();
-            WebDbInitializer.Initialize(host);
+            WebApplicationInitializer.Initialize(host);
             host.Run();
         }
 

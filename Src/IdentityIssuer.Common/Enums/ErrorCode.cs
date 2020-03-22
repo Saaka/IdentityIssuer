@@ -57,6 +57,10 @@ namespace IdentityIssuer.Common.Enums
         /// <summary>
         /// There was an error while validating the request. Usually linked with other, more specific error code.
         /// </summary>
-        ValidationError,
+        ValidationError = 14,
+        /// <summary>
+        /// Creation of tenant failed.
+        /// </summary>
+        CreateTenantFailed = 15
     }
 }
