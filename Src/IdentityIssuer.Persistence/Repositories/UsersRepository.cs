@@ -74,7 +74,7 @@ namespace IdentityIssuer.Persistence.Repositories
             }
             catch (DbUpdateException e)
             {
-                _logger.LogError(e.Message);
+                _logger.LogError(e, e.Message);
                 return false;
             }
         }
@@ -92,7 +92,7 @@ namespace IdentityIssuer.Persistence.Repositories
             }
             catch (DbUpdateException e)
             {
-                _logger.LogError(e.Message);
+                _logger.LogError(e, e.Message);
                 return false;
             }
         }

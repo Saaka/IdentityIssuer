@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using IdentityIssuer.Application.Models;
+using IdentityIssuer.Application.Tenants.Models;
 using IdentityIssuer.Persistence.Entities;
 
 namespace IdentityIssuer.Persistence
@@ -9,9 +10,13 @@ namespace IdentityIssuer.Persistence
         public PersistenceMapperProfile()
         {
             CreateMap<TenantEntity, Tenant>();
-            CreateMap<TenantSettingsEntity, TenantSettings>();
-            CreateMap<TenantProviderSettingsEntity, TenantProviderSettings>();
             CreateMap<TenantUserEntity, TenantUser>();
+            CreateMap<CreateTenantDto, TenantEntity>();
+            
+            CreateMap<CreateTenantSettingsDto, TenantSettingsEntity>();
+            CreateMap<TenantSettingsEntity, TenantSettings>();
+            
+            CreateMap<TenantProviderSettingsEntity, TenantProviderSettings>();
         }
     }
 }

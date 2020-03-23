@@ -1,4 +1,5 @@
-﻿using IdentityIssuer.Application.Tenants.Repositories;
+﻿using System;
+using IdentityIssuer.Application.Tenants.Repositories;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using AutoMapper;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Tenants.Models;
 using IdentityIssuer.Persistence.Entities;
+using Microsoft.Extensions.Logging;
 
 namespace IdentityIssuer.Persistence.Repositories
 {
@@ -14,12 +16,15 @@ namespace IdentityIssuer.Persistence.Repositories
     {
         private readonly AppIdentityContext _context;
         private readonly IMapper _mapper;
+        private readonly ILogger<TenantsRepository> _logger;
 
         public TenantsRepository(AppIdentityContext context,
-            IMapper mapper)
+            IMapper mapper,
+            ILogger<TenantsRepository> logger)
         {
             _context = context;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<string>> GetAllAllowedOriginsAsync()
@@ -83,16 +88,20 @@ namespace IdentityIssuer.Persistence.Repositories
 
         public async Task<Tenant> CreateTenant(CreateTenantDto model)
         {
-            var tenantEntity = new TenantEntity
+            try
             {
-                Code = model.Code,
-                Name = model.Name,
-                AllowedOrigin = model.AllowedOrigin
-            };
-            _context.Tenants.Add(tenantEntity);
-            await _context.SaveChangesAsync();
+                var tenantEntity = _mapper.Map<TenantEntity>(model);
+                
+                _context.Tenants.Add(tenantEntity);
+                await _context.SaveChangesAsync();
 
-            return _mapper.Map<Tenant>(tenantEntity);
+                return _mapper.Map<Tenant>(tenantEntity);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                return null;
+            }
         }
     }
 }
