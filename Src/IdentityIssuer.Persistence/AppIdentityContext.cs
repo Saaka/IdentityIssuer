@@ -16,6 +16,7 @@ namespace IdentityIssuer.Persistence
         public DbSet<TenantEntity> Tenants { get; set; }
         public DbSet<TenantSettingsEntity> TenantSettings { get; set; }
         public DbSet<TenantProviderSettingsEntity> TenantProviderSettings { get; set; }
+        public DbSet<TenantAllowedOriginEntity> TenantAllowedOrigins { get; set; }
         
         public DbSet<TenantUserAvatarEntity> UserAvatars { get; set; }
 

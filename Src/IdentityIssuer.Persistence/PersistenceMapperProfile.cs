@@ -12,6 +12,8 @@ namespace IdentityIssuer.Persistence
             CreateMap<TenantEntity, Tenant>();
             CreateMap<TenantUserEntity, TenantUser>();
             CreateMap<CreateTenantDto, TenantEntity>();
+
+            CreateMap<TenantAllowedOriginEntity, TenantAllowedOrigin>();
             
             CreateMap<CreateTenantSettingsDto, TenantSettingsEntity>();
             CreateMap<TenantSettingsEntity, TenantSettings>();
