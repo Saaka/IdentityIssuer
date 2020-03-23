@@ -3,9 +3,11 @@ using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Constants;
+using IdentityIssuer.Persistence.Behaviors;
 using IdentityIssuer.Persistence.Entities;
 using IdentityIssuer.Persistence.Repositories;
 using IdentityIssuer.Persistence.Utilities;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -70,6 +72,14 @@ namespace IdentityIssuer.Persistence
                 .AddRoles<IdentityRole<int>>()
                 .AddUserStore<UserStore<TenantUserEntity, IdentityRole<int>, AppIdentityContext, int, IdentityUserClaim<int>, IdentityUserRole<int>, IdentityUserLogin<int>, IdentityUserToken<int>, IdentityRoleClaim<int>>>()
                 .AddRoleStore<RoleStore<IdentityRole<int>, AppIdentityContext, int, IdentityUserRole<int>, IdentityRoleClaim<int>>>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddPersistenceModuleBehaviors(this IServiceCollection services)
+        {
+            services
+                .AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionScopeBehavior<,>));
 
             return services;
         }

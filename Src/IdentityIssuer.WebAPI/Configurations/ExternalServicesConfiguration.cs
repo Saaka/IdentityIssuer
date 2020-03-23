@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using IdentityIssuer.Application;
 using IdentityIssuer.Application.Configuration;
+using IdentityIssuer.Persistence;
 using MediatR;
 using MediatR.Pipeline;
 
@@ -32,6 +33,8 @@ namespace IdentityIssuer.WebAPI.Configurations
                 .AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>))
                 .AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPostProcessorBehavior<,>))
 
+                
+                .AddPersistenceModuleBehaviors()
                 .AddApplicationModuleBehaviors();
             
             
