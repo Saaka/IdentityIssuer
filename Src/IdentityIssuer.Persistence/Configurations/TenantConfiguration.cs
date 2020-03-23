@@ -28,11 +28,6 @@ namespace IdentityIssuer.Persistence.Configurations
                 .HasName("IX_TenantCode");
 
             builder
-                .Property(x => x.AllowedOrigin)
-                .IsRequired()
-                .HasMaxLength(TenantConstants.TenantAllowedOriginMaxLength);
-
-            builder
                 .HasMany(x => x.Users)
                 .WithOne(x => x.Tenant)
                 .HasForeignKey(x => x.TenantId)

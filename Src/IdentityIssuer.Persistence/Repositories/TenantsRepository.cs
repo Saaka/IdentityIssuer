@@ -30,9 +30,11 @@ namespace IdentityIssuer.Persistence.Repositories
         public async Task<IEnumerable<string>> GetAllAllowedOriginsAsync()
         {
             var query = from tenant in _context.Tenants
-                select tenant.AllowedOrigin;
+                        join allowedOrigins in _context.TenantAllowedOrigins 
+                            on tenant.Id equals allowedOrigins.TenantId
+                select allowedOrigins.AllowedOrigin;
 
-            return await query.ToListAsync();
+            return (await query.ToListAsync()).Distinct();
         }
 
         public async Task<Tenant> GetTenantAsync(string code)

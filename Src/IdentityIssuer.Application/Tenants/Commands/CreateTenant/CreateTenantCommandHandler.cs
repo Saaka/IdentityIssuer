@@ -61,7 +61,7 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
                 return RequestResult<TenantDto>.Failure(ErrorCode.CreateTenantFailed);
 
             if(!await _tenantAllowedOriginsRepository
-                .SaveAllowedOrigins(tenant.Id, new List<string>{ request.AllowedOrigin}))
+                .SaveAllowedOriginsAsync(tenant.Id, new List<string>{ request.AllowedOrigin}))
                 return RequestResult<TenantDto>.Failure(ErrorCode.CreateTenantFailed);
 
             return RequestResult<TenantDto>

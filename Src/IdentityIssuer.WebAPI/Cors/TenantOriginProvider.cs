@@ -1,42 +1,44 @@
 ﻿using IdentityIssuer.Common.Constants;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Tenants;
+using IdentityIssuer.Application.Tenants.Repositories;
 
 namespace IdentityIssuer.WebAPI.Cors
 {
     public interface ITenantOriginProvider
     {
-        Task<string> GetAllowedOrigin(string tenantCode);
+        Task<IEnumerable<string>> GetAllowedOrigin(string tenantCode);
     }
 
     public class TenantOriginProvider : ITenantOriginProvider
     {
         private readonly ICacheStore _cache;
-        private readonly ITenantProvider _tenantProvider;
+        private readonly ITenantAllowedOriginsRepository _tenantAllowedOriginsRepository;
 
         public TenantOriginProvider(
-            ITenantProvider tenantProvider,
+            ITenantAllowedOriginsRepository tenantAllowedOriginsRepository,
             ICacheStore cache)
         {
             _cache = cache;
-            _tenantProvider = tenantProvider;
+            _tenantAllowedOriginsRepository = tenantAllowedOriginsRepository;
         }
 
-        public async Task<string> GetAllowedOrigin(string tenantCode)
+        public async Task<IEnumerable<string>> GetAllowedOrigin(string tenantCode)
         {
-            var origin = await _cache.GetOrCreateAsync($"{CacheConstants.OriginCachePrefix}{tenantCode}", async (ce) =>
+            var origins = await _cache.GetOrCreateAsync($"{CacheConstants.OriginCachePrefix}{tenantCode}", async (ce) =>
             {
                 ce.SlidingExpiration = TimeSpan.FromMinutes(5);
                 ce.AbsoluteExpiration = DateTime.Now.AddHours(1);
 
-                var tenant = await _tenantProvider.GetTenantAsync(tenantCode);
+                var allowedOrigins = await _tenantAllowedOriginsRepository.GetAllowedOriginsForTenant(tenantCode);
 
-                return tenant?.AllowedOrigin;
+                return allowedOrigins;
             });
 
-            return origin;
+            return origins;
         }
     }
 }

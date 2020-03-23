@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Cors.Infrastructure;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using IdentityIssuer.WebAPI.Configurations;
@@ -16,13 +18,11 @@ namespace IdentityIssuer.WebAPI.Cors
 
         public async Task<CorsPolicy> GetPolicyAsync(HttpContext context, string policyName)
         {
-            string origin;
-            if (policyName == PolicyConstants.PreflightPolicy)
-                origin = context.Request.Headers[IdentityIssuerHeaders.OriginHeader];
-            else
-                origin = await _tenantOriginProvider.GetAllowedOrigin(policyName);
+            var origins = policyName == PolicyConstants.PreflightPolicy
+                ? new string[] { context.Request.Headers[IdentityIssuerHeaders.OriginHeader] }
+                : (await _tenantOriginProvider.GetAllowedOrigin(policyName)).ToArray();
 
-            return new CorsPolicyBuilder(origin)
+            return new CorsPolicyBuilder(origins)
                 .AllowCredentials()
                 .AllowAnyMethod()
                 .AllowAnyHeader()

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using IdentityIssuer.Application.Models;
@@ -25,15 +27,12 @@ namespace IdentityIssuer.WebAPI.UnitTests.CorsTests
         public async Task GetAllowedOrigin_Should_Return_Origin_If_Tenant_Exists()
         {
             var sut = _fixture
-                .WithTenant(new Tenant
-                {
-                    AllowedOrigin = "http://test.com"
-                })
+                .WithTenantOrigins("http://test.com")
                 .Configure();
 
             var origin = await sut.GetAllowedOrigin("Code");
 
-            origin.Should().Be("http://test.com");
+            origin.Should().Contain("http://test.com");
         }
 
         [Fact]
@@ -49,19 +48,19 @@ namespace IdentityIssuer.WebAPI.UnitTests.CorsTests
 
         public class Fixture : AutoMockFixture
         {
-            private Tenant _tenant;
+            private List<string> _allowedOrigins;
 
-            public Fixture WithTenant(Tenant value)
+            public Fixture WithTenantOrigins(params string[] values)
             {
-                this._tenant = value;
+                _allowedOrigins = values.ToList();
                 return this;
             }
 
             public TenantOriginProvider Configure()
             {
                 AutoMockInstance.Mock<ICacheStore>()
-                    .Setup(x => x.GetOrCreateAsync(It.IsAny<string>(), It.IsAny<Func<ICacheEntry, Task<string>>>()))
-                    .ReturnsAsync(_tenant?.AllowedOrigin);
+                    .Setup(x => x.GetOrCreateAsync(It.IsAny<string>(), It.IsAny<Func<ICacheEntry, Task<List<string>>>>()))
+                    .ReturnsAsync(_allowedOrigins);
 
                 return AutoMockInstance.Create<TenantOriginProvider>();
             }

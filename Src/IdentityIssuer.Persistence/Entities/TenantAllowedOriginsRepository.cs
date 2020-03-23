@@ -25,7 +25,7 @@ namespace IdentityIssuer.Persistence.Entities
             _logger = logger;
         }
 
-        public async Task<bool> SaveAllowedOrigins(int tenantId, ICollection<string> origins)
+        public async Task<bool> SaveAllowedOriginsAsync(int tenantId, ICollection<string> origins)
         {
             try
             {
@@ -49,6 +49,16 @@ namespace IdentityIssuer.Persistence.Entities
                 _logger.LogError(ex, ex.Message);
                 return false;
             }
+        }
+
+        public Task<List<string>> GetAllowedOriginsForTenant(string code)
+        {
+            var query = from tenant in _context.Tenants
+                join ao in _context.TenantAllowedOrigins on tenant.Id equals ao.TenantId
+                where tenant.Code == code
+                select ao.AllowedOrigin;
+
+            return query.ToListAsync();
         }
 
         private Task<List<TenantAllowedOriginEntity>> GetAllowedOriginEntities(int tenantId)
