@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -16,6 +17,7 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
     {
         private readonly ITenantsRepository _tenantsRepository;
         private readonly ITenantSettingsRepository _tenantSettingsRepository;
+        private readonly ITenantAllowedOriginsRepository _tenantAllowedOriginsRepository;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
@@ -23,11 +25,13 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
         public CreateTenantCommandHandler(
             ITenantsRepository tenantsRepository,
             ITenantSettingsRepository tenantSettingsRepository,
+            ITenantAllowedOriginsRepository tenantAllowedOriginsRepository,
             IUserRepository userRepository,
             IMapper mapper)
         {
             _tenantsRepository = tenantsRepository;
             _tenantSettingsRepository = tenantSettingsRepository;
+            _tenantAllowedOriginsRepository = tenantAllowedOriginsRepository;
             _userRepository = userRepository;
             _mapper = mapper;
         }
@@ -52,8 +56,12 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
                     enableCredentialsLogin: true,
                     enableGoogleLogin: false,
                     enableFacebookLogin: false));
-            
-            if(tenantSettings == null)
+
+            if (tenantSettings == null)
+                return RequestResult<TenantDto>.Failure(ErrorCode.CreateTenantFailed);
+
+            if(!await _tenantAllowedOriginsRepository
+                .SaveAllowedOrigins(tenant.Id, new List<string>{ request.AllowedOrigin}))
                 return RequestResult<TenantDto>.Failure(ErrorCode.CreateTenantFailed);
 
             return RequestResult<TenantDto>
