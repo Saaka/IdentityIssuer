@@ -25,6 +25,16 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
                 .NotEmpty()
                 .WithMessageCode(ValidationErrorCode.TenantAllowedOriginRequired);
 
+            RuleFor(x => x.TokenExpirationInMinutes)
+                .NotEmpty()
+                .WithMessageCode(ValidationErrorCode.TokenExpirationInMinutesRequired);
+
+            RuleFor(x => x.TokenSecret)
+                .NotEmpty()
+                .WithMessageCode(ValidationErrorCode.TokenSecretRequired)
+                .MaximumLength(TenantConstants.TokenSecretMaxLength)
+                .WithMessageCode(ValidationErrorCode.TokenSecretInvalid);
+
             RuleFor(x => x.AdminContextData)
                 .IsValid();
         }

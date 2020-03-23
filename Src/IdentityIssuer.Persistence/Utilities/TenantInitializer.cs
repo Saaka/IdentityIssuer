@@ -59,6 +59,8 @@ namespace IdentityIssuer.Persistence.Utilities
                         config.Name,
                         config.Code,
                         config.AllowedOrigin,
+                        config.TokenSecret, 
+                        config.TokenExpirationInMinutes,
                         adminContextData);
 
                     var createTenantResult = await _mediator.Send(createTenantCommand);

@@ -1,4 +1,5 @@
 using IdentityIssuer.Application.Configuration;
+using IdentityIssuer.Common.Constants;
 using Microsoft.Extensions.Configuration;
 
 namespace IdentityIssuer.WebAPI.Configurations
@@ -12,21 +13,29 @@ namespace IdentityIssuer.WebAPI.Configurations
             _configuration = configuration;
         }
 
-        public string Name   => 
+        public string Name =>
             _configuration[AdminTenantConfigurationProperties.Name];
-        public string Code  => 
+
+        public string Code =>
             _configuration[AdminTenantConfigurationProperties.Code];
-        public string UserDisplayName=> 
+
+        public string UserDisplayName =>
             _configuration[AdminTenantConfigurationProperties.UserDisplayName];
-        public string Email=> 
+
+        public string Email =>
             _configuration[AdminTenantConfigurationProperties.Email];
-        public string Password => 
+
+        public string Password =>
             _configuration[AdminTenantConfigurationProperties.Password];
-        public string AllowedOrigin => 
+
+        public string AllowedOrigin =>
             _configuration[AdminTenantConfigurationProperties.AllowedOrigin];
-        public string TokenSecret  => 
+
+        public string TokenSecret =>
             _configuration[AdminTenantConfigurationProperties.TokenSecret];
-        public string TokenExpirationInMinutes  => 
-            _configuration[AdminTenantConfigurationProperties.TokenExpirationInMinutes];
+
+        public int TokenExpirationInMinutes =>
+            int.Parse(_configuration[AdminTenantConfigurationProperties.TokenExpirationInMinutes] ??
+                      TenantConstants.DefaultTokenExpirationInMinutes.ToString());
     }
 }

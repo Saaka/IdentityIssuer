@@ -1,12 +1,14 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
+using IdentityIssuer.Common.Requests;
 using MediatR;
 
 namespace IdentityIssuer.Persistence.Behaviors
 {
     public class TransactionScopeBehavior<TRequest, TResponse> : MediatR.IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
+        where TResponse : RequestResult
     {
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken,
             RequestHandlerDelegate<TResponse> next)
@@ -15,7 +17,9 @@ namespace IdentityIssuer.Persistence.Behaviors
             {
                 var result = await next();
 
-                transactionScope.Complete();
+                if (result.IsSuccess)
+                    transactionScope.Complete();
+                
                 return result;
             }
         }

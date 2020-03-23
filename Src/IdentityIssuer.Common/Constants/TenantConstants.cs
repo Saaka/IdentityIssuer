@@ -8,5 +8,7 @@
         public const int TenantCodeMaxLength = 3;
         public const int TenantAllowedOriginMaxLength = 128;
         public const int TokenSecretMaxLength = 256;
+
+        public const int DefaultTokenExpirationInMinutes = 10080;
     }
 }

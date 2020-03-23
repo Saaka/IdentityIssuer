@@ -9,6 +9,6 @@ namespace IdentityIssuer.Application.Configuration
         string Password { get; }
         string AllowedOrigin { get; }
         string TokenSecret { get; }
-        string TokenExpirationInMinutes { get; }
+        int TokenExpirationInMinutes { get; }
     }
 }

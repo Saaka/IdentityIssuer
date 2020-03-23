@@ -14,7 +14,12 @@ namespace IdentityIssuer.WebAPI.Controllers.Tenants
         {
             var adminContext = await GetAdminAsync();
             var result = await Mediator.Send(new CreateTenantCommand(
-                model.Name, model.Code, model.AllowedOrigin, adminContext));
+                model.Name,
+                model.Code,
+                model.AllowedOrigin,
+                model.TokenSecret,
+                model.TokenExpirationInMinutes,
+                adminContext));
 
             return GetResponse(result);
         }

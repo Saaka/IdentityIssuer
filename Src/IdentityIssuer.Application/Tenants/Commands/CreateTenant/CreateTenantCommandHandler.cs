@@ -15,16 +15,19 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
     public class CreateTenantCommandHandler : RequestHandler<CreateTenantCommand, TenantDto>
     {
         private readonly ITenantsRepository _tenantsRepository;
+        private readonly ITenantSettingsRepository _tenantSettingsRepository;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
 
         public CreateTenantCommandHandler(
             ITenantsRepository tenantsRepository,
+            ITenantSettingsRepository tenantSettingsRepository,
             IUserRepository userRepository,
             IMapper mapper)
         {
             _tenantsRepository = tenantsRepository;
+            _tenantSettingsRepository = tenantSettingsRepository;
             _userRepository = userRepository;
             _mapper = mapper;
         }
@@ -38,11 +41,23 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
             var tenant = await _tenantsRepository
                 .CreateTenant(new CreateTenantDto(request.Name, request.Code, request.AllowedOrigin));
 
-            if (tenant != null)
-                return RequestResult<TenantDto>
-                    .Success(_mapper.Map<TenantDto>(tenant));
+            if (tenant == null)
+                return RequestResult<TenantDto>.Failure(ErrorCode.CreateTenantFailed);
+
+            var tenantSettings = await _tenantSettingsRepository
+                .CreateTenantSettings(new CreateTenantSettingsDto(
+                    tenant.Id,
+                    request.TokenSecret,
+                    request.TokenExpirationInMinutes,
+                    enableCredentialsLogin: true,
+                    enableGoogleLogin: false,
+                    enableFacebookLogin: false));
             
-            return RequestResult<TenantDto>.Failure(ErrorCode.CreateTenantFailed);
+            if(tenantSettings == null)
+                return RequestResult<TenantDto>.Failure(ErrorCode.CreateTenantFailed);
+
+            return RequestResult<TenantDto>
+                .Success(_mapper.Map<TenantDto>(tenant));
         }
     }
 }

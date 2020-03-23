@@ -21,5 +21,8 @@ namespace IdentityIssuer.Common.Enums
         TenantNameRequired = 17,
         TenantNameInvalid = 18,
         TenantAllowedOriginRequired = 19,
+        TokenExpirationInMinutesRequired = 20,
+        TokenSecretRequired = 21,
+        TokenSecretInvalid = 22,
     }
 }
