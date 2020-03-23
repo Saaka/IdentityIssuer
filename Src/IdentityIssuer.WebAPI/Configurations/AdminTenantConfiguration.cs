@@ -24,5 +24,9 @@ namespace IdentityIssuer.WebAPI.Configurations
             _configuration[AdminTenantConfigurationProperties.Password];
         public string AllowedOrigin => 
             _configuration[AdminTenantConfigurationProperties.AllowedOrigin];
+        public string TokenSecret  => 
+            _configuration[AdminTenantConfigurationProperties.TokenSecret];
+        public string TokenExpirationInMinutes  => 
+            _configuration[AdminTenantConfigurationProperties.TokenExpirationInMinutes];
     }
 }

@@ -8,5 +8,7 @@ namespace IdentityIssuer.Application.Configuration
         string Email { get; }
         string Password { get; }
         string AllowedOrigin { get; }
+        string TokenSecret { get; }
+        string TokenExpirationInMinutes { get; }
     }
 }

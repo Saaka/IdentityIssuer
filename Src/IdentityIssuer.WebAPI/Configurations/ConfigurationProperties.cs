@@ -15,5 +15,7 @@ namespace IdentityIssuer.WebAPI.Configurations
         public const string Email = "AdminTenant:Email";
         public const string Password = "AdminTenant:Password";
         public const string AllowedOrigin = "AdminTenant:AllowedOrigin";
+        public const string TokenSecret = "AdminTenant:TokenSecret";
+        public const string TokenExpirationInMinutes = "AdminTenant:TokenExpirationInMinutes";
     }
 }
