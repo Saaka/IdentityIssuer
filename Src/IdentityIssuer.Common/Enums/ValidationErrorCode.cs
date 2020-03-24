@@ -24,5 +24,10 @@ namespace IdentityIssuer.Common.Enums
         TokenExpirationInMinutesRequired = 20,
         TokenSecretRequired = 21,
         TokenSecretInvalid = 22,
+        AuthProviderTypeRequired = 23,
+        AuthProviderKeyRequired = 24,
+        AuthProviderKeyTooLong = 25,
+        AuthProviderIdentifierRequired = 26,
+        AuthProviderIdentifierTooLong = 27,
     }
 }

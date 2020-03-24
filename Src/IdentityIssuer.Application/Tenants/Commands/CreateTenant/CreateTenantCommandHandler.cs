@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using IdentityIssuer.Application.Models;
-using IdentityIssuer.Application.Services;
 using IdentityIssuer.Application.Tenants.Models;
 using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Application.Users.Repositories;
@@ -43,25 +41,33 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
                 throw new DomainException(ErrorCode.TenantAlreadyExistsForCode, new {Code = request.Code});
 
             var tenant = await _tenantsRepository
-                .CreateTenant(new CreateTenantDto(request.Name, request.Code, request.AllowedOrigin));
-
+                .CreateTenant(new CreateTenantDto
+                {
+                    Name = request.Name,
+                    Code = request.Code,
+                    AllowedOrigin = request.AllowedOrigin
+                });
             if (tenant == null)
                 return RequestResult<TenantDto>.Failure(ErrorCode.CreateTenantFailed);
 
             var tenantSettings = await _tenantSettingsRepository
-                .CreateTenantSettings(new CreateTenantSettingsDto(
-                    tenant.Id,
-                    request.TokenSecret,
-                    request.TokenExpirationInMinutes,
-                    enableCredentialsLogin: true,
-                    enableGoogleLogin: false,
-                    enableFacebookLogin: false));
-
+                .CreateTenantSettings(new CreateTenantSettingsDto
+                {
+                    TenantId = tenant.Id,
+                    TokenSecret = request.TokenSecret,
+                    TokenExpirationInMinutes = request.TokenExpirationInMinutes,
+                    EnableCredentialsLogin = true,
+                    EnableGoogleLogin = false,
+                    EnableFacebookLogin = false
+                });
             if (tenantSettings == null)
                 return RequestResult<TenantDto>.Failure(ErrorCode.CreateTenantFailed);
 
-            if(!await _tenantAllowedOriginsRepository
-                .SaveAllowedOriginsAsync(tenant.Id, new List<string>{ request.AllowedOrigin}))
+            if (!await _tenantAllowedOriginsRepository
+                .SaveAllowedOriginsAsync(tenant.Id, new List<string>
+                {
+                    request.AllowedOrigin
+                }))
                 return RequestResult<TenantDto>.Failure(ErrorCode.CreateTenantFailed);
 
             return RequestResult<TenantDto>
