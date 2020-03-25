@@ -9,9 +9,14 @@ namespace IdentityIssuer.Persistence.Entities
         public string Code { get; set; }
 
         public virtual TenantSettingsEntity TenantSettings { get; set; }
+
         public virtual ICollection<TenantUserEntity> Users { get; set; }
             = new List<TenantUserEntity>();
+
         public virtual ICollection<TenantAllowedOriginEntity> AllowedOrigins { get; set; }
             = new List<TenantAllowedOriginEntity>();
+
+        public virtual ICollection<TenantProviderSettingsEntity> TenantProviders { get; set; }
+            = new List<TenantProviderSettingsEntity>();
     }
 }

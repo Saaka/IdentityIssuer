@@ -38,6 +38,12 @@ namespace IdentityIssuer.Persistence.Configurations
                 .WithOne(x => x.Tenant)
                 .HasForeignKey<TenantSettingsEntity>(x => x.TenantId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasMany(x => x.TenantProviders)
+                .WithOne(x => x.Tenant)
+                .HasForeignKey(x => x.TenantId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
