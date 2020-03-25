@@ -1,27 +1,51 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
+using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Tenants.Models;
 using IdentityIssuer.Application.Tenants.Repositories;
+using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Requests;
 
 namespace IdentityIssuer.Application.Tenants.Commands.CreateTenantProviderSettings
 {
-    public class CreateTenantProviderSettingsCommandHandler 
+    public class CreateTenantProviderSettingsCommandHandler
         : RequestHandler<CreateTenantProviderSettingsCommand, TenantProviderSettingsDto>
     {
-        private readonly ITenantProviderSettingsRepository _tenantProviderSettingsRepository;
+        private readonly ITenantProviderSettingsRepository _providerSettingsRepository;
+        private readonly ITenantProvider _tenantProvider;
+        private readonly IMapper _mapper;
 
         public CreateTenantProviderSettingsCommandHandler(
-            ITenantProviderSettingsRepository tenantProviderSettingsRepository)
+            ITenantProviderSettingsRepository providerSettingsRepository,
+            ITenantProvider tenantProvider,
+            IMapper mapper)
         {
-            _tenantProviderSettingsRepository = tenantProviderSettingsRepository;
+            _providerSettingsRepository = providerSettingsRepository;
+            _tenantProvider = tenantProvider;
+            _mapper = mapper;
         }
-        
+
         public override async Task<RequestResult<TenantProviderSettingsDto>> Handle(
             CreateTenantProviderSettingsCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var tenant = await _tenantProvider.GetTenantAsync(request.TenantCode);
+            if (await _providerSettingsRepository.ProviderSettingsExistsAsync(tenant.Id, request.ProviderType))
+                return RequestResult<TenantProviderSettingsDto>
+                    .Failure(ErrorCode.TenantProviderSettingsAlreadyExists);
+
+            var createData = _mapper.Map<CreateTenantProviderSettingsDto>(request);
+            createData.TenantId = tenant.Id;
+            var providerSettings = await _providerSettingsRepository
+                .CreateTenantProviderSettings(createData);
+            
+            if(providerSettings == null)
+                return RequestResult<TenantProviderSettingsDto>
+                    .Failure(ErrorCode.CreateTenantProviderSettingsFailed);
+            
+            return RequestResult<TenantProviderSettingsDto>
+                .Success(_mapper.Map<TenantProviderSettingsDto>(providerSettings));
         }
     }
 }

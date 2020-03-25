@@ -8,7 +8,7 @@ namespace IdentityIssuer.Application.Tenants.Repositories
     public interface ITenantProviderSettingsRepository
     {
         Task<TenantProviderSettings> GetProviderSettings(int tenantId, AuthProviderType providerType);
-        Task<bool> TenantProviderSettingsExists(int tenantId, AuthProviderType providerType);
+        Task<bool> ProviderSettingsExistsAsync(int tenantId, AuthProviderType providerType);
         Task<TenantProviderSettings> CreateTenantProviderSettings(CreateTenantProviderSettingsDto data);
     }
 }

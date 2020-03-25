@@ -43,7 +43,7 @@ namespace IdentityIssuer.WebAPI.Controllers
             if (result.IsSuccess)
                 return Ok(result.Data);
             else
-                return BadRequest(new ErrorResponse(result.Error, result.ErrorDetails.ToString()));
+                return BadRequest(new ErrorResponse(result.Error, result.ErrorDetails?.ToString()));
         }
     }
 }

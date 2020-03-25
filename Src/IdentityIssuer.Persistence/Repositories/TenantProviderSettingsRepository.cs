@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -7,6 +8,7 @@ using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace IdentityIssuer.Persistence.Repositories
 {
@@ -14,12 +16,15 @@ namespace IdentityIssuer.Persistence.Repositories
     {
         private readonly AppIdentityContext _context;
         private readonly IMapper _mapper;
+        private readonly ILogger<TenantProviderSettingsRepository> _logger;
 
         public TenantProviderSettingsRepository(AppIdentityContext context,
-            IMapper mapper)
+            IMapper mapper,
+            ILogger<TenantProviderSettingsRepository> logger)
         {
             _context = context;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<TenantProviderSettings> GetProviderSettings(int tenantId, AuthProviderType providerType)
@@ -31,7 +36,7 @@ namespace IdentityIssuer.Persistence.Repositories
             return _mapper.Map<TenantProviderSettings>(result);
         }
 
-        public Task<bool> TenantProviderSettingsExists(int tenantId, AuthProviderType providerType)
+        public Task<bool> ProviderSettingsExistsAsync(int tenantId, AuthProviderType providerType)
         {
             var query = GetTenantProviderSettingsQuery(tenantId, providerType);
 
@@ -40,12 +45,20 @@ namespace IdentityIssuer.Persistence.Repositories
 
         public async Task<TenantProviderSettings> CreateTenantProviderSettings(CreateTenantProviderSettingsDto data)
         {
-            var providerSettings = _mapper.Map<TenantProviderSettingsEntity>(data);
+            try
+            {
+                var providerSettings = _mapper.Map<TenantProviderSettingsEntity>(data);
 
-            _context.TenantProviderSettings.Add(providerSettings);
-            await _context.SaveChangesAsync();
+                _context.TenantProviderSettings.Add(providerSettings);
+                await _context.SaveChangesAsync();
 
-            return _mapper.Map<TenantProviderSettings>(providerSettings);
+                return _mapper.Map<TenantProviderSettings>(providerSettings);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return null;
+            }
         }
 
         private IQueryable<TenantProviderSettingsEntity> GetTenantProviderSettingsQuery(int tenantId,

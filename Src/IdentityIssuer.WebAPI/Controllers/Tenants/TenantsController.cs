@@ -23,5 +23,19 @@ namespace IdentityIssuer.WebAPI.Controllers.Tenants
 
             return GetResponse(result);
         }
+
+        [HttpPost("providersettings/create")]
+        public async Task<ActionResult<TenantProviderSettingsDto>> CreateProviderSettings(CreateProviderSettingsModel model)
+        {
+            var adminContext = await GetAdminAsync();
+            var result = await Mediator.Send(new CreateTenantProviderSettingsCommand(
+                model.TenantCode,
+                model.ProviderType,
+                model.Identifier,
+                model.Key,
+                adminContext));
+
+            return GetResponse(result);
+        }
     }
 }
