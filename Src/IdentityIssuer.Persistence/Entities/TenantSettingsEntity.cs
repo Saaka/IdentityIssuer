@@ -13,6 +13,5 @@ namespace IdentityIssuer.Persistence.Entities
         public bool EnableFacebookLogin { get; set; }
 
         public virtual TenantEntity Tenant { get; set; }
-        public virtual ICollection<TenantProviderSettingsEntity> TenantProviders { get; set; } = new List<TenantProviderSettingsEntity>();
     }
 }

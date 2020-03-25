@@ -6,12 +6,17 @@ namespace IdentityIssuer.Persistence.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            AddTenantIdToProviderSettings(migrationBuilder);
+        }
+
+        private static void AddTenantIdToProviderSettings(MigrationBuilder migrationBuilder)
+        {
             const string schema = PersistenceConstants.DefaultIdentitySchema;
             migrationBuilder.Sql($"UPDATE TPS " +
                                  $"SET TPS.TenantId = " +
-                                    $"(SELECT TOP 1 TS.TenantId " +
-                                    $"FROM {schema}.TenantSettings TS " +
-                                    $"WHERE TS.Id = TPS.TenantSettingsId) " +
+                                     $"(SELECT TOP 1 TS.TenantId " +
+                                     $"FROM {schema}.TenantSettings TS " +
+                                     $"WHERE TS.Id = TPS.TenantSettingsId) " +
                                  $"FROM {schema}.TenantProviderSettings TPS");
         }
 

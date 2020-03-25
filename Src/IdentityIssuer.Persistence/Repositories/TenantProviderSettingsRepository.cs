@@ -40,13 +40,9 @@ namespace IdentityIssuer.Persistence.Repositories
 
         public async Task<TenantProviderSettings> CreateTenantProviderSettings(CreateTenantProviderSettingsDto data)
         {
-            var tenantSettings = await (from ts in _context.TenantSettings
-                where ts.TenantId == data.TenantId
-                select ts).FirstOrDefaultAsync();
-
             var providerSettings = _mapper.Map<TenantProviderSettingsEntity>(data);
-            tenantSettings.TenantProviders.Add(providerSettings);
 
+            _context.TenantProviderSettings.Add(providerSettings);
             await _context.SaveChangesAsync();
 
             return _mapper.Map<TenantProviderSettings>(providerSettings);
@@ -55,11 +51,8 @@ namespace IdentityIssuer.Persistence.Repositories
         private IQueryable<TenantProviderSettingsEntity> GetTenantProviderSettingsQuery(int tenantId,
             AuthProviderType providerType)
         {
-            var query = from tenant in _context.Tenants
-                join settings in _context.TenantSettings on tenant.Id equals settings.TenantId
-                join providerSettings in _context.TenantProviderSettings
-                    on settings.Id equals providerSettings.TenantSettingsId
-                where tenant.Id == tenantId &&
+            var query = from providerSettings in _context.TenantProviderSettings
+                where providerSettings.TenantId == tenantId &&
                       providerSettings.ProviderType == providerType
                 select providerSettings;
             return query;

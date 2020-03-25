@@ -43,7 +43,7 @@ namespace IdentityIssuer.Persistence.Configurations
                 .HasMany(x => x.TenantProviders)
                 .WithOne(x => x.Tenant)
                 .HasForeignKey(x => x.TenantId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

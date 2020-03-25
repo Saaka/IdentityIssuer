@@ -22,12 +22,6 @@ namespace IdentityIssuer.Persistence.Configurations
                 .IsRequired();
 
             builder
-                .HasMany(x => x.TenantProviders)
-                .WithOne(x => x.TenantSettings)
-                .HasForeignKey(x => x.TenantSettingsId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder
                 .Property(x => x.EnableCredentialsLogin)
                 .IsRequired();
             
