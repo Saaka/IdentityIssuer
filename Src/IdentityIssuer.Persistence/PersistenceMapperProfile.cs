@@ -19,6 +19,7 @@ namespace IdentityIssuer.Persistence
             CreateMap<TenantSettingsEntity, TenantSettings>();
             
             CreateMap<TenantProviderSettingsEntity, TenantProviderSettings>();
+            CreateMap<CreateTenantProviderSettingsDto, TenantProviderSettingsEntity>();
         }
     }
 }
