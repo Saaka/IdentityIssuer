@@ -35,7 +35,7 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenantProviderSettin
                 return RequestResult<TenantProviderSettingsDto>
                     .Failure(ErrorCode.TenantProviderSettingsAlreadyExists);
 
-            var createData = _mapper.Map<CreateTenantProviderSettingsDto>(request);
+            var createData = _mapper.Map<CreateTenantProviderSettingsData>(request);
             createData.TenantId = tenant.Id;
             var providerSettings = await _providerSettingsRepository
                 .CreateTenantProviderSettings(createData);

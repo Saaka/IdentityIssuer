@@ -1,6 +1,6 @@
 namespace IdentityIssuer.Application.Tenants.Models
 {
-    public class CreateTenantSettingsDto
+    public class CreateTenantSettingsData
     {
         public int TenantId { get; set; }
         public string TokenSecret { get; set; }

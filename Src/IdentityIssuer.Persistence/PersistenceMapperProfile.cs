@@ -11,15 +11,15 @@ namespace IdentityIssuer.Persistence
         {
             CreateMap<TenantEntity, Tenant>();
             CreateMap<TenantUserEntity, TenantUser>();
-            CreateMap<CreateTenantDto, TenantEntity>();
+            CreateMap<CreateTenantData, TenantEntity>();
 
             CreateMap<TenantAllowedOriginEntity, TenantAllowedOrigin>();
             
-            CreateMap<CreateTenantSettingsDto, TenantSettingsEntity>();
+            CreateMap<CreateTenantSettingsData, TenantSettingsEntity>();
             CreateMap<TenantSettingsEntity, TenantSettings>();
             
             CreateMap<TenantProviderSettingsEntity, TenantProviderSettings>();
-            CreateMap<CreateTenantProviderSettingsDto, TenantProviderSettingsEntity>();
+            CreateMap<CreateTenantProviderSettingsData, TenantProviderSettingsEntity>();
         }
     }
 }

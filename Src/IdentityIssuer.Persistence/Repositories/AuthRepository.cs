@@ -91,7 +91,7 @@ namespace IdentityIssuer.Persistence.Repositories
             return await UpdateUser(user, nameof(UpdateExistingFacebookUser));
         }
 
-        public async Task<TenantUser> CreateUser(CreateUserDto data)
+        public async Task<TenantUser> CreateUser(CreateUserData data)
         {
             var tenantUser = new TenantUserEntity
             {
@@ -111,7 +111,7 @@ namespace IdentityIssuer.Persistence.Repositories
             return _mapper.Map<TenantUser>(tenantUser);
         }
 
-        public async Task<TenantUser> CreateGoogleUser(CreateUserDto data)
+        public async Task<TenantUser> CreateGoogleUser(CreateUserData data)
         {
             var tenantUser = new TenantUserEntity
             {
@@ -131,7 +131,7 @@ namespace IdentityIssuer.Persistence.Repositories
             return _mapper.Map<TenantUser>(tenantUser);
         }
 
-        public async Task<TenantUser> CreateFacebookUser(CreateUserDto data)
+        public async Task<TenantUser> CreateFacebookUser(CreateUserData data)
         {
             var tenantUser = new TenantUserEntity
             {

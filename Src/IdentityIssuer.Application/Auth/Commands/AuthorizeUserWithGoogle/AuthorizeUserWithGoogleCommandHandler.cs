@@ -67,7 +67,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
         {
             var userGuid = _guid.GetGuid();
 
-            var userData = _mapper.Map<CreateUserDto>(tokenInfo);
+            var userData = _mapper.Map<CreateUserData>(tokenInfo);
             userData.UserGuid = userGuid;
             userData.TenantId = requestTenant.TenantId;
             userData.AvatarType = AvatarType.Google;

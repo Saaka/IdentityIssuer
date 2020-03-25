@@ -9,9 +9,9 @@ namespace IdentityIssuer.Application.Auth.Repositories
         Task<bool> IsEmailRegisteredForTenant(string email, int tenantId);
         Task<TenantUser> GetUserByCredentials(string email, string password, int tenantId);
         Task<TenantUser> GetUserByEmail(string email, int tenantId);
-        Task<TenantUser> CreateUser(CreateUserDto data);
-        Task<TenantUser> CreateGoogleUser(CreateUserDto data);
-        Task<TenantUser> CreateFacebookUser(CreateUserDto data);
+        Task<TenantUser> CreateUser(CreateUserData data);
+        Task<TenantUser> CreateGoogleUser(CreateUserData data);
+        Task<TenantUser> CreateFacebookUser(CreateUserData data);
         Task<bool> GoogleUserExists(string externalUserId, int tenantId);
         Task<bool> FacebookUserExists(string externalUserId, int tenantId);
         Task<TenantUser> AddGoogleLoginToUser(int tenantId, string email, string externalUserId);

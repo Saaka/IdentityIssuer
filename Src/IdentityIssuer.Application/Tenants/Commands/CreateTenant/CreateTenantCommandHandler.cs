@@ -41,7 +41,7 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
                 throw new DomainException(ErrorCode.TenantAlreadyExistsForCode, new {Code = request.Code});
 
             var tenant = await _tenantsRepository
-                .CreateTenant(new CreateTenantDto
+                .CreateTenant(new CreateTenantData
                 {
                     Name = request.Name,
                     Code = request.Code,
@@ -51,7 +51,7 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
                 return RequestResult<TenantDto>.Failure(ErrorCode.CreateTenantFailed);
 
             var tenantSettings = await _tenantSettingsRepository
-                .CreateTenantSettings(new CreateTenantSettingsDto
+                .CreateTenantSettings(new CreateTenantSettingsData
                 {
                     TenantId = tenant.Id,
                     TokenSecret = request.TokenSecret,

@@ -88,7 +88,7 @@ namespace IdentityIssuer.Persistence.Repositories
             return _context.Tenants.AnyAsync(x => x.Code == code);
         }
 
-        public async Task<Tenant> CreateTenant(CreateTenantDto model)
+        public async Task<Tenant> CreateTenant(CreateTenantData model)
         {
             try
             {

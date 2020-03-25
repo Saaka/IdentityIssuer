@@ -13,6 +13,6 @@ namespace IdentityIssuer.Application.Tenants.Repositories
         TenantSettings GetTenantSettings(string code);
         Task<TenantSettings> GetTenantSettings(int tenantId);
         Task<bool> TenantCodeExists(string code);
-        Task<Tenant> CreateTenant(CreateTenantDto model);
+        Task<Tenant> CreateTenant(CreateTenantData model);
     }
 }

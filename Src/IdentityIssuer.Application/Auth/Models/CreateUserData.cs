@@ -3,7 +3,7 @@ using System;
 
 namespace IdentityIssuer.Application.Auth.Models
 {
-    public class CreateUserDto
+    public class CreateUserData
     {
         public string Email { get; set; }
         public string DisplayName { get; set; }

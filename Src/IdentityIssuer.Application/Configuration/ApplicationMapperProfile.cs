@@ -12,10 +12,10 @@ namespace IdentityIssuer.Application.Configuration
         public ApplicationMapperProfile()
         {
             CreateMap<TenantUser, UserDto>();
-            CreateMap<TokenInfo, CreateUserDto>();
+            CreateMap<TokenInfo, CreateUserData>();
             CreateMap<Tenant, TenantDto>();
 
-            CreateMap<CreateTenantProviderSettingsCommand, CreateTenantProviderSettingsDto>();
+            CreateMap<CreateTenantProviderSettingsCommand, CreateTenantProviderSettingsData>();
             CreateMap<TenantProviderSettings, TenantProviderSettingsDto>();
         }
     }

@@ -43,7 +43,7 @@ namespace IdentityIssuer.Persistence.Repositories
             return query.Select(x => x.Id).AnyAsync();
         }
 
-        public async Task<TenantProviderSettings> CreateTenantProviderSettings(CreateTenantProviderSettingsDto data)
+        public async Task<TenantProviderSettings> CreateTenantProviderSettings(CreateTenantProviderSettingsData data)
         {
             try
             {
