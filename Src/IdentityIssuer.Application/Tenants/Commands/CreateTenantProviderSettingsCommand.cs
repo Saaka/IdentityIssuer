@@ -11,7 +11,7 @@ namespace IdentityIssuer.Application.Tenants.Commands
         public AuthProviderType ProviderType { get; }
         public string Identifier { get; }
         public string Key { get; }
-        public AdminContextData AdminContextData { get; }
+        public AdminContextData AdminContextData { get; private set; }
         
         public CreateTenantProviderSettingsCommand(
             string tenantCode, AuthProviderType providerType, 
@@ -22,6 +22,12 @@ namespace IdentityIssuer.Application.Tenants.Commands
             Identifier = identifier;
             Key = key;
             AdminContextData = adminContextData;
+        }
+
+        public CreateTenantProviderSettingsCommand WithAdminContextData(AdminContextData value)
+        {
+            AdminContextData = value;
+            return this;
         }
     }
 }

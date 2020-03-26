@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AutoMapper;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Common.Requests;
@@ -16,12 +17,16 @@ namespace IdentityIssuer.WebAPI.Controllers
         private IMediator _mediator;
         private IGuid _guid;
         private IContextDataProvider _contextDataProvider;
+        private IMapper _mapper;
 
-        protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
-        protected IGuid GuidProvider => _guid ??= HttpContext.RequestServices.GetService<IGuid>();
-
-        protected IContextDataProvider ContextDataProvider =>
-            _contextDataProvider ??= HttpContext.RequestServices.GetService<IContextDataProvider>();
+        protected IMediator Mediator 
+            => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
+        protected IGuid GuidProvider 
+            => _guid ??= HttpContext.RequestServices.GetService<IGuid>();
+        protected IContextDataProvider ContextDataProvider 
+            => _contextDataProvider ??= HttpContext.RequestServices.GetService<IContextDataProvider>();
+        protected IMapper Mapper 
+            => _mapper ??= HttpContext.RequestServices.GetService<IMapper>();
 
         protected Task<TenantContextData> GetTenantAsync()
         {

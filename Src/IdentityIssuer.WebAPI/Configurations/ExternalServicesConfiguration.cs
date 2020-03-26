@@ -4,6 +4,7 @@ using System.Reflection;
 using IdentityIssuer.Application;
 using IdentityIssuer.Application.Configuration;
 using IdentityIssuer.Persistence;
+using IdentityIssuer.WebAPI.Controllers.Tenants.Models;
 using MediatR;
 using MediatR.Pipeline;
 
@@ -16,27 +17,26 @@ namespace IdentityIssuer.WebAPI.Configurations
             services
                 .AddAutoMapper(new Assembly[]
                 {
-                    typeof(Persistence.PersistenceMapperProfile).Assembly,
+                    typeof(PersistenceMapperProfile).Assembly,
                     typeof(Infrastructure.InfrastructureAutoMapperProfile).Assembly,
-                    typeof(ApplicationMapperProfile).Assembly
+                    typeof(ApplicationMapperProfile).Assembly,
+                    typeof(ApiTenantMapperProfile).Assembly,
                 })
                 .AddMemoryCache()
-                .AddMediatrBehaviors()
+                .AddMediatRBehaviors()
                 .AddMediatR(typeof(ApplicationModule).Assembly);
 
             return services;
         }
         
-        private static IServiceCollection AddMediatrBehaviors(this IServiceCollection services)
+        private static IServiceCollection AddMediatRBehaviors(this IServiceCollection services)
         {
             services
                 .AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>))
                 .AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPostProcessorBehavior<,>))
 
-                
                 .AddPersistenceModuleBehaviors()
                 .AddApplicationModuleBehaviors();
-            
             
             return services;
         }

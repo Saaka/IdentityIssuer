@@ -9,7 +9,8 @@ namespace IdentityIssuer.Infrastructure
         public InfrastructureAutoMapperProfile()
         {
             CreateMap<GoogleTokenInfo, TokenInfo>()
-                .ForMember(x => x.ExternalUserId, c => c.MapFrom(t => t.GoogleUserId));
+                .ForMember(x => x.ExternalUserId,
+                    c => c.MapFrom(t => t.GoogleUserId));
         }
     }
 }
