@@ -17,6 +17,9 @@ namespace IdentityIssuer.Application.Configuration
 
             CreateMap<CreateTenantProviderSettingsCommand, CreateTenantProviderSettingsData>();
             CreateMap<TenantProviderSettings, TenantProviderSettingsDto>();
+
+            CreateMap<CreateTenantCommand, SaveTenantSettingsData>();
+            CreateMap<CreateTenantCommand, CreateTenantData>();
         }
     }
 }

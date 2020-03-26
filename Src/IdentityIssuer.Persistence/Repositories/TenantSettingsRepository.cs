@@ -24,7 +24,7 @@ namespace IdentityIssuer.Persistence.Repositories
             _logger = logger;
         }
         
-        public async Task<TenantSettings> CreateTenantSettings(CreateTenantSettingsData model)
+        public async Task<TenantSettings> SaveTenantSettings(SaveTenantSettingsData model)
         {
             var settingsEntity = _mapper.Map<TenantSettingsEntity>(model);
 

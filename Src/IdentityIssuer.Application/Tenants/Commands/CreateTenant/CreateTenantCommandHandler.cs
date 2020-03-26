@@ -41,25 +41,15 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
                 throw new DomainException(ErrorCode.TenantAlreadyExistsForCode, new {Code = request.Code});
 
             var tenant = await _tenantsRepository
-                .CreateTenant(new CreateTenantData
-                {
-                    Name = request.Name,
-                    Code = request.Code,
-                    AllowedOrigin = request.AllowedOrigin
-                });
+                .CreateTenant(_mapper.Map<CreateTenantData>(request));
             if (tenant == null)
                 return RequestResult<TenantDto>.Failure(ErrorCode.CreateTenantFailed);
 
+            var saveTenantSettingsData = _mapper.Map<SaveTenantSettingsData>(request);
+            saveTenantSettingsData.TenantId = tenant.Id;
+            
             var tenantSettings = await _tenantSettingsRepository
-                .CreateTenantSettings(new CreateTenantSettingsData
-                {
-                    TenantId = tenant.Id,
-                    TokenSecret = request.TokenSecret,
-                    TokenExpirationInMinutes = request.TokenExpirationInMinutes,
-                    EnableCredentialsLogin = true,
-                    EnableGoogleLogin = false,
-                    EnableFacebookLogin = false
-                });
+                .SaveTenantSettings(saveTenantSettingsData);
             if (tenantSettings == null)
                 return RequestResult<TenantDto>.Failure(ErrorCode.CreateTenantFailed);
 

@@ -6,6 +6,6 @@ namespace IdentityIssuer.Application.Tenants.Repositories
 {
     public interface ITenantSettingsRepository
     {
-        Task<TenantSettings> CreateTenantSettings(CreateTenantSettingsData model);
+        Task<TenantSettings> SaveTenantSettings(SaveTenantSettingsData model);
     }
 }
