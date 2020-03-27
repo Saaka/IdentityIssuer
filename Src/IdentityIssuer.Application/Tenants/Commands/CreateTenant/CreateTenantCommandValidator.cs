@@ -37,6 +37,16 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
 
             RuleFor(x => x.AdminContextData)
                 .IsValid();
+
+            RuleFor(x => x)
+                .Must(HaveOneLoginOptionEnabled)
+                .WithName(nameof(UpdateTenantSettingsCommand.EnableCredentialsLogin))
+                .WithMessageCode(ValidationErrorCode.OneLoginOptionRequired);
+        }
+
+        private static bool HaveOneLoginOptionEnabled(CreateTenantCommand settings)
+        {
+            return settings.EnableCredentialsLogin || settings.EnableFacebookLogin || settings.EnableGoogleLogin;
         }
     }
 }
