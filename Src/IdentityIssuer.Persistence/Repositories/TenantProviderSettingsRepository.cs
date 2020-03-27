@@ -61,6 +61,27 @@ namespace IdentityIssuer.Persistence.Repositories
             }
         }
 
+        public async Task<TenantProviderSettings> UpdateTenantProviderSettings(UpdateTenantProviderSettingsData data)
+        {
+            try
+            {
+                var tenantSettings = await GetTenantProviderSettingsQuery(data.TenantId, data.ProviderType)
+                    .FirstOrDefaultAsync();
+
+                tenantSettings.Key = data.Key;
+                tenantSettings.Identifier = data.Identifier;
+
+                await _context.SaveChangesAsync();
+
+                return _mapper.Map<TenantProviderSettings>(tenantSettings);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return null;
+            }
+        }
+
         private IQueryable<TenantProviderSettingsEntity> GetTenantProviderSettingsQuery(int tenantId,
             AuthProviderType providerType)
         {

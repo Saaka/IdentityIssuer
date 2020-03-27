@@ -47,5 +47,6 @@ namespace IdentityIssuer.Common.Enums
         TenantProviderSettingsAlreadyExists = 16,
         CreateTenantProviderSettingsFailed = 17,
         UpdateTenantSettingsFailed = 18,
+        UpdateTenantProviderSettingsFailed = 19,
     }
 }
