@@ -78,7 +78,7 @@ namespace IdentityIssuer.Persistence.Utilities
                             config.UserDisplayName,
                             config.Password,
                             new TenantContextData(tenant.Id, tenant.Code))
-                        .WithRequestGuid(createTenantCommand.RequestGuid);
+                        .WithCorrelationId(createTenantCommand.CorrelationId);
 
                     var createUserResult = await _mediator.Send(createUserCommand);
                     if (!createUserResult.IsSuccess)
@@ -87,7 +87,7 @@ namespace IdentityIssuer.Persistence.Utilities
                     var makeUserAdminCommand = new MakeUserAdminCommand(
                             createUserResult.Data.UserGuid,
                             adminContextData)
-                        .WithRequestGuid(createTenantCommand.RequestGuid);
+                        .WithCorrelationId(createTenantCommand.CorrelationId);
 
                     var makeUserAdminResult = await _mediator.Send(makeUserAdminCommand);
                     if (!makeUserAdminResult.IsSuccess)

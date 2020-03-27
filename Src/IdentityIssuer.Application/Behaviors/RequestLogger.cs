@@ -22,23 +22,27 @@ namespace IdentityIssuer.Application.Behaviors
             var name = typeof(TRequest).Name;
             TResponse response;
 
-            _logger.LogInformation("{Name} handler started. [{RequestGuid}]", name, request.RequestGuid);
+            _logger.LogInformation("{Name} handler started. [Guid:{RequestGuid}][CorrelationId:{CorrelationId}]", 
+                name, request.RequestGuid, request.CorrelationId);
             try
             {
                 response = await next();
             }
             catch (CommandValidationException)
             {
-                _logger.LogWarning("{Name} handler validation failed. [{RequestGuid}]", name, request.RequestGuid);
+                _logger.LogWarning("{Name} handler validation failed. [{RequestGuid}][CorrelationId:{CorrelationId}]",
+                    name, request.RequestGuid, request.CorrelationId);
                 throw;
             }
             catch
             {
-                _logger.LogError("{Name} handler failed with exception. [{RequestGuid}]", name, request.RequestGuid);
+                _logger.LogError("{Name} handler failed with exception. [{RequestGuid}][CorrelationId:{CorrelationId}]", 
+                    name, request.RequestGuid, request.CorrelationId);
                 throw;
             }
 
-            _logger.LogInformation("{Name} handler finished. [{RequestGuid}]", name, request.RequestGuid);
+            _logger.LogInformation("{Name} handler finished. [{RequestGuid}][CorrelationId:{CorrelationId}]",
+                name, request.RequestGuid, request.CorrelationId);
 
             return response;
         }

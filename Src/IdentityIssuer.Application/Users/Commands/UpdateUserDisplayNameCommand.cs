@@ -8,16 +8,20 @@ namespace IdentityIssuer.Application.Users.Commands
     {
         public UpdateUserDisplayNameCommand(
             string name,
-            Guid userGuid,
-            UserContextData tenant)
+            Guid userGuid)
         {
             Name = name;
             UserGuid = userGuid;
-            User = tenant;
         }
 
         public string Name { get; }
         public Guid UserGuid { get; }
-        public UserContextData User { get; }
+        public UserContextData User { get; private set; }
+
+        public UpdateUserDisplayNameCommand WithUser(UserContextData user)
+        {
+            User = user;
+            return this;
+        }
     }
 }

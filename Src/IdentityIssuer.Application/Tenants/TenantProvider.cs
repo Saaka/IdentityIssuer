@@ -49,8 +49,8 @@ namespace IdentityIssuer.Application.Tenants
         {
             var result = await _cache.GetOrCreateAsync($"{CacheConstants.TenantSettingsCachePrefix}{tenantCode}",
                 async (ce) => { 
-                    ce.SlidingExpiration = TimeSpan.FromMinutes(5);
-                    ce.AbsoluteExpiration = DateTime.Now.AddHours(1);
+                    ce.SlidingExpiration = TimeSpan.FromSeconds(15);
+                    ce.AbsoluteExpiration = DateTime.Now.AddMinutes(5);
 
                     var settings = await _tenantsRepository.GetTenantSettingsAsync(tenantCode);
 
@@ -64,8 +64,8 @@ namespace IdentityIssuer.Application.Tenants
         {
             var result = _cache.GetOrCreate($"{CacheConstants.TenantSettingsCachePrefix}{tenantCode}",
                 (ce) => {
-                    ce.SlidingExpiration = TimeSpan.FromMinutes(5);
-                    ce.AbsoluteExpiration = DateTime.Now.AddHours(1);
+                    ce.SlidingExpiration = TimeSpan.FromSeconds(15);
+                    ce.AbsoluteExpiration = DateTime.Now.AddMinutes(5);
 
                     var settings = _tenantsRepository.GetTenantSettings(tenantCode);
 

@@ -21,7 +21,7 @@ namespace IdentityIssuer.WebAPI.Controllers.Tenants
             return GetResponse(result);
         }
 
-        [HttpPost("providersettings/create")]
+        [HttpPost("providerSettings/create")]
         public async Task<ActionResult<TenantProviderSettingsDto>> CreateProviderSettings(CreateProviderSettingsModel model)
         {
             var adminContext = await GetAdminAsync();
