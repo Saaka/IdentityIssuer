@@ -2,10 +2,12 @@ using System.Threading.Tasks;
 using IdentityIssuer.Application.Tenants.Commands;
 using IdentityIssuer.Application.Tenants.Models;
 using IdentityIssuer.WebAPI.Controllers.Tenants.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityIssuer.WebAPI.Controllers.Tenants
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class TenantsController : BaseApiController
     {
@@ -16,6 +18,18 @@ namespace IdentityIssuer.WebAPI.Controllers.Tenants
             var command = Mapper.Map<CreateTenantCommand>(model)
                 .WithAdminContextData(adminContext);
             
+            var result = await Mediator.Send(command);
+
+            return GetResponse(result);
+        }
+
+        [HttpPost("settings/update")]
+        public async Task<ActionResult<TenantSettingsDto>> UpdateTenantSettings(UpdateTenantSettingsModel model)
+        {
+            var adminContext = await GetAdminAsync();
+            var command = Mapper.Map<UpdateTenantSettingsCommand>(model)
+                .WithAdminContextData(adminContext);
+
             var result = await Mediator.Send(command);
 
             return GetResponse(result);
@@ -33,13 +47,13 @@ namespace IdentityIssuer.WebAPI.Controllers.Tenants
             return GetResponse(result);
         }
 
-        [HttpPost("settings/update")]
-        public async Task<ActionResult<TenantSettingsDto>> UpdateTenantSettings(UpdateTenantSettingsModel model)
+        [HttpPost("providerSettings/update")]
+        public async Task<ActionResult<TenantProviderSettingsDto>> UpdateProviderSettings(UpdateProviderSettingsModel model)
         {
             var adminContext = await GetAdminAsync();
-            var command = Mapper.Map<UpdateTenantSettingsCommand>(model)
+            var command = Mapper.Map<UpdateTenantProviderSettingsCommand>(model)
                 .WithAdminContextData(adminContext);
-
+            
             var result = await Mediator.Send(command);
 
             return GetResponse(result);
