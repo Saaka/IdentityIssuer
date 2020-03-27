@@ -27,6 +27,7 @@ namespace IdentityIssuer.Application.Tenants.Commands.UpdateTenantSettings
 
             RuleFor(x => x)
                 .Must(HaveOneLoginOptionEnabled)
+                .WithName(nameof(UpdateTenantSettingsCommand.EnableCredentialsLogin))
                 .WithMessageCode(ValidationErrorCode.OneLoginOptionRequired);
         }
 
