@@ -12,12 +12,11 @@ namespace IdentityIssuer.Application.Tenants.Commands
         public bool EnableCredentialsLogin { get; }
         public bool EnableGoogleLogin { get; }
         public bool EnableFacebookLogin { get; }
-        public AdminContextData AdminContextData { get; }
+        public AdminContextData AdminContextData { get; private set; }
 
         public UpdateTenantSettingsCommand(
             string tenantCode, string tokenSecret, int tokenExpirationInMinutes,
-            bool enableCredentialsLogin, bool enableGoogleLogin, bool enableFacebookLogin,
-            AdminContextData adminContextData)
+            bool enableCredentialsLogin, bool enableGoogleLogin, bool enableFacebookLogin)
         {
             TenantCode = tenantCode;
             TokenSecret = tokenSecret;
@@ -25,7 +24,12 @@ namespace IdentityIssuer.Application.Tenants.Commands
             EnableCredentialsLogin = enableCredentialsLogin;
             EnableGoogleLogin = enableGoogleLogin;
             EnableFacebookLogin = enableFacebookLogin;
-            AdminContextData = adminContextData;
+        }
+
+        public UpdateTenantSettingsCommand WithAdminContextData(AdminContextData value)
+        {
+            AdminContextData = value;
+            return this;
         }
     }
 }

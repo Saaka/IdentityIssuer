@@ -12,8 +12,9 @@ namespace IdentityIssuer.WebAPI.Controllers.Tenants
         [HttpPost("create")]
         public async Task<ActionResult<TenantDto>> CreateTenant(CreateTenantModel model)
         {
+            var adminContext = await GetAdminAsync();
             var command = Mapper.Map<CreateTenantCommand>(model)
-                .WithAdminContextData(await GetAdminAsync());
+                .WithAdminContextData(adminContext);
             
             var result = await Mediator.Send(command);
 
@@ -23,9 +24,22 @@ namespace IdentityIssuer.WebAPI.Controllers.Tenants
         [HttpPost("providersettings/create")]
         public async Task<ActionResult<TenantProviderSettingsDto>> CreateProviderSettings(CreateProviderSettingsModel model)
         {
+            var adminContext = await GetAdminAsync();
             var command = Mapper.Map<CreateTenantProviderSettingsCommand>(model)
-                .WithAdminContextData(await GetAdminAsync());
+                .WithAdminContextData(adminContext);
             
+            var result = await Mediator.Send(command);
+
+            return GetResponse(result);
+        }
+
+        [HttpPost("settings/update")]
+        public async Task<ActionResult<TenantSettingsDto>> UpdateTenantSettings(UpdateTenantSettingsModel model)
+        {
+            var adminContext = await GetAdminAsync();
+            var command = Mapper.Map<UpdateTenantSettingsCommand>(model)
+                .WithAdminContextData(adminContext);
+
             var result = await Mediator.Send(command);
 
             return GetResponse(result);

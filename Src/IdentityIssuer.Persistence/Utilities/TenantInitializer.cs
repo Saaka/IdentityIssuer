@@ -56,15 +56,15 @@ namespace IdentityIssuer.Persistence.Utilities
                         return _mapper.Map<TenantDto>(tenant);
 
                     var createTenantCommand = new CreateTenantCommand(
-                        config.Name,
-                        config.Code,
-                        config.AllowedOrigin,
-                        config.TokenSecret, 
-                        config.TokenExpirationInMinutes,
-                        true,
-                        false, 
-                        false,
-                        adminContextData);
+                            config.Name,
+                            config.Code,
+                            config.AllowedOrigin,
+                            config.TokenSecret,
+                            config.TokenExpirationInMinutes,
+                            true,
+                            false,
+                            false)
+                        .WithAdminContextData(adminContextData);
 
                     var createTenantResult = await _mediator.Send(createTenantCommand);
                     if (!createTenantResult.IsSuccess)

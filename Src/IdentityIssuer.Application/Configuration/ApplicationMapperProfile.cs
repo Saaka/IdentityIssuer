@@ -14,12 +14,15 @@ namespace IdentityIssuer.Application.Configuration
             CreateMap<TenantUser, UserDto>();
             CreateMap<TokenInfo, CreateUserData>();
             CreateMap<Tenant, TenantDto>();
+            CreateMap<TenantSettings, TenantSettingsDto>();
 
             CreateMap<CreateTenantProviderSettingsCommand, CreateTenantProviderSettingsData>();
             CreateMap<TenantProviderSettings, TenantProviderSettingsDto>();
 
             CreateMap<CreateTenantCommand, SaveTenantSettingsData>();
             CreateMap<CreateTenantCommand, CreateTenantData>();
+            
+            CreateMap<UpdateTenantSettingsCommand, SaveTenantSettingsData>();
         }
     }
 }

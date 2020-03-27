@@ -29,5 +29,6 @@ namespace IdentityIssuer.Common.Enums
         AuthProviderKeyTooLong = 25,
         AuthProviderIdentifierRequired = 26,
         AuthProviderIdentifierTooLong = 27,
+        OneLoginOptionRequired = 28,
     }
 }

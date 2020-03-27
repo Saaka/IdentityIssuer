@@ -9,7 +9,7 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
     {
         public CreateTenantCommandValidator()
         {
-            RuleFor(x => x.Code)
+            RuleFor(x => x.TenantCode)
                 .NotEmpty()
                 .WithMessageCode(ValidationErrorCode.TenantCodeRequired)
                 .Length(TenantConstants.TenantCodeMaxLength, TenantConstants.TenantCodeMaxLength)

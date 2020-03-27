@@ -7,7 +7,7 @@ namespace IdentityIssuer.Application.Tenants.Commands
     public class CreateTenantCommand : Request<TenantDto>
     {
         public string Name { get; }
-        public string Code { get; }
+        public string TenantCode { get; }
         public string AllowedOrigin { get; }
         public string TokenSecret { get; }
         public int TokenExpirationInMinutes { get; }
@@ -18,19 +18,17 @@ namespace IdentityIssuer.Application.Tenants.Commands
 
         public CreateTenantCommand(
             string name,
-            string code,
+            string tenantCode,
             string allowedOrigin,
             string tokenSecret, 
             int tokenExpirationInMinutes,
             bool enableCredentialsLogin,
             bool enableGoogleLogin,
-            bool enableFacebookLogin,
-            AdminContextData adminContextData)
+            bool enableFacebookLogin)
         {
             Name = name;
-            Code = code;
+            TenantCode = tenantCode;
             AllowedOrigin = allowedOrigin;
-            AdminContextData = adminContextData;
             TokenSecret = tokenSecret;
             TokenExpirationInMinutes = tokenExpirationInMinutes;
             EnableCredentialsLogin = enableCredentialsLogin;

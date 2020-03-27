@@ -15,13 +15,12 @@ namespace IdentityIssuer.Application.Tenants.Commands
         
         public CreateTenantProviderSettingsCommand(
             string tenantCode, AuthProviderType providerType, 
-            string identifier, string key, AdminContextData adminContextData)
+            string identifier, string key)
         {
             TenantCode = tenantCode;
             ProviderType = providerType;
             Identifier = identifier;
             Key = key;
-            AdminContextData = adminContextData;
         }
 
         public CreateTenantProviderSettingsCommand WithAdminContextData(AdminContextData value)
