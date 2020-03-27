@@ -6,7 +6,7 @@ namespace IdentityIssuer.Application.Tenants.Repositories
 {
     public interface ITenantAllowedOriginsRepository
     {
-        Task<bool> SaveAllowedOriginsAsync(int tenantId, ICollection<string> allowedOrigins);
+        Task<bool> SaveAllowedOriginsAsync(int tenantId, IEnumerable<string> allowedOrigins);
         Task<List<string>> GetAllowedOriginsForTenant(string code);
     }
 }

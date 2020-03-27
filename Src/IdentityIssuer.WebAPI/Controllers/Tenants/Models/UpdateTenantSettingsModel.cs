@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace IdentityIssuer.WebAPI.Controllers.Tenants.Models
 {
     public class UpdateTenantSettingsModel
@@ -8,5 +10,11 @@ namespace IdentityIssuer.WebAPI.Controllers.Tenants.Models
         public bool EnableCredentialsLogin { get; set; }
         public bool EnableGoogleLogin { get; set; }
         public bool EnableFacebookLogin { get; set; }
+        public List<string> AllowedOrigins { get; set; }
+        
+        public UpdateTenantSettingsModel()
+        {
+            AllowedOrigins= new List<string>();
+        }
     }
 }

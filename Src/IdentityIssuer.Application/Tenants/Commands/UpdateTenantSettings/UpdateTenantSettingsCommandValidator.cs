@@ -29,6 +29,15 @@ namespace IdentityIssuer.Application.Tenants.Commands.UpdateTenantSettings
                 .Must(HaveOneLoginOptionEnabled)
                 .WithName(nameof(UpdateTenantSettingsCommand.EnableCredentialsLogin))
                 .WithMessageCode(ValidationErrorCode.OneLoginOptionRequired);
+
+            RuleFor(x => x.AllowedOrigins)
+                .NotEmpty()
+                .WithMessageCode(ValidationErrorCode.TenantAllowedOriginRequired);
+
+            RuleForEach(x => x.AllowedOrigins)
+                .NotEmpty()
+                .WithMessageCode(ValidationErrorCode.TenantAllowedOriginRequired)
+                .WithName(nameof(UpdateTenantSettingsCommand.AllowedOrigins));
         }
 
         private static bool HaveOneLoginOptionEnabled(UpdateTenantSettingsCommand settings)

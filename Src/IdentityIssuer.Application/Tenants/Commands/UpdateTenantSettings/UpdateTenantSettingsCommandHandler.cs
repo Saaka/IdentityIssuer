@@ -12,15 +12,18 @@ namespace IdentityIssuer.Application.Tenants.Commands.UpdateTenantSettings
     {
         private readonly ITenantsRepository _tenantsRepository;
         private readonly ITenantSettingsRepository _tenantSettingsRepository;
+        private readonly ITenantAllowedOriginsRepository _allowedOriginsRepository;
         private readonly IMapper _mapper;
 
         public UpdateTenantSettingsCommandHandler(
+            IMapper mapper,
             ITenantsRepository tenantsRepository,
             ITenantSettingsRepository tenantSettingsRepository,
-            IMapper mapper)
+            ITenantAllowedOriginsRepository allowedOriginsRepository)
         {
             _tenantsRepository = tenantsRepository;
             _tenantSettingsRepository = tenantSettingsRepository;
+            _allowedOriginsRepository = allowedOriginsRepository;
             _mapper = mapper;
         }
         
@@ -37,7 +40,10 @@ namespace IdentityIssuer.Application.Tenants.Commands.UpdateTenantSettings
             var tenantSettings = await _tenantSettingsRepository.SaveTenantSettings(saveData);
             if(tenantSettings == null)
                 return RequestResult<TenantSettingsDto>.Failure(ErrorCode.UpdateTenantSettingsFailed);
-
+            
+            if(!await _allowedOriginsRepository.SaveAllowedOriginsAsync(tenant.Id, request.AllowedOrigins))
+                return RequestResult<TenantSettingsDto>.Failure(ErrorCode.UpdateTenantSettingsFailed);
+                
             return RequestResult<TenantSettingsDto>
                 .Success(_mapper.Map<TenantSettingsDto>(tenantSettings));
         }

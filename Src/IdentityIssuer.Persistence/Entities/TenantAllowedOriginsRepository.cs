@@ -25,7 +25,7 @@ namespace IdentityIssuer.Persistence.Entities
             _logger = logger;
         }
 
-        public async Task<bool> SaveAllowedOriginsAsync(int tenantId, ICollection<string> origins)
+        public async Task<bool> SaveAllowedOriginsAsync(int tenantId, IEnumerable<string> origins)
         {
             try
             {
