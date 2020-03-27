@@ -1,7 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Tenants.Models;
 using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Common.Enums;
@@ -9,7 +8,7 @@ using IdentityIssuer.Common.Requests;
 
 namespace IdentityIssuer.Application.Tenants.Commands.UpdateTenantProviderSettings
 {
-    public class UpdateTenantProviderSettingsCommandHandler 
+    public class UpdateTenantProviderSettingsCommandHandler
         : RequestHandler<UpdateTenantProviderSettingsCommand, TenantProviderSettingsDto>
     {
         private readonly ITenantProviderSettingsRepository _providerSettingsRepository;
@@ -30,6 +29,10 @@ namespace IdentityIssuer.Application.Tenants.Commands.UpdateTenantProviderSettin
             UpdateTenantProviderSettingsCommand request, CancellationToken cancellationToken)
         {
             var tenant = await _tenantProvider.GetTenantAsync(request.TenantCode);
+            if (tenant == null)
+                return RequestResult<TenantProviderSettingsDto>.Failure(ErrorCode.TenantNotFound,
+                    new {Code = request.TenantCode});
+
             if (!await _providerSettingsRepository.ProviderSettingsExistsAsync(tenant.Id, request.ProviderType))
                 return RequestResult<TenantProviderSettingsDto>
                     .Failure(ErrorCode.TenantProviderSettingsNotFound);
@@ -38,11 +41,11 @@ namespace IdentityIssuer.Application.Tenants.Commands.UpdateTenantProviderSettin
             updateData.TenantId = tenant.Id;
             var providerSettings = await _providerSettingsRepository
                 .UpdateTenantProviderSettings(updateData);
-            
-            if(providerSettings == null)
+
+            if (providerSettings == null)
                 return RequestResult<TenantProviderSettingsDto>
                     .Failure(ErrorCode.UpdateTenantProviderSettingsFailed);
-            
+
             return RequestResult<TenantProviderSettingsDto>
                 .Success(_mapper.Map<TenantProviderSettingsDto>(providerSettings));
         }
