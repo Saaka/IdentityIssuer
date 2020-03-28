@@ -1,11 +1,11 @@
 using FluentValidation;
 using IdentityIssuer.Common.Enums;
 
-namespace IdentityIssuer.Application.Tenants.Commands.RemoveTenantProviderSettings
+namespace IdentityIssuer.Application.Tenants.Commands.DeleteTenantProviderSettings
 {
-    public class RemoveTenantProviderSettingsCommandValidator : AbstractValidator<RemoveTenantProviderSettingsCommand>
+    public class DeleteTenantProviderSettingsCommandValidator : AbstractValidator<DeleteTenantProviderSettingsCommand>
     {
-        public RemoveTenantProviderSettingsCommandValidator()
+        public DeleteTenantProviderSettingsCommandValidator()
         {
             RuleFor(x => x.TenantCode)
                 .NotEmpty()

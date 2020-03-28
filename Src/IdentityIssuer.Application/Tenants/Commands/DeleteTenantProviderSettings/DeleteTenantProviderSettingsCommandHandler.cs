@@ -6,16 +6,16 @@ using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Requests;
 
-namespace IdentityIssuer.Application.Tenants.Commands.RemoveTenantProviderSettings
+namespace IdentityIssuer.Application.Tenants.Commands.DeleteTenantProviderSettings
 {
-    public class RemoveTenantProviderSettingsCommandHandler
-        : RequestHandler<RemoveTenantProviderSettingsCommand, Guid>
+    public class DeleteTenantProviderSettingsCommandHandler
+        : RequestHandler<DeleteTenantProviderSettingsCommand, Guid>
     {
         private readonly ITenantProviderSettingsRepository _providerSettingsRepository;
         private readonly ITenantProvider _tenantProvider;
         private readonly IMapper _mapper;
 
-        public RemoveTenantProviderSettingsCommandHandler(
+        public DeleteTenantProviderSettingsCommandHandler(
             ITenantProviderSettingsRepository providerSettingsRepository,
             ITenantProvider tenantProvider,
             IMapper mapper)
@@ -26,7 +26,7 @@ namespace IdentityIssuer.Application.Tenants.Commands.RemoveTenantProviderSettin
         }
 
         public override async Task<RequestResult<Guid>> Handle(
-            RemoveTenantProviderSettingsCommand request, CancellationToken cancellationToken)
+            DeleteTenantProviderSettingsCommand request, CancellationToken cancellationToken)
         {
             var tenant = await _tenantProvider.GetTenantAsync(request.TenantCode);
             if (tenant == null)
@@ -40,7 +40,7 @@ namespace IdentityIssuer.Application.Tenants.Commands.RemoveTenantProviderSettin
             if(!await _providerSettingsRepository
                 .RemoveTenantProviderSettings(tenant.Id, request.ProviderType))
                 return RequestResult
-                    .Failure(ErrorCode.RemoveTenantProviderSettingsFailed);
+                    .Failure(ErrorCode.DeleteTenantProviderSettingsFailed);
 
             return RequestResult
                 .Success(request.RequestGuid);
