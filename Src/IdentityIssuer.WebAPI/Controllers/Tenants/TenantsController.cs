@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Tenants.Commands;
 using IdentityIssuer.Application.Tenants.Models;
@@ -52,6 +53,18 @@ namespace IdentityIssuer.WebAPI.Controllers.Tenants
         {
             var adminContext = await GetAdminAsync();
             var command = Mapper.Map<UpdateTenantProviderSettingsCommand>(model)
+                .WithAdminContextData(adminContext);
+            
+            var result = await Mediator.Send(command);
+
+            return GetResponse(result);
+        }
+
+        [HttpDelete("providerSettings/delete")]
+        public async Task<ActionResult<Guid>> DeleteProviderSettings(DeleteProviderSettingsModel model)
+        {
+            var adminContext = await GetAdminAsync();
+            var command = Mapper.Map<DeleteTenantProviderSettingsCommand>(model)
                 .WithAdminContextData(adminContext);
             
             var result = await Mediator.Send(command);
