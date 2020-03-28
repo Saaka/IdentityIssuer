@@ -26,6 +26,7 @@ namespace IdentityIssuer.Common.Exceptions
                 var propertyFailures = failures
                     .Where(e => e.PropertyName == propertyName)
                     .Select(e => e.ErrorMessage)
+                    .Distinct()
                     .ToArray();
 
                 Failures.Add(propertyName, propertyFailures);
