@@ -82,6 +82,25 @@ namespace IdentityIssuer.Persistence.Repositories
             }
         }
 
+        public async Task<bool> RemoveTenantProviderSettings(int tenantId, AuthProviderType providerType)
+        {
+            try
+            {
+                var tenantSettings = await GetTenantProviderSettingsQuery(tenantId, providerType)
+                    .FirstOrDefaultAsync();
+
+                _context.Entry(tenantSettings).State = EntityState.Deleted;
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return false;
+            }
+        }
+
         private IQueryable<TenantProviderSettingsEntity> GetTenantProviderSettingsQuery(int tenantId,
             AuthProviderType providerType)
         {

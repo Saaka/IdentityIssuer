@@ -11,5 +11,6 @@ namespace IdentityIssuer.Application.Tenants.Repositories
         Task<bool> ProviderSettingsExistsAsync(int tenantId, AuthProviderType providerType);
         Task<TenantProviderSettings> CreateTenantProviderSettings(CreateTenantProviderSettingsData data);
         Task<TenantProviderSettings> UpdateTenantProviderSettings(UpdateTenantProviderSettingsData data);
+        Task<bool> RemoveTenantProviderSettings(int tenantId, AuthProviderType providerType);
     }
 }
