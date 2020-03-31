@@ -50,7 +50,8 @@ namespace IdentityIssuer.Application.Auth.Queries.GetUserByCredentials
                 .Success(new AuthorizationData
                 {
                     Token = token,
-                    User = _mapper.Map<UserDto>(user)
+                    User = _mapper.Map<UserDto>(user),
+                    TenantCode = request.Tenant.TenantCode
                 });
         }
     }

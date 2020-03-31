@@ -113,7 +113,8 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
             return new AuthorizationData
             {
                 Token = token,
-                User = _mapper.Map<UserDto>(user)
+                User = _mapper.Map<UserDto>(user),
+                TenantCode = requestTenant.TenantCode,
             };
         }
 

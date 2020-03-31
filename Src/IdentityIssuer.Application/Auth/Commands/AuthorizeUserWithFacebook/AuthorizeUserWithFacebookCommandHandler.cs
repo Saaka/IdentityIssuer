@@ -115,7 +115,8 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
                     new AuthorizationData
                     {
                         Token = token,
-                        User = _mapper.Map<UserDto>(user)
+                        User = _mapper.Map<UserDto>(user),
+                        TenantCode = requestTenant.TenantCode,
                     });
         }
 
