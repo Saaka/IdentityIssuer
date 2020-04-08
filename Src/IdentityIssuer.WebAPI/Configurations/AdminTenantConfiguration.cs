@@ -14,10 +14,10 @@ namespace IdentityIssuer.WebAPI.Configurations
         }
 
         public string TenantName =>
-            _configuration[AdminTenantConfigurationProperties.Name];
+            _configuration[AdminTenantConfigurationProperties.TenantName];
 
         public string TenantCode =>
-            _configuration[AdminTenantConfigurationProperties.Code];
+            _configuration[AdminTenantConfigurationProperties.TenantCode];
 
         public string UserDisplayName =>
             _configuration[AdminTenantConfigurationProperties.UserDisplayName];

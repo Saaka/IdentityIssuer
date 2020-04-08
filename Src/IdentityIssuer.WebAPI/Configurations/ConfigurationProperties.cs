@@ -9,8 +9,8 @@ namespace IdentityIssuer.WebAPI.Configurations
 
     public static class AdminTenantConfigurationProperties
     {
-        public const string Name = "AdminTenant:Name";
-        public const string Code = "AdminTenant:Code";
+        public const string TenantName = "AdminTenant:TenantName";
+        public const string TenantCode = "AdminTenant:TenantCode";
         public const string UserDisplayName = "AdminTenant:UserDisplayName";
         public const string Email = "AdminTenant:Email";
         public const string Password = "AdminTenant:Password";
