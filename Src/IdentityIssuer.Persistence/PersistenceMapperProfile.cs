@@ -11,13 +11,16 @@ namespace IdentityIssuer.Persistence
         {
             CreateMap<TenantEntity, Tenant>();
             CreateMap<TenantUserEntity, TenantUser>();
-            CreateMap<CreateTenantData, TenantEntity>();
+
+            CreateMap<CreateTenantData, TenantEntity>()
+                .ForMember(t => t.Code,
+                    cfg => cfg.MapFrom(d => d.TenantCode));
 
             CreateMap<TenantAllowedOriginEntity, TenantAllowedOrigin>();
-            
+
             CreateMap<SaveTenantSettingsData, TenantSettingsEntity>();
             CreateMap<TenantSettingsEntity, TenantSettings>();
-            
+
             CreateMap<TenantProviderSettingsEntity, TenantProviderSettings>();
             CreateMap<CreateTenantProviderSettingsData, TenantProviderSettingsEntity>();
         }
