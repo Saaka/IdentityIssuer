@@ -15,7 +15,8 @@ namespace IdentityIssuer.Persistence.Entities
         public string ImageUrl { get; set; }
         public AvatarType SelectedAvatarType { get; set; }
         public bool IsAdmin { get; set; }
-
+        public bool IsOwner { get; set; }
+        
         public virtual TenantEntity Tenant { get; set; }
 
         public virtual ICollection<TenantUserAvatarEntity> Avatars { get; set; } = new List<TenantUserAvatarEntity>();

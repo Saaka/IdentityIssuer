@@ -58,6 +58,11 @@ namespace IdentityIssuer.Persistence.Configurations
                 .Property(x => x.IsAdmin)
                 .IsRequired()
                 .HasDefaultValue(false);
+            
+            builder
+                .Property(x => x.IsOwner)
+                .IsRequired()
+                .HasDefaultValue(false);
         }
     }
 }
