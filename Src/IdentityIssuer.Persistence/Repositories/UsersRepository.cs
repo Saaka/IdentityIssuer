@@ -97,6 +97,24 @@ namespace IdentityIssuer.Persistence.Repositories
             }
         }
 
+        public async Task<bool> SetUserOwnerValue(Guid userGuid, bool isOwner)
+        {
+            try
+            {
+                var user = await GetUserEntity(userGuid);
+                user.IsOwner = isOwner;
+
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (DbUpdateException e)
+            {
+                _logger.LogError(e, e.Message);
+                return false;
+            }
+        }
+
         private async Task<TenantUserEntity> GetUserEntity(Guid guid)
         {
             var query = from u in _context.Users

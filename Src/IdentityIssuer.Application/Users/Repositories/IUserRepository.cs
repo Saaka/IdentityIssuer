@@ -12,5 +12,6 @@ namespace IdentityIssuer.Application.Users.Repositories
         Task<int> GetUserId(Guid guid);
         Task<bool> UpdateUserDisplayName(Guid userGuid, string name);
         Task<bool> SetUserAdminValue(Guid userGuid, bool isAdmin);
+        Task<bool> SetUserOwnerValue(Guid userGuid, bool isOwner);
     }
 }

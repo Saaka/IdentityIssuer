@@ -10,8 +10,10 @@ using IdentityIssuer.Application.Tenants.Commands;
 using IdentityIssuer.Application.Tenants.Models;
 using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Application.Users.Commands;
+using IdentityIssuer.Application.Users.Models;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
+using IdentityIssuer.Common.Requests;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -55,43 +57,15 @@ namespace IdentityIssuer.Persistence.Utilities
                     if (tenant != null)
                         return _mapper.Map<TenantDto>(tenant);
 
-                    var createTenantCommand = new CreateTenantCommand(
-                            config.Name,
-                            config.Code,
-                            config.AllowedOrigin,
-                            config.TokenSecret,
-                            config.TokenExpirationInMinutes,
-                            true,
-                            false,
-                            false)
-                        .WithAdminContextData(adminContextData);
-
-                    var createTenantResult = await _mediator.Send(createTenantCommand);
-                    if (!createTenantResult.IsSuccess)
-                        throw new DomainException(createTenantResult);
+                    var correlationId = await CreateTenant(config, adminContextData);
 
                     tenant = await _tenantsRepository.GetTenantAsync(config.Code);
 
-                    var createUserCommand = new RegisterUserWithCredentialsCommand(
-                            _guid.GetGuid(),
-                            config.Email,
-                            config.UserDisplayName,
-                            config.Password,
-                            new TenantContextData(tenant.Id, tenant.Code))
-                        .WithCorrelationId(createTenantCommand.CorrelationId);
+                    var createUserResult = await CreateUser(config, tenant, correlationId);
 
-                    var createUserResult = await _mediator.Send(createUserCommand);
-                    if (!createUserResult.IsSuccess)
-                        throw new DomainException(createTenantResult);
+                    await MakeUserAdmin(createUserResult.Data.UserGuid, adminContextData, correlationId);
 
-                    var makeUserAdminCommand = new MakeUserAdminCommand(
-                            createUserResult.Data.UserGuid,
-                            adminContextData)
-                        .WithCorrelationId(createTenantCommand.CorrelationId);
-
-                    var makeUserAdminResult = await _mediator.Send(makeUserAdminCommand);
-                    if (!makeUserAdminResult.IsSuccess)
-                        throw new DomainException(makeUserAdminResult);
+                    await MakeUserTenantOwner(createUserResult.Data.UserGuid, adminContextData, correlationId);
 
                     transactionScope.Complete();
                     return _mapper.Map<TenantDto>(tenant);
@@ -103,6 +77,66 @@ namespace IdentityIssuer.Persistence.Utilities
             }
 
             return null;
+        }
+
+        private async Task<Guid> CreateTenant(IAdminTenantConfiguration config, AdminContextData adminContextData)
+        {
+            var createTenantCommand = new CreateTenantCommand(
+                    config.Name,
+                    config.Code,
+                    config.AllowedOrigin,
+                    config.TokenSecret,
+                    config.TokenExpirationInMinutes,
+                    true,
+                    false,
+                    false)
+                .WithAdminContextData(adminContextData);
+
+            var createTenantResult = await _mediator.Send(createTenantCommand);
+            if (!createTenantResult.IsSuccess)
+                throw new DomainException(createTenantResult);
+            return createTenantCommand.CorrelationId;
+        }
+
+        private async Task<RequestResult<UserDto>> CreateUser(
+            IAdminTenantConfiguration config, Tenant tenant, Guid correlationId)
+        {
+            var createUserCommand = new RegisterUserWithCredentialsCommand(
+                    _guid.GetGuid(),
+                    config.Email,
+                    config.UserDisplayName,
+                    config.Password,
+                    new TenantContextData(tenant.Id, tenant.Code))
+                .WithCorrelationId(correlationId);
+
+            var createUserResult = await _mediator.Send(createUserCommand);
+            if (!createUserResult.IsSuccess)
+                throw new DomainException(createUserResult);
+            return createUserResult;
+        }
+
+        private async Task MakeUserAdmin(Guid userGuid, AdminContextData adminContextData, Guid correlationId)
+        {
+            var makeUserAdminCommand = new MakeUserAdminCommand(
+                    userGuid,
+                    adminContextData)
+                .WithCorrelationId(correlationId);
+
+            var makeUserAdminResult = await _mediator.Send(makeUserAdminCommand);
+            if (!makeUserAdminResult.IsSuccess)
+                throw new DomainException(makeUserAdminResult);
+        }
+
+        private async Task MakeUserTenantOwner(Guid userGuid, AdminContextData adminContextData, Guid correlationId)
+        {
+            var makeUserOwnerCommand = new MakeUserOwnerCommand(
+                    userGuid,
+                    adminContextData)
+                .WithCorrelationId(correlationId);
+
+            var makeUserOwnerResult = await _mediator.Send(makeUserOwnerCommand);
+            if (!makeUserOwnerResult.IsSuccess)
+                throw new DomainException(makeUserOwnerResult);
         }
     }
 }
