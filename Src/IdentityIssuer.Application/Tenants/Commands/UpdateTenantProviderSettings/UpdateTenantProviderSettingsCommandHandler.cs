@@ -31,7 +31,7 @@ namespace IdentityIssuer.Application.Tenants.Commands.UpdateTenantProviderSettin
             var tenant = await _tenantProvider.GetTenantAsync(request.TenantCode);
             if (tenant == null)
                 return RequestResult<TenantProviderSettingsDto>.Failure(ErrorCode.TenantNotFound,
-                    new {Code = request.TenantCode});
+                    new {TenantCode = request.TenantCode});
 
             if (!await _providerSettingsRepository.ProviderSettingsExistsAsync(tenant.Id, request.ProviderType))
                 return RequestResult<TenantProviderSettingsDto>

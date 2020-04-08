@@ -51,7 +51,7 @@ namespace IdentityIssuer.Persistence.Utilities
             {
                 using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    var tenant = await _tenantsRepository.GetTenantAsync(config.Code);
+                    var tenant = await _tenantsRepository.GetTenantAsync(config.TenantCode);
                     var adminContextData = new AdminContextData(AdminContextType.System);
 
                     if (tenant != null)
@@ -59,7 +59,7 @@ namespace IdentityIssuer.Persistence.Utilities
 
                     var correlationId = await CreateTenant(config, adminContextData);
 
-                    tenant = await _tenantsRepository.GetTenantAsync(config.Code);
+                    tenant = await _tenantsRepository.GetTenantAsync(config.TenantCode);
 
                     var createUserResult = await CreateUser(config, tenant, correlationId);
 
@@ -82,8 +82,8 @@ namespace IdentityIssuer.Persistence.Utilities
         private async Task<Guid> CreateTenant(IAdminTenantConfiguration config, AdminContextData adminContextData)
         {
             var createTenantCommand = new CreateTenantCommand(
-                    config.Name,
-                    config.Code,
+                    config.TenantName,
+                    config.TenantCode,
                     config.AllowedOrigin,
                     config.TokenSecret,
                     config.TokenExpirationInMinutes,
