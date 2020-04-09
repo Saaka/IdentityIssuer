@@ -8,5 +8,6 @@ namespace IdentityIssuer.Application.Models
         public string UserGuid { get; set; }
         public string ImageUrl { get; set; }
         public bool IsAdmin { get; set; }
+        public bool IsOwner { get; set; }
     }
 }

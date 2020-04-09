@@ -31,6 +31,8 @@ namespace IdentityIssuer.Infrastructure.Security
             };
             if (user.IsAdmin)
                 claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, UserRoles.Admin));
+            if (user.IsOwner)
+                claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, UserRoles.TenantOwner));
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
