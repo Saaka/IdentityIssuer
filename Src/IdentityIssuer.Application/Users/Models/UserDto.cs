@@ -9,5 +9,6 @@ namespace IdentityIssuer.Application.Users.Models
         public string Email { get; set; }
         public string ImageUrl { get; set; }
         public bool IsAdmin { get; set; }
+        public bool IsOwner { get; set; }
     }
 }
