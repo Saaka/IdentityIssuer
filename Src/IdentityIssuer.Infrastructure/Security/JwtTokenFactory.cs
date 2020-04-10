@@ -29,11 +29,11 @@ namespace IdentityIssuer.Infrastructure.Security
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserGuid),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
-            if (user.IsAdmin)
-                claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, UserRoles.Admin));
-            if (user.IsOwner)
-                claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, UserRoles.TenantOwner));
+            claims.Add(new Claim(CustomClaims.Tenant, tenantCode));
 
+            var roleClaims = GetRoleClaims(user);
+            claims.AddRange(roleClaims);
+            
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
@@ -46,6 +46,21 @@ namespace IdentityIssuer.Infrastructure.Security
             jwt.Header.Add(JwtHeaderParameterNames.Kid, tenantCode);
 
             return tokenHandler.WriteToken(jwt);
+        }
+
+        private IEnumerable<Claim> GetRoleClaims(TenantUser user)
+        {
+            var roleClaims = new List<Claim>
+            {
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, UserRoles.User)
+            };
+            
+            if (user.IsAdmin)
+                roleClaims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, UserRoles.Admin));
+            if (user.IsOwner)
+                roleClaims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, UserRoles.TenantOwner));
+
+            return roleClaims;
         }
     }
 }
