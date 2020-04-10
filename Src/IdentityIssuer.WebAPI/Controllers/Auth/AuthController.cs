@@ -1,8 +1,6 @@
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Auth.Commands;
 using IdentityIssuer.Application.Auth.Models;
-using IdentityIssuer.Application.Auth.Queries;
-using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Users.Models;
 using IdentityIssuer.Application.Users.Queries;
 using IdentityIssuer.WebAPI.Controllers.Auth.Models;
@@ -32,7 +30,7 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
         [HttpPost("login")]
         public async Task<ActionResult<AuthorizationData>> Login(LoginUserWithCredentialsRequest request)
         {
-            var result = await Mediator.Send(new GetUserByCredentialsQuery(
+            var result = await Mediator.Send(new LoginUserWithCredentialsCommand(
                 email: request.Email,
                 password: request.Password,
                 tenant: await GetTenantAsync()

@@ -9,16 +9,16 @@ using IdentityIssuer.Application.Users.Models;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Requests;
 
-namespace IdentityIssuer.Application.Auth.Queries.GetUserByCredentials
+namespace IdentityIssuer.Application.Auth.Commands.LoginUserWithCredentials
 {
-    public class GetUserByCredentialsQueryHandler : RequestHandler<GetUserByCredentialsQuery, AuthorizationData>
+    public class LoginUserWithCredentialsCommandHandler: RequestHandler<LoginUserWithCredentialsCommand, AuthorizationData>
     {
         private readonly IAuthRepository _authRepository;
         private readonly IJwtTokenFactory _jwtTokenFactory;
         private readonly ITenantsRepository _tenantsRepository;
         private readonly IMapper _mapper;
 
-        public GetUserByCredentialsQueryHandler(
+        public LoginUserWithCredentialsCommandHandler(
             IAuthRepository authRepository,
             IJwtTokenFactory jwtTokenFactory,
             ITenantsRepository tenantsRepository,
@@ -30,7 +30,7 @@ namespace IdentityIssuer.Application.Auth.Queries.GetUserByCredentials
             _mapper = mapper;
         }
 
-        public override async Task<RequestResult<AuthorizationData>> Handle(GetUserByCredentialsQuery request,
+        public override async Task<RequestResult<AuthorizationData>> Handle(LoginUserWithCredentialsCommand request,
             CancellationToken cancellationToken)
         {
             var user = await _authRepository.GetUserByCredentials(request.Email, request.Password,

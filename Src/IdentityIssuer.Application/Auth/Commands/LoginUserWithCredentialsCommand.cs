@@ -2,11 +2,11 @@ using IdentityIssuer.Application.Auth.Models;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Common.Requests;
 
-namespace IdentityIssuer.Application.Auth.Queries
+namespace IdentityIssuer.Application.Auth.Commands
 {
-    public class GetUserByCredentialsQuery : Request<AuthorizationData>
+    public class LoginUserWithCredentialsCommand: Request<AuthorizationData>
     {
-        public GetUserByCredentialsQuery(
+        public LoginUserWithCredentialsCommand(
             string email, 
             string password, 
             TenantContextData tenant)
