@@ -50,8 +50,7 @@ namespace IdentityIssuer.Application.Auth.Commands.LoginUserWithCredentials
                 .Success(new AuthorizationData
                 {
                     Token = token,
-                    User = _mapper.Map<UserDto>(user),
-                    TenantCode = request.Tenant.TenantCode
+                    User = _mapper.Map<UserDto>(user)
                 });
         }
     }

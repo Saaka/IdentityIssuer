@@ -114,7 +114,6 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
             {
                 Token = token,
                 User = _mapper.Map<UserDto>(user),
-                TenantCode = requestTenant.TenantCode,
             };
         }
 

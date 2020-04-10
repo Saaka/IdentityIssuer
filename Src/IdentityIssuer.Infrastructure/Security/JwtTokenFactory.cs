@@ -28,8 +28,11 @@ namespace IdentityIssuer.Infrastructure.Security
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserGuid),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(CustomClaims.Name, user.DisplayName),
+                new Claim(CustomClaims.Avatar, user.ImageUrl),
+                new Claim(CustomClaims.Tenant, tenantCode),
             };
-            claims.Add(new Claim(CustomClaims.Tenant, tenantCode));
 
             var roleClaims = GetRoleClaims(user);
             claims.AddRange(roleClaims);
