@@ -44,6 +44,13 @@ namespace IdentityIssuer.Persistence.Configurations
                 .WithOne(x => x.Tenant)
                 .HasForeignKey(x => x.TenantId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasOne(x => x.TenantApplication)
+                .WithOne(x => x.Tenant)
+                .HasForeignKey<TenantApplicationEntity>(x => x.TenantId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

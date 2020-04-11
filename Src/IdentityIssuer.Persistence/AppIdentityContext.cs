@@ -19,6 +19,7 @@ namespace IdentityIssuer.Persistence
         public DbSet<TenantAllowedOriginEntity> TenantAllowedOrigins { get; set; }
         
         public DbSet<TenantUserAvatarEntity> UserAvatars { get; set; }
+        public DbSet<TenantApplicationEntity> TenantApplications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
