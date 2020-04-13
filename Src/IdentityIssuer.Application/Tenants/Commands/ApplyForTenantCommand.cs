@@ -1,3 +1,4 @@
+using IdentityIssuer.Application.Models;
 using IdentityIssuer.Common.Requests;
 
 namespace IdentityIssuer.Application.Tenants.Commands
@@ -14,5 +15,6 @@ namespace IdentityIssuer.Application.Tenants.Commands
         public bool EnableFacebookLogin { get; }
         public string OwnerEmail { get; }
         public string OwnerPassword { get; }
+        public TenantContextData Tenant { get; }
     }
 }
