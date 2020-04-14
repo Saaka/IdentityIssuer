@@ -34,9 +34,6 @@ namespace IdentityIssuer.Application.Tenants.Commands.ApplyForTenant
                 .MaximumLength(TenantConstants.TokenSecretMaxLength)
                 .WithMessageCode(ValidationErrorCode.TokenSecretInvalid);
 
-            RuleFor(x => x.Tenant)
-                .IsValid();
-
             RuleFor(x => x)
                 .Must(HaveOneLoginOptionEnabled)
                 .WithName(nameof(UpdateTenantSettingsCommand.EnableCredentialsLogin))
@@ -49,12 +46,9 @@ namespace IdentityIssuer.Application.Tenants.Commands.ApplyForTenant
                 .WithMessageCode(ValidationErrorCode.UserEmailInvalid)
                 .Length(UserConstants.MinEmailLength, UserConstants.MaxEmailLength)
                 .WithMessageCode(ValidationErrorCode.UserEmailInvalid);
-            
-            RuleFor(x => x.OwnerPassword)
-                .Length(UserConstants.MinPasswordLength, UserConstants.MaxPasswordLength)
-                .WithMessageCode(ValidationErrorCode.UserPasswordInvalid)
-                .NotEmpty()
-                .WithMessageCode(ValidationErrorCode.UserPasswordRequired);
+
+            RuleFor(x => x.Tenant)
+                .IsValid();
         }
 
         private static bool HaveOneLoginOptionEnabled(ApplyForTenantCommand settings)

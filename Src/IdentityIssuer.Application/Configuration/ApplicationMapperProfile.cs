@@ -22,6 +22,8 @@ namespace IdentityIssuer.Application.Configuration
 
             CreateMap<CreateTenantCommand, SaveTenantSettingsData>();
             CreateMap<CreateTenantCommand, CreateTenantData>();
+
+            CreateMap<ApplyForTenantCommand, SaveTenantApplicationData>();
             
             CreateMap<UpdateTenantSettingsCommand, SaveTenantSettingsData>();
         }

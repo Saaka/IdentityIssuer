@@ -22,9 +22,6 @@ namespace IdentityIssuer.Application.Tenants.Commands.UpdateTenantSettings
                 .MaximumLength(TenantConstants.TokenSecretMaxLength)
                 .WithMessageCode(ValidationErrorCode.TokenSecretInvalid);
 
-            RuleFor(x => x.AdminContextData)
-                .IsValid();
-
             RuleFor(x => x)
                 .Must(HaveOneLoginOptionEnabled)
                 .WithName(nameof(UpdateTenantSettingsCommand.EnableCredentialsLogin))
@@ -38,6 +35,9 @@ namespace IdentityIssuer.Application.Tenants.Commands.UpdateTenantSettings
                 .NotEmpty()
                 .WithMessageCode(ValidationErrorCode.TenantAllowedOriginRequired)
                 .WithName(nameof(UpdateTenantSettingsCommand.AllowedOrigins));
+
+            RuleFor(x => x.AdminContextData)
+                .IsValid();
         }
 
         private static bool HaveOneLoginOptionEnabled(UpdateTenantSettingsCommand settings)

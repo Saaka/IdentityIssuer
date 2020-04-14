@@ -14,7 +14,6 @@ namespace IdentityIssuer.Application.Tenants.Commands
         public bool EnableGoogleLogin { get; }
         public bool EnableFacebookLogin { get; }
         public string OwnerEmail { get; }
-        public string OwnerPassword { get; }
         public TenantContextData Tenant { get; }
     }
 }
