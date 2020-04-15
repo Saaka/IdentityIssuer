@@ -23,6 +23,9 @@ namespace IdentityIssuer.Persistence
 
             CreateMap<TenantProviderSettingsEntity, TenantProviderSettings>();
             CreateMap<CreateTenantProviderSettingsData, TenantProviderSettingsEntity>();
+
+            CreateMap<SaveTenantApplicationData, TenantApplicationEntity>();
+            CreateMap<TenantApplicationEntity, TenantApplication>();
         }
     }
 }

@@ -12,6 +12,7 @@ namespace IdentityIssuer.WebAPI.Controllers.Tenants.Models
             CreateMap<UpdateTenantSettingsModel, UpdateTenantSettingsCommand>();
             CreateMap<UpdateProviderSettingsModel, UpdateTenantProviderSettingsCommand>();
             CreateMap<DeleteProviderSettingsModel, DeleteTenantProviderSettingsCommand>();
+            CreateMap<TenantApplicationModel, ApplyForTenantCommand>();
         }
     }
 }

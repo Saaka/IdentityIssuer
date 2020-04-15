@@ -1,10 +1,7 @@
-using System;
-
-namespace IdentityIssuer.Application.Tenants.Models
+namespace IdentityIssuer.WebAPI.Controllers.Tenants.Models
 {
-    public class SaveTenantApplicationData
+    public class TenantApplicationModel
     {
-        public Guid TenantApplicationGuid { get; set; }
         public string Name { get; set; }
         public string TenantCode { get; set; }
         public string AllowedOrigin { get; set; }

@@ -2,7 +2,7 @@ using System;
 
 namespace IdentityIssuer.Application.Tenants.Models
 {
-    public class SaveTenantApplicationData
+    public class TenantApplicationDto
     {
         public Guid TenantApplicationGuid { get; set; }
         public string Name { get; set; }

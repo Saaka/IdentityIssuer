@@ -25,6 +25,7 @@ namespace IdentityIssuer.Persistence
                 .AddTransient<ITenantSettingsRepository, TenantSettingsRepository>()
                 .AddTransient<ITenantProviderSettingsRepository, TenantProviderSettingsRepository>()
                 .AddTransient<ITenantAllowedOriginsRepository, TenantAllowedOriginsRepository>()
+                .AddTransient<ITenantApplicationsRepository, TenantApplicationsRepository>()
                 .AddTransient<IUserRepository, UsersRepository>()
                 .AddTransient<IAuthRepository, AuthRepository>()
                 .AddTransient<IAvatarRepository, AvatarRepository>()

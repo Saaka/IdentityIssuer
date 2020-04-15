@@ -71,5 +71,17 @@ namespace IdentityIssuer.WebAPI.Controllers.Tenants
 
             return GetResponse(result);
         }
+
+        [HttpPost("application")]
+        public async Task<ActionResult<TenantApplicationDto>> ApplyForTenant(TenantApplicationModel model)
+        {
+            var tenantContext = await GetTenantAsync();
+            var command = Mapper.Map<ApplyForTenantCommand>(model)
+                .WithTenantContextData(tenantContext);
+
+            var result = await Mediator.Send(command);
+
+            return GetResponse(result);
+        }
     }
 }
