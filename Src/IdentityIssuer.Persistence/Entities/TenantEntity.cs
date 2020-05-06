@@ -7,6 +7,8 @@ namespace IdentityIssuer.Persistence.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
+        public bool? IsAdminTenant { get; set; }
+        public bool? IsActive { get; set; }
 
         public virtual TenantSettingsEntity TenantSettings { get; set; }
         public virtual TenantApplicationEntity TenantApplication { get; set; }

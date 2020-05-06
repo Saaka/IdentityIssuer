@@ -51,6 +51,16 @@ namespace IdentityIssuer.Persistence.Configurations
                 .HasForeignKey<TenantApplicationEntity>(x => x.TenantId)
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder
+                .Property(x => x.IsAdminTenant)
+                .IsRequired()
+                .HasDefaultValue(false);
+
+            builder
+                .Property(x => x.IsActive)
+                .IsRequired()
+                .HasDefaultValue(true);
         }
     }
 }
