@@ -89,7 +89,8 @@ namespace IdentityIssuer.Persistence.Utilities
                     config.TokenExpirationInMinutes,
                     true,
                     false,
-                    false)
+                    false,
+                    true)
                 .WithAdminContextData(adminContextData);
 
             var createTenantResult = await _mediator.Send(createTenantCommand);

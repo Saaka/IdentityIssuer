@@ -4,6 +4,6 @@ namespace IdentityIssuer.Application.Tenants.Models
     {
         public string Name { get; set; }
         public string TenantCode { get; set; }
-        public string AllowedOrigin { get; set; }
+        public bool IsAdminTenant { get; set; }
     }
 }
