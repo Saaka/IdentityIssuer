@@ -17,6 +17,7 @@ namespace IdentityIssuer.WebAPI.Services
         Task<UserContextData> GetUser(HttpContext context);
         Task<TenantContextData> GetTenant(HttpContext context);
         Task<AdminContextData> GetAdmin(HttpContext context);
+        Task<AdminTenantContextData> GetAdminTenant(HttpContext context);
     }
 
     public class ContextDataProvider : IContextDataProvider
@@ -43,9 +44,9 @@ namespace IdentityIssuer.WebAPI.Services
         public async Task<TenantContextData> GetTenant(HttpContext context)
         {
             var tenantCode = GetTenantCodeFromContext(context);
-            var tenantId = await GetTenantId(tenantCode);
+            var tenant = await _tenantProvider.GetTenantAsync(tenantCode);
 
-            return new TenantContextData(tenantId, tenantCode);
+            return new TenantContextData(tenant.Id, tenant.Code);
         }
 
         public async Task<AdminContextData> GetAdmin(HttpContext context)
@@ -61,10 +62,12 @@ namespace IdentityIssuer.WebAPI.Services
                 : new AdminContextData(AdminContextType.None);
         }
 
-        private async Task<int> GetTenantId(string tenantCode)
+        public async Task<AdminTenantContextData> GetAdminTenant(HttpContext context)
         {
+            var tenantCode = GetTenantCodeFromContext(context);
             var tenant = await _tenantProvider.GetTenantAsync(tenantCode);
-            return tenant.Id;
+
+            return new AdminTenantContextData(tenant.Id, tenant.Code, tenant.IsAdminTenant);
         }
 
         private Guid GetUserGuidFromContext(HttpContext context)

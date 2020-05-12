@@ -32,6 +32,10 @@ namespace IdentityIssuer.WebAPI.Controllers
         {
             return ContextDataProvider.GetTenant(HttpContext);
         }
+        protected Task<AdminTenantContextData> GetAdminTenantAsync()
+        {
+            return ContextDataProvider.GetAdminTenant(HttpContext);
+        }
 
         protected Task<UserContextData> GetUserAsync()
         {

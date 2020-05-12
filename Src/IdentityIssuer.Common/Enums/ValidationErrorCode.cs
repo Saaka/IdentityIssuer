@@ -30,5 +30,6 @@ namespace IdentityIssuer.Common.Enums
         AuthProviderIdentifierRequired = 26,
         AuthProviderIdentifierTooLong = 27,
         OneLoginOptionRequired = 28,
+        AdminTenantContextRequired = 29,
     }
 }

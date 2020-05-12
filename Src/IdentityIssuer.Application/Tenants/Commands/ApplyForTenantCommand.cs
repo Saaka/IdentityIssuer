@@ -15,7 +15,7 @@ namespace IdentityIssuer.Application.Tenants.Commands
         public bool EnableGoogleLogin { get; }
         public bool EnableFacebookLogin { get; }
         public string OwnerEmail { get; }
-        public TenantContextData Tenant { get; private set; }
+        public AdminTenantContextData AdminTenant { get; private set; }
 
         public ApplyForTenantCommand(string name, string tenantCode, string allowedOrigin, string tokenSecret,
             int tokenExpirationInMinutes, bool enableCredentialsLogin, bool enableGoogleLogin, bool enableFacebookLogin,
@@ -32,9 +32,9 @@ namespace IdentityIssuer.Application.Tenants.Commands
             OwnerEmail = ownerEmail;
         }
 
-        public ApplyForTenantCommand WithTenantContextData(TenantContextData tenant)
+        public ApplyForTenantCommand WithAdminTenantContextData(AdminTenantContextData adminTenant)
         {
-            Tenant = tenant;
+            AdminTenant = adminTenant;
             return this;
         }
     }

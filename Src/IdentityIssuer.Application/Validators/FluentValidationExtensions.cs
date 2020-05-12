@@ -27,6 +27,13 @@ namespace IdentityIssuer.Application
             return ruleBuilder
                 .SetValidator(new AdminContextDataValidator());
         }
+        
+        public static IRuleBuilderOptions<T, AdminTenantContextData> IsValid<T>(
+            this IRuleBuilder<T, AdminTenantContextData> ruleBuilder)
+        {
+            return ruleBuilder
+                .SetValidator(new AdminTenantContextDataValidator());
+        }
 
         public static IRuleBuilderOptions<T, TProperty> WithMessageCode<T, TProperty>(
             this IRuleBuilderOptions<T, TProperty> rule, ValidationErrorCode code)

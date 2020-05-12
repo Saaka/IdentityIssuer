@@ -75,9 +75,9 @@ namespace IdentityIssuer.WebAPI.Controllers.Tenants
         [HttpPost("application")]
         public async Task<ActionResult<TenantApplicationDto>> ApplyForTenant(TenantApplicationModel model)
         {
-            var tenantContext = await GetTenantAsync();
+            var adminTenantContext = await GetAdminTenantAsync();
             var command = Mapper.Map<ApplyForTenantCommand>(model)
-                .WithTenantContextData(tenantContext);
+                .WithAdminTenantContextData(adminTenantContext);
 
             var result = await Mediator.Send(command);
 

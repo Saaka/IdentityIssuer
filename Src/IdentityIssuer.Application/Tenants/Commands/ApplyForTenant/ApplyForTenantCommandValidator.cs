@@ -47,7 +47,7 @@ namespace IdentityIssuer.Application.Tenants.Commands.ApplyForTenant
                 .Length(UserConstants.MinEmailLength, UserConstants.MaxEmailLength)
                 .WithMessageCode(ValidationErrorCode.UserEmailInvalid);
 
-            RuleFor(x => x.Tenant)
+            RuleFor(x => x.AdminTenant)
                 .IsValid();
         }
 
