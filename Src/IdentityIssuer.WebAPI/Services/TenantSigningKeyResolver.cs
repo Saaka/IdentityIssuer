@@ -39,13 +39,13 @@ namespace IdentityIssuer.WebAPI.Services
             string kid,
             TokenValidationParameters validationParameters)
         {
-            var currentTenant = _contextDataProvider.GetTenant(_httpContextAccessor.HttpContext).Result;
-            if (currentTenant == null)
+            var requestContext = _contextDataProvider.GetRequestContext(_httpContextAccessor.HttpContext).Result;
+            if (!requestContext.IsTenantContext)
                 throw new UnauthorizedAccessException(ErrorCode.MissingTenantContextData.ToString());
-            if (currentTenant.TenantCode != kid)
+            if (requestContext.Tenant.TenantCode != kid)
                 throw new UnauthorizedAccessException(ErrorCode.KidMissmatch.ToString());
 
-            var tenantSettings = _tenantProvider.GetTenantSettings(currentTenant.TenantCode);
+            var tenantSettings = _tenantProvider.GetTenantSettings(requestContext.Tenant.TenantCode);
             if (string.IsNullOrEmpty(tenantSettings?.TokenSecret))
                 throw new UnauthorizedAccessException(ErrorCode.MissingTenantTokenSecret.ToString());
 
