@@ -26,7 +26,7 @@ namespace IdentityIssuer.Infrastructure.Security
             var tokenHandler = new JwtSecurityTokenHandler();
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserGuid),
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserGuid.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(CustomClaims.Name, user.DisplayName),

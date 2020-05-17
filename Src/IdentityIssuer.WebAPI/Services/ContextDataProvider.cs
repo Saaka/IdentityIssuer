@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Models;
+using IdentityIssuer.Application.Models.RequestContext;
 using IdentityIssuer.Application.Tenants;
 using IdentityIssuer.Application.Users;
 using IdentityIssuer.Common.Enums;
@@ -18,6 +19,8 @@ namespace IdentityIssuer.WebAPI.Services
         Task<TenantContextData> GetTenant(HttpContext context);
         Task<AdminContextData> GetAdmin(HttpContext context);
         Task<AdminTenantContextData> GetAdminTenant(HttpContext context);
+
+        Task<RequestContextData> GetRequestContext(HttpContext context);
     }
 
     public class ContextDataProvider : IContextDataProvider
@@ -72,21 +75,50 @@ namespace IdentityIssuer.WebAPI.Services
 
         private Guid GetUserGuidFromContext(HttpContext context)
         {
-            if (context.User?.Claims == null || !(context.User?.Claims).Any())
-                throw new DomainException(ErrorCode.TenantHeaderMissing);
-            else if (!context.User.HasClaim(x => x.Type == ClaimTypes.NameIdentifier))
-                throw new DomainException(ErrorCode.UserClaimMissing);
-
             var guid = context.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
             return new Guid(guid);
         }
 
-        private string GetTenantCodeFromContext(HttpContext context)
-        {
-            if (!context.Request.Headers.ContainsKey(IdentityIssuerHeaders.TenantHeader))
-                throw new DomainException(ErrorCode.TenantHeaderMissing);
+        private string GetTenantCodeFromContext(HttpContext context) =>
+            context.Request.Headers[IdentityIssuerHeaders.TenantHeader];
 
-            return context.Request.Headers[IdentityIssuerHeaders.TenantHeader];
+        public async Task<RequestContextData> GetRequestContext(HttpContext context)
+        {
+            var requestContext = new RequestContextData();
+            if (HasTenantContext(context))
+                requestContext.WithTenantContext(await GetTenantContext(context));
+            if (HasUserContext(context))
+                requestContext.WithUserContext(await GetUserContext(context));
+
+            return requestContext;
         }
+
+        private async Task<TenantContext> GetTenantContext(HttpContext context)
+        {
+            var tenantCode = GetTenantCodeFromContext(context);
+            var tenant = await _tenantProvider.GetTenantAsync(tenantCode);
+            
+            if(tenant == null)
+                throw new DomainException(ErrorCode.TenantNotFound);
+
+            return new TenantContext(tenant.Id, tenant.Code, tenant.IsAdminTenant);
+        }
+
+        private async Task<UserContext> GetUserContext(HttpContext context)
+        {
+            var userGuid = GetUserGuidFromContext(context);
+            var user = await _usersProvider.GetUser(userGuid);
+
+            if (user == null)
+                throw new DomainException(ErrorCode.UserNotFound);
+            
+            return new UserContext(user.Id, user.UserGuid, user.IsAdmin);
+        }
+
+        private bool HasTenantContext(HttpContext context) =>
+            context.Request.Headers.ContainsKey(IdentityIssuerHeaders.TenantHeader);
+
+        private bool HasUserContext(HttpContext context)
+            => context.User?.Claims != null && context.User.HasClaim(x => x.Type == ClaimTypes.NameIdentifier);
     }
 }
