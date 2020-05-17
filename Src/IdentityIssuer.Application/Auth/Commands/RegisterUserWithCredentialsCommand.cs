@@ -11,14 +11,12 @@ namespace IdentityIssuer.Application.Auth.Commands
             Guid userGuid, 
             string email, 
             string displayName, 
-            string password, 
-            TenantContextData tenant)
+            string password)
         {
             UserGuid = userGuid;
             Email = email;
             DisplayName = displayName;
             Password = password;
-            Tenant = tenant;
         }
 
         public Guid UserGuid { get;  }

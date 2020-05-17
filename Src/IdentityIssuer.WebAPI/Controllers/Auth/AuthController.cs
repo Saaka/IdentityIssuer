@@ -20,9 +20,8 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
                 userGuid: guid,
                 email: request.Email,
                 displayName: request.DisplayName,
-                password: request.Password,
-                tenant: await GetTenantAsync()
-            ));
+                password: request.Password
+            ).WithRequestContext(await GetRequestContext()));
 
             return GetResponse(result);
         }
@@ -32,9 +31,8 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
         {
             var result = await Mediator.Send(new LoginUserWithCredentialsCommand(
                 email: request.Email,
-                password: request.Password,
-                tenant: await GetTenantAsync()
-            ));
+                password: request.Password
+            ).WithRequestContext(await GetRequestContext()));
 
             return GetResponse(result);
         }
@@ -42,22 +40,21 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
         [HttpPost("google")]
         public async Task<ActionResult<AuthorizationData>> AuthorizeWithGoogle(AuthorizeUserWithGoogleRequest request)
         {
-            var tenant = await GetTenantAsync();
             var tokenResult = await Mediator.Send(new AuthorizeUserWithGoogleCommand(
-                token: request.GoogleToken,
-                tenant: tenant));
-            
+                token: request.GoogleToken
+            ).WithRequestContext(await GetRequestContext()));
+
             return GetResponse(tokenResult);
         }
 
         [HttpPost("facebook")]
-        public async Task<ActionResult<AuthorizationData>> AuthorizeWithFacebook(AuthorizeUserWithFacebookRequest request)
+        public async Task<ActionResult<AuthorizationData>> AuthorizeWithFacebook(
+            AuthorizeUserWithFacebookRequest request)
         {
-            var tenant = await GetTenantAsync();
             var tokenResult = await Mediator.Send(new AuthorizeUserWithFacebookCommand(
-                token: request.FacebookToken,
-                tenant: tenant));
-            
+                token: request.FacebookToken
+            ).WithRequestContext(await GetRequestContext()));
+
             return GetResponse(tokenResult);
         }
 
@@ -65,11 +62,11 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
         [HttpGet("user")]
         public async Task<ActionResult<UserDto>> GetUserData()
         {
-            var user = await GetUserAsync();
+            var context = await GetRequestContext();
             var result = await Mediator.Send(new GetUserByIdQuery(
-                user.UserId, 
-                user.UserGuid,
-                user.Tenant));
+                context.User.UserId,
+                context.User.UserGuid
+            ).WithRequestContext(context));
 
             return GetResponse(result);
         }

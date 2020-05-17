@@ -1,13 +1,12 @@
 using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Models;
-using IdentityIssuer.Application.Models.RequestContext;
 using IdentityIssuer.Application.Tenants;
 using IdentityIssuer.Application.Users;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
+using IdentityIssuer.Common.Requests.RequestContext;
 using IdentityIssuer.WebAPI.Configurations;
 using Microsoft.AspNetCore.Http;
 
@@ -15,11 +14,6 @@ namespace IdentityIssuer.WebAPI.Services
 {
     public interface IContextDataProvider
     {
-        Task<UserContextData> GetUser(HttpContext context);
-        Task<TenantContextData> GetTenant(HttpContext context);
-        Task<AdminContextData> GetAdmin(HttpContext context);
-        Task<AdminTenantContextData> GetAdminTenant(HttpContext context);
-
         Task<RequestContextData> GetRequestContext(HttpContext context);
     }
 

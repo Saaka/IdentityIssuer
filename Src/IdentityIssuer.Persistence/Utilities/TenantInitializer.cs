@@ -14,6 +14,7 @@ using IdentityIssuer.Application.Users.Models;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
 using IdentityIssuer.Common.Requests;
+using IdentityIssuer.Common.Requests.RequestContext;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -102,13 +103,15 @@ namespace IdentityIssuer.Persistence.Utilities
         private async Task<RequestResult<UserDto>> CreateUser(
             IAdminTenantConfiguration config, Tenant tenant, Guid correlationId)
         {
+            var userContext = new RequestContextData()
+                .WithTenantContext(new TenantContext(tenant.Id, tenant.Code, true));
             var createUserCommand = new RegisterUserWithCredentialsCommand(
                     _guid.GetGuid(),
                     config.Email,
                     config.UserDisplayName,
-                    config.Password,
-                    new TenantContextData(tenant.Id, tenant.Code))
-                .WithCorrelationId(correlationId);
+                    config.Password)
+                .WithCorrelationId(correlationId)
+                .WithRequestContext(userContext);
 
             var createUserResult = await _mediator.Send(createUserCommand);
             if (!createUserResult.IsSuccess)

@@ -14,10 +14,10 @@ namespace IdentityIssuer.WebAPI.Controllers.Users
         [HttpPost("name")]
         public async Task<ActionResult<Guid>> UpdateUserDisplayName(UpdateUserDisplayNameModel model)
         {
-            var currentUser = await GetUserAsync();
+            var requestContext = await GetRequestContext();
             var result = await Mediator.Send(
                 new UpdateUserDisplayNameCommand(model.Name, model.UserGuid)
-                    .WithUser(currentUser));
+                    .WithRequestContext(requestContext));
 
             return GetResponse(result);
         }

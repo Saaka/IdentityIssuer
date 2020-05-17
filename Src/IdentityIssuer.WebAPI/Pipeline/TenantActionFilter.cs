@@ -13,17 +13,18 @@ namespace IdentityIssuer.WebAPI.Pipeline
         {
             _contextDataProvider = contextDataProvider;
         }
-        
+
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             foreach (var argument in context.ActionArguments.Values)
             {
                 if (!(argument is ITenantRequest request)) continue;
-                
-                var tenant = await _contextDataProvider.GetTenant(context.HttpContext);
-                request.TenantId = tenant.TenantId;
+
+                var requestContext = await _contextDataProvider.GetRequestContext(context.HttpContext);
+                if (requestContext.IsTenantContext)
+                    request.TenantId = requestContext.Tenant.TenantId;
             }
-            
+
             await next();
         }
     }

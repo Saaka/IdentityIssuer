@@ -4,6 +4,7 @@ using FluentAssertions;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Tenants;
 using IdentityIssuer.Common.Enums;
+using IdentityIssuer.Common.Requests.RequestContext;
 using IdentityIssuer.WebAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
@@ -137,10 +138,11 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
                 return this;
             }
 
-            private TenantContextData _tenantContextData;
+            private RequestContextData _contextData;
             public Fixture WithContextData(string tenantCode)
             {
-                _tenantContextData = new TenantContextData(1, tenantCode);
+                _contextData = new RequestContextData()
+                    .WithTenantContext(new TenantContext(1, tenantCode, false));
                 return this;
             }
 
@@ -153,8 +155,8 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
                         .Returns(_tenantSettings);
 
                     ContextDataProviderMock = mock.Mock<IContextDataProvider>();
-                    ContextDataProviderMock.Setup(x => x.GetTenant(It.IsAny<HttpContext>()))
-                        .ReturnsAsync(_tenantContextData);
+                    ContextDataProviderMock.Setup(x => x.GetRequestContext(It.IsAny<HttpContext>()))
+                        .ReturnsAsync(_contextData);
 
                     HttpContextAccessorMock = mock.Mock<IHttpContextAccessor>();
                     HttpContextAccessorMock.Setup(x => x.HttpContext)

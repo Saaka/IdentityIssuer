@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using AutoMapper;
-using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Common.Requests;
+using IdentityIssuer.Common.Requests.RequestContext;
 using IdentityIssuer.WebAPI.Models;
 using IdentityIssuer.WebAPI.Services;
 using MediatR;
@@ -28,24 +28,8 @@ namespace IdentityIssuer.WebAPI.Controllers
         protected IMapper Mapper 
             => _mapper ??= HttpContext.RequestServices.GetService<IMapper>();
 
-        protected Task<TenantContextData> GetTenantAsync()
-        {
-            return ContextDataProvider.GetTenant(HttpContext);
-        }
-        protected Task<AdminTenantContextData> GetAdminTenantAsync()
-        {
-            return ContextDataProvider.GetAdminTenant(HttpContext);
-        }
-
-        protected Task<UserContextData> GetUserAsync()
-        {
-            return ContextDataProvider.GetUser(HttpContext);
-        }
-
-        protected Task<AdminContextData> GetAdminAsync()
-        {
-            return ContextDataProvider.GetAdmin(HttpContext);
-        }
+        protected Task<RequestContextData> GetRequestContext()
+            => _contextDataProvider.GetRequestContext(HttpContext);
 
         protected ActionResult<TResponseType> GetResponse<TResponseType>(RequestResult<TResponseType> result)
         {

@@ -8,12 +8,10 @@ namespace IdentityIssuer.Application.Auth.Commands
     {
         public LoginUserWithCredentialsCommand(
             string email, 
-            string password, 
-            TenantContextData tenant)
+            string password)
         {
             Email = email;
             Password = password;
-            Tenant = tenant;
         }
 
         public string Email { get; }

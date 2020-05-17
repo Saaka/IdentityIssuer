@@ -15,9 +15,9 @@ namespace IdentityIssuer.WebAPI.Controllers.Tenants
         [HttpPost("create")]
         public async Task<ActionResult<TenantDto>> CreateTenant(CreateTenantModel model)
         {
-            var adminContext = await GetAdminAsync();
+            var requestContext = await GetRequestContext();
             var command = Mapper.Map<CreateTenantCommand>(model)
-                .WithAdminContextData(adminContext);
+                .WithRequestContext(requestContext);
             
             var result = await Mediator.Send(command);
 
@@ -27,9 +27,9 @@ namespace IdentityIssuer.WebAPI.Controllers.Tenants
         [HttpPost("settings/update")]
         public async Task<ActionResult<TenantSettingsDto>> UpdateTenantSettings(UpdateTenantSettingsModel model)
         {
-            var adminContext = await GetAdminAsync();
+            var requestContext = await GetRequestContext();
             var command = Mapper.Map<UpdateTenantSettingsCommand>(model)
-                .WithAdminContextData(adminContext);
+                .WithRequestContext(requestContext);
 
             var result = await Mediator.Send(command);
 
@@ -39,9 +39,9 @@ namespace IdentityIssuer.WebAPI.Controllers.Tenants
         [HttpPost("providerSettings/create")]
         public async Task<ActionResult<TenantProviderSettingsDto>> CreateProviderSettings(CreateProviderSettingsModel model)
         {
-            var adminContext = await GetAdminAsync();
+            var requestContext = await GetRequestContext();
             var command = Mapper.Map<CreateTenantProviderSettingsCommand>(model)
-                .WithAdminContextData(adminContext);
+                .WithRequestContext(requestContext);
             
             var result = await Mediator.Send(command);
 
@@ -51,9 +51,9 @@ namespace IdentityIssuer.WebAPI.Controllers.Tenants
         [HttpPost("providerSettings/update")]
         public async Task<ActionResult<TenantProviderSettingsDto>> UpdateProviderSettings(UpdateProviderSettingsModel model)
         {
-            var adminContext = await GetAdminAsync();
+            var requestContext = await GetRequestContext();
             var command = Mapper.Map<UpdateTenantProviderSettingsCommand>(model)
-                .WithAdminContextData(adminContext);
+                .WithRequestContext(requestContext);
             
             var result = await Mediator.Send(command);
 
@@ -63,9 +63,9 @@ namespace IdentityIssuer.WebAPI.Controllers.Tenants
         [HttpDelete("providerSettings/delete")]
         public async Task<ActionResult<Guid>> DeleteProviderSettings(DeleteProviderSettingsModel model)
         {
-            var adminContext = await GetAdminAsync();
+            var requestContext = await GetRequestContext();
             var command = Mapper.Map<DeleteTenantProviderSettingsCommand>(model)
-                .WithAdminContextData(adminContext);
+                .WithRequestContext(requestContext);
             
             var result = await Mediator.Send(command);
 
@@ -75,9 +75,9 @@ namespace IdentityIssuer.WebAPI.Controllers.Tenants
         [HttpPost("application")]
         public async Task<ActionResult<TenantApplicationDto>> ApplyForTenant(TenantApplicationModel model)
         {
-            var adminTenantContext = await GetAdminTenantAsync();
+            var requestContext = await GetRequestContext();
             var command = Mapper.Map<ApplyForTenantCommand>(model)
-                .WithAdminTenantContextData(adminTenantContext);
+                .WithRequestContext(requestContext);
 
             var result = await Mediator.Send(command);
 

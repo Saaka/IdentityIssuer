@@ -18,13 +18,14 @@ namespace IdentityIssuer.Application.Users.Commands.UpdateUserDisplayName
                 .NotEmpty()
                 .WithMessageCode(ValidationErrorCode.UserGuidRequired);
 
-            RuleFor(x => x.UserGuid)
-                .Equal(x => x.User.UserGuid)
-                .When(x => !x.User.IsAdmin)
-                .WithMessageCode(ValidationErrorCode.UserActionNotAllowed);
-
             RuleFor(x => x.User)
                 .IsValid();
+            
+            RuleFor(x => x.UserGuid)
+                .Equal(x => x.RequestContext.User.UserGuid)
+                .When(x => !x.RequestContext.User.IsAdmin)
+                .WithMessageCode(ValidationErrorCode.UserActionNotAllowed);
+
         }
     }
 }

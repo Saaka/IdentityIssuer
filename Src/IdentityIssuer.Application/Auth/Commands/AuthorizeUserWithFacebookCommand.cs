@@ -7,11 +7,9 @@ namespace IdentityIssuer.Application.Auth.Commands
     public class AuthorizeUserWithFacebookCommand : Request<AuthorizationData>
     {
         public AuthorizeUserWithFacebookCommand(
-            string token, 
-            TenantContextData tenant)
+            string token)
         {
             Token = token;
-            Tenant = tenant;
         }
 
         public string Token { get; }

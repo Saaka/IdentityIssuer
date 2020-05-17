@@ -40,7 +40,7 @@ namespace IdentityIssuer.WebAPI.Services
             TokenValidationParameters validationParameters)
         {
             var requestContext = _contextDataProvider.GetRequestContext(_httpContextAccessor.HttpContext).Result;
-            if (!requestContext.IsTenantContext)
+            if (requestContext == null || !requestContext.IsTenantContext)
                 throw new UnauthorizedAccessException(ErrorCode.MissingTenantContextData.ToString());
             if (requestContext.Tenant.TenantCode != kid)
                 throw new UnauthorizedAccessException(ErrorCode.KidMissmatch.ToString());

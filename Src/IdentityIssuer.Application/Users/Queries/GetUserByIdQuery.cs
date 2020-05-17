@@ -9,12 +9,10 @@ namespace IdentityIssuer.Application.Users.Queries
     {
         public GetUserByIdQuery(
             int userId,
-            Guid userGuid,
-            TenantContextData tenant)
+            Guid userGuid)
         {
             UserId = userId;
             UserGuid = userGuid;
-            Tenant = tenant;
         }
 
         public int UserId { get; }

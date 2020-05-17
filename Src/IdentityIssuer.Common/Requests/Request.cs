@@ -1,4 +1,5 @@
 using System;
+using IdentityIssuer.Common.Requests.RequestContext;
 using MediatR;
 
 namespace IdentityIssuer.Common.Requests
@@ -13,7 +14,8 @@ namespace IdentityIssuer.Common.Requests
     {
         public Guid RequestGuid { get; private set; }
         public Guid CorrelationId { get; private set; }
-
+        public RequestContextData RequestContext { get; private set; }
+        
         protected Request()
         {
             RequestGuid = Guid.NewGuid();
@@ -23,6 +25,12 @@ namespace IdentityIssuer.Common.Requests
         public Request<TResult> WithCorrelationId(Guid guid)
         {
             CorrelationId = guid;
+            return this;
+        }
+
+        public Request<TResult> WithRequestContext(RequestContextData contextData)
+        {
+            RequestContext = contextData;
             return this;
         }
     }
