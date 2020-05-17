@@ -1,7 +1,9 @@
 using FluentValidation;
+using FluentValidation.Validators;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Validators.FluentValidation;
 using IdentityIssuer.Common.Enums;
+using IdentityIssuer.Common.Requests.RequestContext;
 
 namespace IdentityIssuer.Application
 {
@@ -13,7 +15,14 @@ namespace IdentityIssuer.Application
             return ruleBuilder
                 .SetValidator(new TenantContextDataValidator());
         }
-        
+
+        public static IRuleBuilderOptions<T, RequestContextData> HasUserContext<T>(
+            this IRuleBuilder<T, RequestContextData> ruleBuilder)
+        {
+            return ruleBuilder
+                .SetValidator(new RequestHasUserContextValidator());
+        }
+
         public static IRuleBuilderOptions<T, UserContextData> IsValid<T>(
             this IRuleBuilder<T, UserContextData> ruleBuilder)
         {
