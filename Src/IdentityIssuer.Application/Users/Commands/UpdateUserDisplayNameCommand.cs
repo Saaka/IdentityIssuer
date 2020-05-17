@@ -16,12 +16,5 @@ namespace IdentityIssuer.Application.Users.Commands
 
         public string Name { get; }
         public Guid UserGuid { get; }
-        public UserContextData User { get; private set; }
-
-        public UpdateUserDisplayNameCommand WithUser(UserContextData user)
-        {
-            User = user;
-            return this;
-        }
     }
 }
