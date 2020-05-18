@@ -8,8 +8,6 @@ namespace IdentityIssuer.Application.Validators.FluentValidation
     {
         public AdminTenantContextValidator()
         {
-            RuleFor(x => x)
-                .SetValidator(new TenantContextValidator());
             RuleFor(x=> x.IsAdminTenant)
                 .Equal(true)
                 .WithMessageCode(ValidationErrorCode.AdminTenantContextRequired);

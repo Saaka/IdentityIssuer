@@ -12,7 +12,7 @@ namespace IdentityIssuer.Application
             this IRuleBuilder<T, RequestContextData> ruleBuilder)
         {
             return ruleBuilder
-                .SetValidator(new RequestHasUserContextValidator());
+                .SetValidator(new IsInUserContextValidator());
         }
 
         public static IRuleBuilderOptions<T, RequestContextData> IsInTenantContext<T>(
@@ -28,12 +28,18 @@ namespace IdentityIssuer.Application
             return ruleBuilder
                 .SetValidator(new IsInAdminTenantContextValidator());
         }
+
+        public static IRuleBuilderOptions<T, RequestContextData> IsInAdminContext<T>(
+            this IRuleBuilder<T, RequestContextData> ruleBuilder)
+        {
+            return ruleBuilder
+                .SetValidator(new IsInAdminTenantContextValidator());
+        }
         
         public static IRuleBuilderOptions<T, AdminContextData> IsValid<T>(
             this IRuleBuilder<T, AdminContextData> ruleBuilder)
         {
-            return ruleBuilder
-                .SetValidator(new AdminContextDataValidator());
+            throw new System.NotImplementedException();
         }
 
         public static IRuleBuilderOptions<T, TProperty> WithMessageCode<T, TProperty>(

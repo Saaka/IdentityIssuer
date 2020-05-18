@@ -4,21 +4,14 @@ using IdentityIssuer.Common.Requests.RequestContext;
 
 namespace IdentityIssuer.Application.Validators.FluentValidation
 {
-    public class RequestHasUserContextValidator : AbstractValidator<RequestContextData>
+    public class IsInUserContextValidator : AbstractValidator<RequestContextData>
     {
-        public RequestHasUserContextValidator()
+        public IsInUserContextValidator()
         {
             RuleFor(x => x)
                 .IsInTenantContext();
             RuleFor(x => x.User)
-                .NotNull()
-                .WithMessageCode(ValidationErrorCode.UserContextRequired);
-            RuleFor(x => x.User.UserId)
-                .NotEmpty()
-                .WithMessageCode(ValidationErrorCode.UserContextRequired);
-            RuleFor(x => x.User.UserGuid)
-                .NotEmpty()
-                .WithMessageCode(ValidationErrorCode.UserContextRequired);
+                .SetValidator(new UserContextValidator());
         }
     }
 }

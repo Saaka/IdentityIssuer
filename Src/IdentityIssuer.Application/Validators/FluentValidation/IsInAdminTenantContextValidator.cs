@@ -7,6 +7,8 @@ namespace IdentityIssuer.Application.Validators.FluentValidation
     {
         public IsInAdminTenantContextValidator()
         {
+            RuleFor(x => x)
+                .IsInTenantContext();
             RuleFor(x => x.Tenant)
                 .SetValidator(new AdminTenantContextValidator());
         }
