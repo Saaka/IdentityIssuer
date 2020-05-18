@@ -12,7 +12,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
                 .WithMessageCode(ValidationErrorCode.ProviderTokenRequired);
 
             RuleFor(x => x.RequestContext)
-                .HasTenantContext();
+                .IsInTenantContext();
         }   
     }
 }

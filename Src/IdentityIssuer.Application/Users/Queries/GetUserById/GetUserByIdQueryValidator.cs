@@ -7,7 +7,7 @@ namespace IdentityIssuer.Application.Users.Queries.GetUserById
         public GetUserByIdQueryValidator()
         {
             RuleFor(x => x.RequestContext)
-                .HasUserContext();
+                .IsInUserContext();
         }
     }
 }

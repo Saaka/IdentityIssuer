@@ -3,9 +3,9 @@ using IdentityIssuer.Common.Requests.RequestContext;
 
 namespace IdentityIssuer.Application.Validators.FluentValidation
 {
-    public class RequestHasTenantContextValidator: AbstractValidator<RequestContextData>
+    public class IsInTenantContextValidator : AbstractValidator<RequestContextData>
     {
-        public RequestHasTenantContextValidator()
+        public IsInTenantContextValidator()
         {
             RuleFor(x => x.Tenant)
                 .SetValidator(new TenantContextValidator());

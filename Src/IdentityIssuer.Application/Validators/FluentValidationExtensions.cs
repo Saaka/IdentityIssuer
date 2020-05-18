@@ -8,18 +8,25 @@ namespace IdentityIssuer.Application
 {
     public static class FluentValidationExtensions
     {
-        public static IRuleBuilderOptions<T, RequestContextData> HasUserContext<T>(
+        public static IRuleBuilderOptions<T, RequestContextData> IsInUserContext<T>(
             this IRuleBuilder<T, RequestContextData> ruleBuilder)
         {
             return ruleBuilder
                 .SetValidator(new RequestHasUserContextValidator());
         }
 
-        public static IRuleBuilderOptions<T, RequestContextData> HasTenantContext<T>(
+        public static IRuleBuilderOptions<T, RequestContextData> IsInTenantContext<T>(
             this IRuleBuilder<T, RequestContextData> ruleBuilder)
         {
             return ruleBuilder
-                .SetValidator(new RequestHasTenantContextValidator());
+                .SetValidator(new IsInTenantContextValidator());
+        }
+
+        public static IRuleBuilderOptions<T, RequestContextData> IsInAdminTenantContext<T>(
+            this IRuleBuilder<T, RequestContextData> ruleBuilder)
+        {
+            return ruleBuilder
+                .SetValidator(new IsInAdminTenantContextValidator());
         }
         
         public static IRuleBuilderOptions<T, AdminContextData> IsValid<T>(
@@ -27,13 +34,6 @@ namespace IdentityIssuer.Application
         {
             return ruleBuilder
                 .SetValidator(new AdminContextDataValidator());
-        }
-        
-        public static IRuleBuilderOptions<T, AdminTenantContextData> IsValid<T>(
-            this IRuleBuilder<T, AdminTenantContextData> ruleBuilder)
-        {
-            return ruleBuilder
-                .SetValidator(new AdminTenantContextDataValidator());
         }
 
         public static IRuleBuilderOptions<T, TProperty> WithMessageCode<T, TProperty>(

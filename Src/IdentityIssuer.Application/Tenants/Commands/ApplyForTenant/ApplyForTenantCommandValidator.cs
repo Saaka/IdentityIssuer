@@ -47,8 +47,8 @@ namespace IdentityIssuer.Application.Tenants.Commands.ApplyForTenant
                 .Length(UserConstants.MinEmailLength, UserConstants.MaxEmailLength)
                 .WithMessageCode(ValidationErrorCode.UserEmailInvalid);
 
-            RuleFor(x => x.AdminTenant)
-                .IsValid();
+            RuleFor(x => x.RequestContext)
+                .IsInAdminTenantContext();
         }
 
         private static bool HaveOneLoginOptionEnabled(ApplyForTenantCommand settings)

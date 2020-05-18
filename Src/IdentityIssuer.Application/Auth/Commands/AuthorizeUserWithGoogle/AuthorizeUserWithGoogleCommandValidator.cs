@@ -12,7 +12,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
                 .WithMessageCode(ValidationErrorCode.ProviderTokenRequired);
 
             RuleFor(x => x.RequestContext)
-                .HasTenantContext();
+                .IsInTenantContext();
         }   
     }
 }

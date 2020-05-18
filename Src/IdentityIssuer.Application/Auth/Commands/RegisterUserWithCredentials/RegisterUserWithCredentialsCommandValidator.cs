@@ -33,7 +33,7 @@ namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
                 .Length(UserConstants.MinEmailLength, UserConstants.MaxEmailLength)
                 .WithMessageCode(ValidationErrorCode.UserEmailInvalid);
             RuleFor(x => x.RequestContext)
-                .HasTenantContext();
+                .IsInTenantContext();
             RuleFor(x => x)
                 .MustAsync(HaveUniqueEmailForTenant)
                 .OverridePropertyName(nameof(RegisterUserWithCredentialsCommand.Email))

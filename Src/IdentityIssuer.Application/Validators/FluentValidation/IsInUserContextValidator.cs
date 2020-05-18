@@ -9,7 +9,7 @@ namespace IdentityIssuer.Application.Validators.FluentValidation
         public RequestHasUserContextValidator()
         {
             RuleFor(x => x)
-                .HasTenantContext();
+                .IsInTenantContext();
             RuleFor(x => x.User)
                 .NotNull()
                 .WithMessageCode(ValidationErrorCode.UserContextRequired);

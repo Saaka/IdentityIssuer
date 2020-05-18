@@ -19,7 +19,7 @@ namespace IdentityIssuer.Application.Users.Commands.UpdateUserDisplayName
                 .WithMessageCode(ValidationErrorCode.UserGuidRequired);
 
             RuleFor(x => x.RequestContext)
-                .HasUserContext();
+                .IsInUserContext();
 
             RuleFor(x => x.UserGuid)
                 .Equal(x => x.RequestContext.User.UserGuid)
