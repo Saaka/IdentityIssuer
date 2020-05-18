@@ -32,8 +32,8 @@ namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
                 .WithMessageCode(ValidationErrorCode.UserEmailInvalid)
                 .Length(UserConstants.MinEmailLength, UserConstants.MaxEmailLength)
                 .WithMessageCode(ValidationErrorCode.UserEmailInvalid);
-            RuleFor(x => x.Tenant)
-                .IsValid();
+            RuleFor(x => x.RequestContext)
+                .HasTenantContext();
             RuleFor(x => x)
                 .MustAsync(HaveUniqueEmailForTenant)
                 .OverridePropertyName(nameof(RegisterUserWithCredentialsCommand.Email))
@@ -43,7 +43,8 @@ namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
         private async Task<bool> HaveUniqueEmailForTenant(RegisterUserWithCredentialsCommand command,
             CancellationToken cancellationToken)
         {
-            return !(await _authRepository.IsEmailRegisteredForTenant(command.Email, command.Tenant.TenantId));
+            return !(await _authRepository
+                .IsEmailRegisteredForTenant(command.Email, command.RequestContext.Tenant.TenantId));
         }
     }
 }

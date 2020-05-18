@@ -11,6 +11,7 @@ using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
 using IdentityIssuer.Common.Requests;
+using IdentityIssuer.Common.Requests.RequestContext;
 
 namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
 {
@@ -49,25 +50,25 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
         public override async Task<RequestResult<AuthorizationData>> Handle(AuthorizeUserWithFacebookCommand request,
             CancellationToken cancellationToken)
         {
-            var providerSettings = await GetTenantProviderSettings(request.Tenant);
+            var providerSettings = await GetTenantProviderSettings(request.RequestContext.Tenant);
             var tokenInfo = await _facebookApiClient
                 .GetTokenInfoAsync(request.Token, providerSettings.Identifier, providerSettings.Key);
             
-            var (hasError, result) = ValidateTokenWithProviderSettings(tokenInfo, request.Tenant, providerSettings);
+            var (hasError, result) = ValidateTokenWithProviderSettings(tokenInfo, request.RequestContext.Tenant, providerSettings);
             if (hasError)
                 return result;
 
-            if (await _authRepository.FacebookUserExists(tokenInfo.ExternalUserId, request.Tenant.TenantId))
-                return await UpdateExistingUser(tokenInfo, request.Tenant);
+            if (await _authRepository.FacebookUserExists(tokenInfo.ExternalUserId, request.RequestContext.Tenant.TenantId))
+                return await UpdateExistingUser(tokenInfo, request.RequestContext.Tenant);
 
-            if (await _authRepository.IsEmailRegisteredForTenant(tokenInfo.Email, request.Tenant.TenantId))
-                return await AddFacebookToExistingUser(tokenInfo, request.Tenant);
+            if (await _authRepository.IsEmailRegisteredForTenant(tokenInfo.Email, request.RequestContext.Tenant.TenantId))
+                return await AddFacebookToExistingUser(tokenInfo, request.RequestContext.Tenant);
 
-            return await CreateNewFacebookUser(tokenInfo, request.Tenant);
+            return await CreateNewFacebookUser(tokenInfo, request.RequestContext.Tenant);
         }
 
         private async Task<RequestResult<AuthorizationData>> CreateNewFacebookUser(TokenInfo tokenInfo,
-            TenantContextData requestTenant)
+            TenantContext requestTenant)
         {
             var userGuid = _guid.GetGuid();
 
@@ -83,7 +84,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
         }
 
         private async Task<RequestResult<AuthorizationData>> AddFacebookToExistingUser(TokenInfo tokenInfo,
-            TenantContextData requestTenant)
+            TenantContext requestTenant)
         {
             var user = await _authRepository
                 .AddFacebookLoginToUser(requestTenant.TenantId, tokenInfo.Email, tokenInfo.ExternalUserId);
@@ -94,7 +95,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
         }
 
         private async Task<RequestResult<AuthorizationData>> UpdateExistingUser(TokenInfo tokenInfo,
-            TenantContextData requestTenant)
+            TenantContext requestTenant)
         {
             var user = await _authRepository
                 .GetUserByEmail(tokenInfo.Email, requestTenant.TenantId);
@@ -104,7 +105,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
             return await GetAuthorizationDataResult(requestTenant, user);
         }
 
-        private async Task<RequestResult<AuthorizationData>> GetAuthorizationDataResult(TenantContextData requestTenant,
+        private async Task<RequestResult<AuthorizationData>> GetAuthorizationDataResult(TenantContext requestTenant,
             TenantUser user)
         {
             var tenantSettings = await _tenantsRepository.GetTenantSettings(requestTenant.TenantId);
@@ -119,7 +120,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
                     });
         }
 
-        private async Task<TenantProviderSettings> GetTenantProviderSettings(TenantContextData tenant)
+        private async Task<TenantProviderSettings> GetTenantProviderSettings(TenantContext tenant)
         {
             var providerSettings = await _providerSettingsRepository
                 .GetProviderSettings(tenant.TenantId, AuthProviderType.Facebook);
@@ -131,7 +132,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
         }
 
         private (bool hasError, RequestResult<AuthorizationData> result) ValidateTokenWithProviderSettings(
-            TokenInfo tokenInfo, TenantContextData tenant, TenantProviderSettings providerSettings)
+            TokenInfo tokenInfo, TenantContext tenant, TenantProviderSettings providerSettings)
         {
             if (tokenInfo == null || providerSettings == null || tokenInfo.ClientId != providerSettings.Identifier)
             {

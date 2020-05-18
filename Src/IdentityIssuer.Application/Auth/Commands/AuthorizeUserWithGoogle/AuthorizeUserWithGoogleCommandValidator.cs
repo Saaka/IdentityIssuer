@@ -9,9 +9,10 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
         {
             RuleFor(x => x.Token)
                 .NotEmpty()
-                .WithMessageCode(ValidationErrorCode.ProviderTokenRequired);;
-            RuleFor(x => x.Tenant)
-                .IsValid();
+                .WithMessageCode(ValidationErrorCode.ProviderTokenRequired);
+
+            RuleFor(x => x.RequestContext)
+                .HasTenantContext();
         }   
     }
 }

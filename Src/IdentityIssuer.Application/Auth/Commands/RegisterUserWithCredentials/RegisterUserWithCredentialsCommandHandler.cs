@@ -41,7 +41,7 @@ namespace IdentityIssuer.Application.Auth.Commands.RegisterUserWithCredentials
                 Password = request.Password,
                 DisplayName = request.DisplayName,
                 ImageUrl = imageUrl,
-                TenantId = request.Tenant.TenantId,
+                TenantId = request.RequestContext.Tenant.TenantId,
                 UserGuid = request.UserGuid,
                 AvatarType = AvatarType.Gravatar,
             });

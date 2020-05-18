@@ -17,6 +17,5 @@ namespace IdentityIssuer.Application.Users.Queries
 
         public int UserId { get; }
         public Guid UserGuid { get; }
-        public TenantContextData Tenant { get; }
     }
 }

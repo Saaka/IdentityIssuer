@@ -10,9 +10,9 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
             RuleFor(x => x.Token)
                 .NotEmpty()
                 .WithMessageCode(ValidationErrorCode.ProviderTokenRequired);
-            
-            RuleFor(x => x.Tenant)
-                .IsValid();
+
+            RuleFor(x => x.RequestContext)
+                .HasTenantContext();
         }   
     }
 }

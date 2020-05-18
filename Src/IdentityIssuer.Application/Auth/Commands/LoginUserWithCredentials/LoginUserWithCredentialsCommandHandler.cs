@@ -34,17 +34,17 @@ namespace IdentityIssuer.Application.Auth.Commands.LoginUserWithCredentials
             CancellationToken cancellationToken)
         {
             var user = await _authRepository.GetUserByCredentials(request.Email, request.Password,
-                request.Tenant.TenantId);
+                request.RequestContext.Tenant.TenantId);
             if (user == null)
                 return RequestResult<AuthorizationData>.Failure(ErrorCode.UserNotFound,
-                    new {email = request.Email, tenantCode = request.Tenant.TenantCode});
+                    new {email = request.Email, tenantCode = request.RequestContext.Tenant.TenantCode});
 
-            var settings = await _tenantsRepository.GetTenantSettings(request.Tenant.TenantId);
+            var settings = await _tenantsRepository.GetTenantSettings(request.RequestContext.Tenant.TenantId);
             if (settings == null)
                 return RequestResult<AuthorizationData>.Failure(ErrorCode.TenantSettingsNotFound,
-                    new {tenantCode = request.Tenant.TenantCode});
+                    new {tenantCode = request.RequestContext.Tenant.TenantCode});
 
-            var token = _jwtTokenFactory.Create(user, settings, request.Tenant.TenantCode);
+            var token = _jwtTokenFactory.Create(user, settings, request.RequestContext.Tenant.TenantCode);
             
             return RequestResult<AuthorizationData>
                 .Success(new AuthorizationData

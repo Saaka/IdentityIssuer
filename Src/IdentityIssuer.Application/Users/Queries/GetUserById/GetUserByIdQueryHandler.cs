@@ -24,7 +24,7 @@ namespace IdentityIssuer.Application.Users.Queries.GetUserById
         public override async Task<RequestResult<UserDto>> Handle(GetUserByIdQuery request,
             CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetUser(request.UserId, request.Tenant.TenantId);
+            var user = await _userRepository.GetUser(request.UserId, request.RequestContext.Tenant.TenantId);
             if (user == null)
                 return RequestResult<UserDto>
                     .Failure(ErrorCode.UserNotFound, new {userGuid = request.UserGuid});

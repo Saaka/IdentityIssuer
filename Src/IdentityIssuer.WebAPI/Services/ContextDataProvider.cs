@@ -28,24 +28,6 @@ namespace IdentityIssuer.WebAPI.Services
             _usersProvider = usersProvider;
         }
 
-        public async Task<UserContextData> GetUser(HttpContext context)
-        {
-            var userGuid = GetUserGuidFromContext(context);
-            var user = await _usersProvider.GetUser(userGuid);
-
-            var tenant = await GetTenant(context);
-
-            return new UserContextData(user.Id, userGuid, user.IsAdmin, tenant);
-        }
-
-        public async Task<TenantContextData> GetTenant(HttpContext context)
-        {
-            var tenantCode = GetTenantCodeFromContext(context);
-            var tenant = await _tenantProvider.GetTenantAsync(tenantCode);
-
-            return new TenantContextData(tenant.Id, tenant.Code);
-        }
-
         public async Task<AdminContextData> GetAdmin(HttpContext context)
         {
             var userGuid = GetUserGuidFromContext(context);

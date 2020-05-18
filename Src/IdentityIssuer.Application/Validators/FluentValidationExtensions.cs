@@ -1,5 +1,4 @@
 using FluentValidation;
-using FluentValidation.Validators;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Validators.FluentValidation;
 using IdentityIssuer.Common.Enums;
@@ -9,13 +8,6 @@ namespace IdentityIssuer.Application
 {
     public static class FluentValidationExtensions
     {
-        public static IRuleBuilderOptions<T, TenantContextData> IsValid<T>(
-            this IRuleBuilder<T, TenantContextData> ruleBuilder)
-        {
-            return ruleBuilder
-                .SetValidator(new TenantContextDataValidator());
-        }
-
         public static IRuleBuilderOptions<T, RequestContextData> HasUserContext<T>(
             this IRuleBuilder<T, RequestContextData> ruleBuilder)
         {
@@ -23,11 +15,11 @@ namespace IdentityIssuer.Application
                 .SetValidator(new RequestHasUserContextValidator());
         }
 
-        public static IRuleBuilderOptions<T, UserContextData> IsValid<T>(
-            this IRuleBuilder<T, UserContextData> ruleBuilder)
+        public static IRuleBuilderOptions<T, RequestContextData> HasTenantContext<T>(
+            this IRuleBuilder<T, RequestContextData> ruleBuilder)
         {
             return ruleBuilder
-                .SetValidator(new UserContextDataValidator());
+                .SetValidator(new RequestHasTenantContextValidator());
         }
         
         public static IRuleBuilderOptions<T, AdminContextData> IsValid<T>(

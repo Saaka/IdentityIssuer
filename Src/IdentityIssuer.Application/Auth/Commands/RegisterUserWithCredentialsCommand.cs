@@ -23,6 +23,5 @@ namespace IdentityIssuer.Application.Auth.Commands
         public string Email { get;  }
         public string DisplayName { get;  }
         public string Password { get;  }
-        public TenantContextData Tenant { get;  }
     }
 }

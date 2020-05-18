@@ -13,6 +13,5 @@ namespace IdentityIssuer.Application.Auth.Commands
         }
 
         public string Token { get; }
-        public TenantContextData Tenant { get; }
     }
 }

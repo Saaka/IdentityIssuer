@@ -9,8 +9,8 @@ using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Application.Users.Models;
 using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Enums;
-using IdentityIssuer.Common.Exceptions;
 using IdentityIssuer.Common.Requests;
+using IdentityIssuer.Common.Requests.RequestContext;
 
 namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
 {
@@ -50,20 +50,20 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
             CancellationToken cancellationToken)
         {
             var tokenInfo = await _googleApiClient.GetTokenInfoAsync(request.Token);
-            var (hasError, result) = await ValidateTokenWithProviderSettings(tokenInfo, request.Tenant);
+            var (hasError, result) = await ValidateTokenWithProviderSettings(tokenInfo, request.RequestContext.Tenant);
             if (hasError)
                 return result;
             
-            if (await _authRepository.GoogleUserExists(tokenInfo.ExternalUserId, request.Tenant.TenantId))
-                return await UpdateExistingUser(tokenInfo, request.Tenant);
+            if (await _authRepository.GoogleUserExists(tokenInfo.ExternalUserId, request.RequestContext.Tenant.TenantId))
+                return await UpdateExistingUser(tokenInfo, request.RequestContext.Tenant);
 
-            if (await _authRepository.IsEmailRegisteredForTenant(tokenInfo.Email, request.Tenant.TenantId))
-                return await AddGoogleToExistingUser(tokenInfo, request.Tenant);
+            if (await _authRepository.IsEmailRegisteredForTenant(tokenInfo.Email, request.RequestContext.Tenant.TenantId))
+                return await AddGoogleToExistingUser(tokenInfo, request.RequestContext.Tenant);
 
-            return await CreateNewGoogleUser(tokenInfo, request.Tenant);
+            return await CreateNewGoogleUser(tokenInfo, request.RequestContext.Tenant);
         }
 
-        private async Task<RequestResult<AuthorizationData>> CreateNewGoogleUser(TokenInfo tokenInfo, TenantContextData requestTenant)
+        private async Task<RequestResult<AuthorizationData>> CreateNewGoogleUser(TokenInfo tokenInfo, TenantContext requestTenant)
         {
             var userGuid = _guid.GetGuid();
 
@@ -81,7 +81,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
                 .Success(data);
         }
 
-        private async Task<RequestResult<AuthorizationData>> AddGoogleToExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
+        private async Task<RequestResult<AuthorizationData>> AddGoogleToExistingUser(TokenInfo tokenInfo, TenantContext requestTenant)
         {
             var user = await _authRepository
                 .AddGoogleLoginToUser(requestTenant.TenantId, tokenInfo.Email, tokenInfo.ExternalUserId);
@@ -93,7 +93,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
                 .Success(data);
         }
 
-        private async Task<RequestResult<AuthorizationData>> UpdateExistingUser(TokenInfo tokenInfo, TenantContextData requestTenant)
+        private async Task<RequestResult<AuthorizationData>> UpdateExistingUser(TokenInfo tokenInfo, TenantContext requestTenant)
         {
             var user = await _authRepository
                 .GetUserByEmail(tokenInfo.Email, requestTenant.TenantId);
@@ -105,7 +105,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
                 .Success(data);
         }
 
-        private async Task<AuthorizationData> GetAuthorizationData(TenantContextData requestTenant, TenantUser user)
+        private async Task<AuthorizationData> GetAuthorizationData(TenantContext requestTenant, TenantUser user)
         {
             var tenantSettings = await _tenantsRepository.GetTenantSettings(requestTenant.TenantId);
             var token = _jwtTokenFactory.Create(user, tenantSettings, requestTenant.TenantCode);
@@ -117,7 +117,7 @@ namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithGoogle
             };
         }
 
-        private async Task<(bool hasError, RequestResult<AuthorizationData> result)> ValidateTokenWithProviderSettings(TokenInfo tokenInfo, TenantContextData tenant)
+        private async Task<(bool hasError, RequestResult<AuthorizationData> result)> ValidateTokenWithProviderSettings(TokenInfo tokenInfo, TenantContext tenant)
         {
             var providerSettings = await _providerSettingsRepository
                 .GetProviderSettings(tenant.TenantId, AuthProviderType.Google);

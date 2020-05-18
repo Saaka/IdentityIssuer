@@ -15,8 +15,8 @@ namespace IdentityIssuer.Application.Auth.Commands.LoginUserWithCredentials
                 .WithMessageCode(ValidationErrorCode.UserEmailRequired)
                 .EmailAddress()
                 .WithMessageCode(ValidationErrorCode.UserEmailInvalid);
-            RuleFor(x => x.Tenant)
-                .IsValid();
+            RuleFor(x => x.RequestContext)
+                .HasTenantContext();
         }
     }
 }

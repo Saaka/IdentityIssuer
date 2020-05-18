@@ -1,12 +1,12 @@
 using FluentValidation;
-using IdentityIssuer.Application.Models;
 using IdentityIssuer.Common.Enums;
+using IdentityIssuer.Common.Requests.RequestContext;
 
 namespace IdentityIssuer.Application.Validators.FluentValidation
 {
-    public class TenantContextDataValidator : AbstractValidator<TenantContextData>
+    public class TenantContextValidator : AbstractValidator<TenantContext>
     {
-        public TenantContextDataValidator()
+        public TenantContextValidator()
         {
             RuleFor(x => x)
                 .NotNull()
