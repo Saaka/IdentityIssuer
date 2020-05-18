@@ -10,32 +10,20 @@ namespace IdentityIssuer.Application
     {
         public static IRuleBuilderOptions<T, RequestContextData> IsInUserContext<T>(
             this IRuleBuilder<T, RequestContextData> ruleBuilder)
-        {
-            return ruleBuilder
-                .SetValidator(new IsInUserContextValidator());
-        }
+            => ruleBuilder.SetValidator(new IsInUserContextValidator());
 
         public static IRuleBuilderOptions<T, RequestContextData> IsInTenantContext<T>(
             this IRuleBuilder<T, RequestContextData> ruleBuilder)
-        {
-            return ruleBuilder
-                .SetValidator(new IsInTenantContextValidator());
-        }
+            => ruleBuilder.SetValidator(new IsInTenantContextValidator());
 
         public static IRuleBuilderOptions<T, RequestContextData> IsInAdminTenantContext<T>(
             this IRuleBuilder<T, RequestContextData> ruleBuilder)
-        {
-            return ruleBuilder
-                .SetValidator(new IsInAdminTenantContextValidator());
-        }
+            => ruleBuilder.SetValidator(new IsInAdminTenantContextValidator());
 
         public static IRuleBuilderOptions<T, RequestContextData> IsInAdminContext<T>(
             this IRuleBuilder<T, RequestContextData> ruleBuilder)
-        {
-            return ruleBuilder
-                .SetValidator(new IsInAdminTenantContextValidator());
-        }
-        
+            => ruleBuilder.SetValidator(new IsInAdminTenantContextValidator());
+
         public static IRuleBuilderOptions<T, AdminContextData> IsValid<T>(
             this IRuleBuilder<T, AdminContextData> ruleBuilder)
         {
@@ -44,9 +32,6 @@ namespace IdentityIssuer.Application
 
         public static IRuleBuilderOptions<T, TProperty> WithMessageCode<T, TProperty>(
             this IRuleBuilderOptions<T, TProperty> rule, ValidationErrorCode code)
-        {
-            return rule
-                .WithMessage(code.ToString());
-        }
+            => rule.WithMessage(code.ToString());
     }
 }
