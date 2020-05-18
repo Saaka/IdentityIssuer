@@ -11,7 +11,7 @@ namespace IdentityIssuer.Application.Validators.FluentValidation
         {
             RuleFor(x => x.IsAdmin)
                 .Equal(true)
-                .WithMessageCode(ValidationErrorCode.UserActionNotAllowed);
+                .WithMessageCode(ValidationErrorCode.AdminContextRequired);
         }
     }
 }
