@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Requests;
@@ -13,16 +12,13 @@ namespace IdentityIssuer.Application.Tenants.Commands.DeleteTenantProviderSettin
     {
         private readonly ITenantProviderSettingsRepository _providerSettingsRepository;
         private readonly ITenantProvider _tenantProvider;
-        private readonly IMapper _mapper;
 
         public DeleteTenantProviderSettingsCommandHandler(
             ITenantProviderSettingsRepository providerSettingsRepository,
-            ITenantProvider tenantProvider,
-            IMapper mapper)
+            ITenantProvider tenantProvider)
         {
             _providerSettingsRepository = providerSettingsRepository;
             _tenantProvider = tenantProvider;
-            _mapper = mapper;
         }
 
         public override async Task<RequestResult<Guid>> Handle(
@@ -31,7 +27,7 @@ namespace IdentityIssuer.Application.Tenants.Commands.DeleteTenantProviderSettin
             var tenant = await _tenantProvider.GetTenantAsync(request.TenantCode);
             if (tenant == null)
                 return RequestResult.Failure(ErrorCode.TenantNotFound,
-                    new {TenantCode = request.TenantCode});
+                    new {request.TenantCode});
             
             if (!await _providerSettingsRepository.ProviderSettingsExistsAsync(tenant.Id, request.ProviderType))
                 return RequestResult

@@ -1,5 +1,4 @@
-﻿using IdentityIssuer.Common.Constants;
-using IdentityIssuer.Common.Enums;
+﻿using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

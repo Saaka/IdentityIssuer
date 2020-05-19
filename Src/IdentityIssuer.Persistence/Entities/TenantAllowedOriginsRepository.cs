@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using IdentityIssuer.Application.Tenants.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -12,16 +11,13 @@ namespace IdentityIssuer.Persistence.Entities
     public class TenantAllowedOriginsRepository : ITenantAllowedOriginsRepository
     {
         private readonly AppIdentityContext _context;
-        private readonly IMapper _mapper;
         private readonly ILogger<TenantAllowedOriginsRepository> _logger;
 
         public TenantAllowedOriginsRepository(
             AppIdentityContext context,
-            IMapper mapper,
             ILogger<TenantAllowedOriginsRepository> logger)
         {
             _context = context;
-            _mapper = mapper;
             _logger = logger;
         }
 

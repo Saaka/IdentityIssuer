@@ -33,7 +33,7 @@ namespace IdentityIssuer.Application.Tenants.Commands.UpdateTenantSettings
             var tenant = await _tenantsRepository.GetTenantAsync(request.TenantCode);
             if (tenant == null)
                 return RequestResult<TenantSettingsDto>.Failure(ErrorCode.TenantNotFound, 
-                    new {TenantCode = request.TenantCode});
+                    new {request.TenantCode});
 
             var saveData = _mapper.Map<SaveTenantSettingsData>(request);
             saveData.TenantId = tenant.Id;

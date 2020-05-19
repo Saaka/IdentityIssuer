@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace IdentityIssuer.Persistence.Entities
 {
     public class TenantSettingsEntity

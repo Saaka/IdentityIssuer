@@ -1,4 +1,3 @@
-using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Tenants.Models;
 using IdentityIssuer.Common.Requests;
 

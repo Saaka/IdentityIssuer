@@ -3,8 +3,6 @@ using AutoMapper;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Users.Repositories;
 using System.Linq;
-using IdentityIssuer.Common.Enums;
-using IdentityIssuer.Common.Exceptions;
 using IdentityIssuer.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;

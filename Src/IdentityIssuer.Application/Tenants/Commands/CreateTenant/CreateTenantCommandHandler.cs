@@ -4,9 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using IdentityIssuer.Application.Tenants.Models;
 using IdentityIssuer.Application.Tenants.Repositories;
-using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Enums;
-using IdentityIssuer.Common.Exceptions;
 using IdentityIssuer.Common.Requests;
 
 namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
@@ -16,7 +14,6 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
         private readonly ITenantsRepository _tenantsRepository;
         private readonly ITenantSettingsRepository _tenantSettingsRepository;
         private readonly ITenantAllowedOriginsRepository _tenantAllowedOriginsRepository;
-        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
 
@@ -24,13 +21,11 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
             ITenantsRepository tenantsRepository,
             ITenantSettingsRepository tenantSettingsRepository,
             ITenantAllowedOriginsRepository tenantAllowedOriginsRepository,
-            IUserRepository userRepository,
             IMapper mapper)
         {
             _tenantsRepository = tenantsRepository;
             _tenantSettingsRepository = tenantSettingsRepository;
             _tenantAllowedOriginsRepository = tenantAllowedOriginsRepository;
-            _userRepository = userRepository;
             _mapper = mapper;
         }
 
@@ -38,7 +33,8 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
             CancellationToken cancellationToken)
         {
             if (await _tenantsRepository.TenantCodeExists(request.TenantCode))
-                return RequestResult<TenantDto>.Failure(ErrorCode.TenantAlreadyExistsForCode, new {TenantCode = request.TenantCode});
+                return RequestResult<TenantDto>
+                    .Failure(ErrorCode.TenantAlreadyExistsForCode, new {request.TenantCode});
 
             var tenant = await _tenantsRepository
                 .CreateTenant(_mapper.Map<CreateTenantData>(request));

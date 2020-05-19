@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Services;
-using IdentityIssuer.Application.Tenants;
 using IdentityIssuer.Application.Tenants.Repositories;
 
 namespace IdentityIssuer.WebAPI.Cors

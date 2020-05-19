@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.UnitTests.Utils.Fixtures;
 using IdentityIssuer.WebAPI.Cors;

@@ -6,7 +6,7 @@ using MediatR;
 
 namespace IdentityIssuer.Persistence.Behaviors
 {
-    public class TransactionScopeBehavior<TRequest, TResponse> : MediatR.IPipelineBehavior<TRequest, TResponse>
+    public class TransactionScopeBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
         where TResponse : RequestResult
     {

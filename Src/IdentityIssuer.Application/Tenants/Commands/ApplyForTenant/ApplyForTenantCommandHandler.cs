@@ -33,7 +33,7 @@ namespace IdentityIssuer.Application.Tenants.Commands.ApplyForTenant
         {
             if (await _tenantsRepository.TenantCodeExists(request.TenantCode))
                 return RequestResult<TenantApplicationDto>.Failure(ErrorCode.TenantAlreadyExistsForCode,
-                    new {TenantCode = request.TenantCode});
+                    new {request.TenantCode});
 
             var createApplicationData = _mapper.Map<SaveTenantApplicationData>(request);
             createApplicationData.TenantApplicationGuid = _guid.GetGuid();

@@ -11,7 +11,6 @@ using IdentityIssuer.Application.Tenants.Models;
 using IdentityIssuer.Application.Tenants.Repositories;
 using IdentityIssuer.Application.Users.Commands;
 using IdentityIssuer.Application.Users.Models;
-using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
 using IdentityIssuer.Common.Requests;
 using IdentityIssuer.Common.Requests.RequestContexts;

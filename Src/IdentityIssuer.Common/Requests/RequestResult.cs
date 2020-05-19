@@ -45,7 +45,7 @@ namespace IdentityIssuer.Common.Requests
     {
         public TResult Data { get; }
 
-        public RequestResult(TResult data) : base()
+        public RequestResult(TResult data) 
             => Data = data;
 
         public RequestResult(ErrorCode error, object errorDetails = null) : base(error, errorDetails)

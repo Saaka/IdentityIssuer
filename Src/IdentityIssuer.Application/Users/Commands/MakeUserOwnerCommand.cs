@@ -1,5 +1,4 @@
 using System;
-using IdentityIssuer.Application.Models;
 using IdentityIssuer.Common.Requests;
 
 namespace IdentityIssuer.Application.Users.Commands

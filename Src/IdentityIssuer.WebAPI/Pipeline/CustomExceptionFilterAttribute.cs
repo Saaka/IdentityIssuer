@@ -49,8 +49,8 @@ namespace IdentityIssuer.WebAPI.Pipeline
             context.Result = new JsonResult(new
             {
                 Error = domainException.ErrorCode.ToString(),
-                ErrorCode = domainException.ErrorCode,
-                ErrorDetails = domainException.ErrorDetails
+                domainException.ErrorCode,
+                domainException.ErrorDetails
             });
         }
 

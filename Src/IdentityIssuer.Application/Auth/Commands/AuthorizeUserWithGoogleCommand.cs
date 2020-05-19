@@ -1,5 +1,4 @@
 using IdentityIssuer.Application.Auth.Models;
-using IdentityIssuer.Application.Models;
 using IdentityIssuer.Common.Requests;
 
 namespace IdentityIssuer.Application.Auth.Commands

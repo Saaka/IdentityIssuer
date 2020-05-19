@@ -19,10 +19,10 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
         [Fact]
         public void ResolveSecurityKey_Should_Return_Collection_With_One_SymmetricSecurityKey()
         {
-            var fixture = new Fixture()
+            var sut = new Fixture()
                 .WithTenantSettings(secret: "123")
-                .WithContextData(tenantCode: "TST");
-            var sut = fixture.Configure();
+                .WithContextData(tenantCode: "TST")
+                .Configure();
 
             var result = sut.ResolveSecurityKey(
                 null,
@@ -40,10 +40,10 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
         [Fact]
         public void ResolveSecurityKey_Should_Throw_UnauthorizedException_For_Kid_Tenant_Missmatch()
         {
-            var fixture = new Fixture()
+            var sut = new Fixture()
                 .WithTenantSettings(secret: "123")
-                .WithContextData(tenantCode: "TST");
-            var sut = fixture.Configure();
+                .WithContextData(tenantCode: "TST")
+                .Configure();
 
             sut.Invoking(x => x.ResolveSecurityKey(
                     null,
@@ -61,9 +61,9 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
         [Fact]
         public void ResolveSecurityKey_Should_Throw_UnauthorizedException_For_Missing_Settings()
         {
-            var fixture = new Fixture()
-                .WithContextData(tenantCode: "TST");
-            var sut = fixture.Configure();
+            var sut = new Fixture()
+                .WithContextData(tenantCode: "TST")
+                .Configure();
 
             sut.Invoking(x => x.ResolveSecurityKey(
                     null,
@@ -83,10 +83,10 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
         [InlineData(null)]
         public void ResolveSecurityKey_Should_Throw_UnauthorizedException_For_Missing_Secret(string secret)
         {
-            var fixture = new Fixture()
+            var sut = new Fixture()
                 .WithTenantSettings(secret)
-                .WithContextData(tenantCode: "TST");
-            var sut = fixture.Configure();
+                .WithContextData(tenantCode: "TST")
+                .Configure();
 
             sut.Invoking(x => x.ResolveSecurityKey(
                     null,
@@ -104,9 +104,9 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
         [Fact]
         public void ResolveSecurityKey_Should_Throw_UnauthorizedException_For_Missing_Context_Data()
         {
-            var fixture = new Fixture()
-                .WithTenantSettings("123");
-            var sut = fixture.Configure();
+            var sut = new Fixture()
+                .WithTenantSettings("123")
+                .Configure();
 
             sut.Invoking(x => x.ResolveSecurityKey(
                     null,
@@ -123,7 +123,6 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
 
         private class Fixture
         {
-            public TenantSigningKeyResolver Sut { get; private set; }
             public Mock<ITenantProvider> TenantProviderMock { get; private set; }
             public Mock<IContextDataProvider> ContextDataProviderMock { get; private set; }
             public Mock<IHttpContextAccessor> HttpContextAccessorMock { get; private set; }
@@ -162,7 +161,7 @@ namespace IdentityIssuer.WebAPI.UnitTests.Services
                     HttpContextAccessorMock.Setup(x => x.HttpContext)
                         .Returns((HttpContext) null);
 
-                    return Sut = mock.Create<TenantSigningKeyResolver>();
+                    return mock.Create<TenantSigningKeyResolver>();
                 }
             }
         }

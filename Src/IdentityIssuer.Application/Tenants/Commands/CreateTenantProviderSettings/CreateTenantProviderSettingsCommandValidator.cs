@@ -1,4 +1,3 @@
-using System.Data;
 using FluentValidation;
 using IdentityIssuer.Common.Constants;
 using IdentityIssuer.Common.Enums;

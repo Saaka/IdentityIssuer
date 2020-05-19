@@ -1,5 +1,4 @@
 using IdentityIssuer.Application.Tenants.Models;
-using IdentityIssuer.Application.Models;
 using IdentityIssuer.Common.Requests;
 using IdentityIssuer.Common.Enums;
 
