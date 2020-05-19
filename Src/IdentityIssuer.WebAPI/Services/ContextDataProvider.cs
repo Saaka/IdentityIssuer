@@ -5,7 +5,7 @@ using IdentityIssuer.Application.Tenants;
 using IdentityIssuer.Application.Users;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
-using IdentityIssuer.Common.Requests.RequestContext;
+using IdentityIssuer.Common.Requests.RequestContexts;
 using IdentityIssuer.WebAPI.Configurations;
 using Microsoft.AspNetCore.Http;
 
@@ -13,7 +13,7 @@ namespace IdentityIssuer.WebAPI.Services
 {
     public interface IContextDataProvider
     {
-        Task<RequestContextData> GetRequestContext(HttpContext context);
+        Task<RequestContext> GetRequestContext(HttpContext context);
     }
 
     public class ContextDataProvider : IContextDataProvider
@@ -27,9 +27,9 @@ namespace IdentityIssuer.WebAPI.Services
             _usersProvider = usersProvider;
         }
         
-        public async Task<RequestContextData> GetRequestContext(HttpContext context)
+        public async Task<RequestContext> GetRequestContext(HttpContext context)
         {
-            var requestContext = new RequestContextData();
+            var requestContext = new RequestContext();
             if (HasTenantContext(context))
                 requestContext.WithTenantContext(await GetTenantContext(context));
             if (HasUserContext(context))

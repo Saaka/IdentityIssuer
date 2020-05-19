@@ -1,26 +1,26 @@
 using FluentValidation;
 using IdentityIssuer.Application.Validators.FluentValidation;
 using IdentityIssuer.Common.Enums;
-using IdentityIssuer.Common.Requests.RequestContext;
+using IdentityIssuer.Common.Requests.RequestContexts;
 
 namespace IdentityIssuer.Application
 {
     public static class FluentValidationExtensions
     {
-        public static IRuleBuilderOptions<T, RequestContextData> IsInUserContext<T>(
-            this IRuleBuilder<T, RequestContextData> ruleBuilder)
+        public static IRuleBuilderOptions<T, RequestContext> IsInUserContext<T>(
+            this IRuleBuilder<T, RequestContext> ruleBuilder)
             => ruleBuilder.SetValidator(new IsInUserContextValidator());
 
-        public static IRuleBuilderOptions<T, RequestContextData> IsInTenantContext<T>(
-            this IRuleBuilder<T, RequestContextData> ruleBuilder)
+        public static IRuleBuilderOptions<T, RequestContext> IsInTenantContext<T>(
+            this IRuleBuilder<T, RequestContext> ruleBuilder)
             => ruleBuilder.SetValidator(new IsInTenantContextValidator());
 
-        public static IRuleBuilderOptions<T, RequestContextData> IsInAdminTenantContext<T>(
-            this IRuleBuilder<T, RequestContextData> ruleBuilder)
+        public static IRuleBuilderOptions<T, RequestContext> IsInAdminTenantContext<T>(
+            this IRuleBuilder<T, RequestContext> ruleBuilder)
             => ruleBuilder.SetValidator(new IsInAdminTenantContextValidator());
 
-        public static IRuleBuilderOptions<T, RequestContextData> IsInAdminContext<T>(
-            this IRuleBuilder<T, RequestContextData> ruleBuilder)
+        public static IRuleBuilderOptions<T, RequestContext> IsInAdminContext<T>(
+            this IRuleBuilder<T, RequestContext> ruleBuilder)
             => ruleBuilder.SetValidator(new IsInAdminContextValidator());
 
         public static IRuleBuilderOptions<T, TProperty> WithMessageCode<T, TProperty>(

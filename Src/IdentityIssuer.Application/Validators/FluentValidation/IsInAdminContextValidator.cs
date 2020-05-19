@@ -1,10 +1,10 @@
 using FluentValidation;
 using IdentityIssuer.Common.Enums;
-using IdentityIssuer.Common.Requests.RequestContext;
+using IdentityIssuer.Common.Requests.RequestContexts;
 
 namespace IdentityIssuer.Application.Validators.FluentValidation
 {
-    public class IsInAdminContextValidator : AbstractValidator<RequestContextData>
+    public class IsInAdminContextValidator : AbstractValidator<RequestContext>
     {
         public IsInAdminContextValidator()
         {

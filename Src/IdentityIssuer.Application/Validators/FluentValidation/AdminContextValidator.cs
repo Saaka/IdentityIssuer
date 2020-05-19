@@ -1,7 +1,7 @@
 using FluentValidation;
 using IdentityIssuer.Application.Models;
 using IdentityIssuer.Common.Enums;
-using IdentityIssuer.Common.Requests.RequestContext;
+using IdentityIssuer.Common.Requests.RequestContexts;
 
 namespace IdentityIssuer.Application.Validators.FluentValidation
 {

@@ -1,4 +1,4 @@
-namespace IdentityIssuer.Common.Requests.RequestContext
+namespace IdentityIssuer.Common.Requests.RequestContexts
 {
     public class TenantContext
     {

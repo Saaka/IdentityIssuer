@@ -41,7 +41,7 @@ namespace IdentityIssuer.WebAPI.Services
         {
             var requestContext = _contextDataProvider.GetRequestContext(_httpContextAccessor.HttpContext).Result;
             if (requestContext == null || !requestContext.IsTenantContext)
-                throw new UnauthorizedAccessException(ErrorCode.MissingTenantContextData.ToString());
+                throw new UnauthorizedAccessException(ErrorCode.MissingTenantContext.ToString());
             if (requestContext.Tenant.TenantCode != kid)
                 throw new UnauthorizedAccessException(ErrorCode.KidMissmatch.ToString());
 

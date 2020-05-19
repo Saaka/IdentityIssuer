@@ -11,7 +11,7 @@ using IdentityIssuer.Application.Users.Repositories;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
 using IdentityIssuer.Common.Requests;
-using IdentityIssuer.Common.Requests.RequestContext;
+using IdentityIssuer.Common.Requests.RequestContexts;
 
 namespace IdentityIssuer.Application.Auth.Commands.AuthorizeUserWithFacebook
 {

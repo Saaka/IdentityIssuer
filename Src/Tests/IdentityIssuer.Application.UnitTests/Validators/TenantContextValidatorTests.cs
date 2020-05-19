@@ -1,7 +1,7 @@
 using IdentityIssuer.Application.Validators.FluentValidation;
 using Xunit;
 using FluentValidation.TestHelper;
-using IdentityIssuer.Common.Requests.RequestContext;
+using IdentityIssuer.Common.Requests.RequestContexts;
 
 namespace IdentityIssuer.Application.UnitTests.Validators
 {

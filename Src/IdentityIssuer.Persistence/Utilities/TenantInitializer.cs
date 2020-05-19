@@ -14,7 +14,7 @@ using IdentityIssuer.Application.Users.Models;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Exceptions;
 using IdentityIssuer.Common.Requests;
-using IdentityIssuer.Common.Requests.RequestContext;
+using IdentityIssuer.Common.Requests.RequestContexts;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -53,7 +53,7 @@ namespace IdentityIssuer.Persistence.Utilities
                 using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
                     var tenant = await _tenantsRepository.GetTenantAsync(config.TenantCode);
-                    var requestContext = new RequestContextData()
+                    var requestContext = new RequestContext()
                         .WithSystemAdminContext();
 
                     if (tenant != null)
@@ -81,7 +81,7 @@ namespace IdentityIssuer.Persistence.Utilities
             return null;
         }
 
-        private async Task<Guid> CreateTenant(IAdminTenantConfiguration config, RequestContextData requestContext)
+        private async Task<Guid> CreateTenant(IAdminTenantConfiguration config, RequestContext requestContext)
         {
             var createTenantCommand = new CreateTenantCommand(
                     config.TenantName,
@@ -104,7 +104,7 @@ namespace IdentityIssuer.Persistence.Utilities
         private async Task<RequestResult<UserDto>> CreateUser(
             IAdminTenantConfiguration config, Tenant tenant, Guid correlationId)
         {
-            var userContext = new RequestContextData()
+            var userContext = new RequestContext()
                 .WithTenantContext(new TenantContext(tenant.Id, tenant.Code, true));
             var createUserCommand = new RegisterUserWithCredentialsCommand(
                     _guid.GetGuid(),
@@ -120,7 +120,7 @@ namespace IdentityIssuer.Persistence.Utilities
             return createUserResult;
         }
 
-        private async Task MakeUserAdmin(Guid userGuid, RequestContextData requestContext, Guid correlationId)
+        private async Task MakeUserAdmin(Guid userGuid, RequestContext requestContext, Guid correlationId)
         {
             var makeUserAdminCommand = new MakeUserAdminCommand(
                     userGuid)
@@ -132,7 +132,7 @@ namespace IdentityIssuer.Persistence.Utilities
                 throw new DomainException(makeUserAdminResult);
         }
 
-        private async Task MakeUserTenantOwner(Guid userGuid, RequestContextData requestContext, Guid correlationId)
+        private async Task MakeUserTenantOwner(Guid userGuid, RequestContext requestContext, Guid correlationId)
         {
             var makeUserOwnerCommand = new MakeUserOwnerCommand(
                     userGuid)

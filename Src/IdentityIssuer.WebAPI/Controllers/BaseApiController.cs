@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Common.Requests;
-using IdentityIssuer.Common.Requests.RequestContext;
+using IdentityIssuer.Common.Requests.RequestContexts;
 using IdentityIssuer.WebAPI.Models;
 using IdentityIssuer.WebAPI.Services;
 using MediatR;
@@ -28,7 +28,7 @@ namespace IdentityIssuer.WebAPI.Controllers
         protected IMapper Mapper 
             => _mapper ??= HttpContext.RequestServices.GetService<IMapper>();
 
-        protected Task<RequestContextData> GetRequestContext()
+        protected Task<RequestContext> GetRequestContext()
             => _contextDataProvider.GetRequestContext(HttpContext);
 
         protected ActionResult<TResponseType> GetResponse<TResponseType>(RequestResult<TResponseType> result)

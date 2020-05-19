@@ -1,4 +1,3 @@
-using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Users.Models;
 using System;
 using IdentityIssuer.Common.Requests;

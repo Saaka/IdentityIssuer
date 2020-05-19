@@ -1,8 +1,8 @@
 using IdentityIssuer.Common.Enums;
 
-namespace IdentityIssuer.Common.Requests.RequestContext
+namespace IdentityIssuer.Common.Requests.RequestContexts
 {
-    public class RequestContextData
+    public class RequestContext
     {
         public AdminContextType AdminContextType { get; private set; } = AdminContextType.None;
         public bool IsTenantContext => Tenant != null;
@@ -11,13 +11,13 @@ namespace IdentityIssuer.Common.Requests.RequestContext
         public TenantContext Tenant { get; private set; }
         public UserContext User { get; private set; }
 
-        public RequestContextData WithTenantContext(TenantContext tenant)
+        public RequestContext WithTenantContext(TenantContext tenant)
         {
             Tenant = tenant;
             return this;
         }
 
-        public RequestContextData WithUserContext(UserContext user)
+        public RequestContext WithUserContext(UserContext user)
         {
             User = user;
             if (User.IsAdmin)
@@ -26,7 +26,7 @@ namespace IdentityIssuer.Common.Requests.RequestContext
             return this;
         }
 
-        public RequestContextData WithSystemAdminContext()
+        public RequestContext WithSystemAdminContext()
         {
             AdminContextType = AdminContextType.System;
             return this;

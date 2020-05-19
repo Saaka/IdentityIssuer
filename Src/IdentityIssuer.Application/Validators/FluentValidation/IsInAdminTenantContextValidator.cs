@@ -1,9 +1,9 @@
 using FluentValidation;
-using IdentityIssuer.Common.Requests.RequestContext;
+using IdentityIssuer.Common.Requests.RequestContexts;
 
 namespace IdentityIssuer.Application.Validators.FluentValidation
 {
-    public class IsInAdminTenantContextValidator : AbstractValidator<RequestContextData>
+    public class IsInAdminTenantContextValidator : AbstractValidator<RequestContext>
     {
         public IsInAdminTenantContextValidator()
         {

@@ -9,7 +9,7 @@ namespace IdentityIssuer.Common.Enums
         ///<summary>
         /// Could not establish Tenant from current context.
         /// </summary>
-        MissingTenantContextData = 2,
+        MissingTenantContext = 2,
         /// <summary>
         /// Current tenant does not match JWT Kid header.
         /// </summary>
