@@ -30,8 +30,8 @@ namespace IdentityIssuer.Application.Tenants.Commands.UpdateTenantProviderSettin
                 .MaximumLength(TenantConstants.ProviderKeyMaxLength)
                 .WithMessageCode(ValidationErrorCode.AuthProviderKeyTooLong);
 
-            RuleFor(x => x.AdminContextData)
-                .IsValid();
+            RuleFor(x => x.RequestContext)
+                .IsInAdminContext();
         }
     }
 }

@@ -15,8 +15,7 @@ namespace IdentityIssuer.Application.Tenants.Commands
         public bool EnableGoogleLogin { get; }
         public bool EnableFacebookLogin { get; }
         public IReadOnlyCollection<string> AllowedOrigins { get; }
-        public AdminContextData AdminContextData { get; private set; }
-
+        
         public UpdateTenantSettingsCommand(
             string tenantCode, string tokenSecret, int tokenExpirationInMinutes,
             bool enableCredentialsLogin, bool enableGoogleLogin, bool enableFacebookLogin,
@@ -29,12 +28,6 @@ namespace IdentityIssuer.Application.Tenants.Commands
             EnableGoogleLogin = enableGoogleLogin;
             EnableFacebookLogin = enableFacebookLogin;
             AllowedOrigins = allowedOrigins;
-        }
-
-        public UpdateTenantSettingsCommand WithAdminContextData(AdminContextData value)
-        {
-            AdminContextData = value;
-            return this;
         }
     }
 }

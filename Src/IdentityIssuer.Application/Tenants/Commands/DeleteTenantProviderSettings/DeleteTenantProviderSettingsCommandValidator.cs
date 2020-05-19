@@ -1,3 +1,4 @@
+using System.Data;
 using FluentValidation;
 using IdentityIssuer.Common.Enums;
 
@@ -17,8 +18,8 @@ namespace IdentityIssuer.Application.Tenants.Commands.DeleteTenantProviderSettin
                 .NotEmpty()
                 .WithMessageCode(ValidationErrorCode.AuthProviderTypeRequired);
 
-            RuleFor(x => x.AdminContextData)
-                .IsValid();
+            RuleFor(x => x.RequestContext)
+                .IsInAdminContext();
         }
     }
 }

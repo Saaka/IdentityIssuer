@@ -53,20 +53,21 @@ namespace IdentityIssuer.Persistence.Utilities
                 using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
                     var tenant = await _tenantsRepository.GetTenantAsync(config.TenantCode);
-                    var adminContextData = new AdminContextData(AdminContextType.System);
+                    var requestContext = new RequestContextData()
+                        .WithSystemAdminContext();
 
                     if (tenant != null)
                         return _mapper.Map<TenantDto>(tenant);
 
-                    var correlationId = await CreateTenant(config, adminContextData);
+                    var correlationId = await CreateTenant(config, requestContext);
 
                     tenant = await _tenantsRepository.GetTenantAsync(config.TenantCode);
 
                     var createUserResult = await CreateUser(config, tenant, correlationId);
 
-                    await MakeUserAdmin(createUserResult.Data.UserGuid, adminContextData, correlationId);
+                    await MakeUserAdmin(createUserResult.Data.UserGuid, requestContext, correlationId);
 
-                    await MakeUserTenantOwner(createUserResult.Data.UserGuid, adminContextData, correlationId);
+                    await MakeUserTenantOwner(createUserResult.Data.UserGuid, requestContext, correlationId);
 
                     transactionScope.Complete();
                     return _mapper.Map<TenantDto>(tenant);
@@ -80,7 +81,7 @@ namespace IdentityIssuer.Persistence.Utilities
             return null;
         }
 
-        private async Task<Guid> CreateTenant(IAdminTenantConfiguration config, AdminContextData adminContextData)
+        private async Task<Guid> CreateTenant(IAdminTenantConfiguration config, RequestContextData requestContext)
         {
             var createTenantCommand = new CreateTenantCommand(
                     config.TenantName,
@@ -92,7 +93,7 @@ namespace IdentityIssuer.Persistence.Utilities
                     false,
                     false,
                     true)
-                .WithAdminContextData(adminContextData);
+                .WithRequestContext(requestContext);
 
             var createTenantResult = await _mediator.Send(createTenantCommand);
             if (!createTenantResult.IsSuccess)
@@ -119,11 +120,11 @@ namespace IdentityIssuer.Persistence.Utilities
             return createUserResult;
         }
 
-        private async Task MakeUserAdmin(Guid userGuid, AdminContextData adminContextData, Guid correlationId)
+        private async Task MakeUserAdmin(Guid userGuid, RequestContextData requestContext, Guid correlationId)
         {
             var makeUserAdminCommand = new MakeUserAdminCommand(
-                    userGuid,
-                    adminContextData)
+                    userGuid)
+                .WithRequestContext(requestContext)
                 .WithCorrelationId(correlationId);
 
             var makeUserAdminResult = await _mediator.Send(makeUserAdminCommand);
@@ -131,11 +132,11 @@ namespace IdentityIssuer.Persistence.Utilities
                 throw new DomainException(makeUserAdminResult);
         }
 
-        private async Task MakeUserTenantOwner(Guid userGuid, AdminContextData adminContextData, Guid correlationId)
+        private async Task MakeUserTenantOwner(Guid userGuid, RequestContextData requestContext, Guid correlationId)
         {
             var makeUserOwnerCommand = new MakeUserOwnerCommand(
-                    userGuid,
-                    adminContextData)
+                    userGuid)
+                .WithRequestContext(requestContext)
                 .WithCorrelationId(correlationId);
 
             var makeUserOwnerResult = await _mediator.Send(makeUserOwnerCommand);

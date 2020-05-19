@@ -36,8 +36,8 @@ namespace IdentityIssuer.Application.Tenants.Commands.UpdateTenantSettings
                 .WithMessageCode(ValidationErrorCode.TenantAllowedOriginRequired)
                 .WithName(nameof(UpdateTenantSettingsCommand.AllowedOrigins));
 
-            RuleFor(x => x.AdminContextData)
-                .IsValid();
+            RuleFor(x => x.RequestContext)
+                .IsInAdminContext();
         }
 
         private static bool HaveOneLoginOptionEnabled(UpdateTenantSettingsCommand settings)

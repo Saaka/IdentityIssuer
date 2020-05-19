@@ -1,7 +1,6 @@
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Tenants;
 using IdentityIssuer.Application.Users;
 using IdentityIssuer.Common.Enums;
@@ -27,37 +26,7 @@ namespace IdentityIssuer.WebAPI.Services
             _tenantProvider = tenantProvider;
             _usersProvider = usersProvider;
         }
-
-        public async Task<AdminContextData> GetAdmin(HttpContext context)
-        {
-            var userGuid = GetUserGuidFromContext(context);
-            var user = await _usersProvider.GetUser(userGuid);
-
-            if (user == null)
-                throw new DomainException(ErrorCode.UserNotFound);
-
-            return user.IsAdmin
-                ? new AdminContextData(AdminContextType.User, user.Id)
-                : new AdminContextData(AdminContextType.None);
-        }
-
-        public async Task<AdminTenantContextData> GetAdminTenant(HttpContext context)
-        {
-            var tenantCode = GetTenantCodeFromContext(context);
-            var tenant = await _tenantProvider.GetTenantAsync(tenantCode);
-
-            return new AdminTenantContextData(tenant.Id, tenant.Code, tenant.IsAdminTenant);
-        }
-
-        private Guid GetUserGuidFromContext(HttpContext context)
-        {
-            var guid = context.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
-            return new Guid(guid);
-        }
-
-        private string GetTenantCodeFromContext(HttpContext context) =>
-            context.Request.Headers[IdentityIssuerHeaders.TenantHeader];
-
+        
         public async Task<RequestContextData> GetRequestContext(HttpContext context)
         {
             var requestContext = new RequestContextData();
@@ -90,6 +59,15 @@ namespace IdentityIssuer.WebAPI.Services
             
             return new UserContext(user.Id, user.UserGuid, user.IsAdmin);
         }
+
+        private Guid GetUserGuidFromContext(HttpContext context)
+        {
+            var guid = context.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            return new Guid(guid);
+        }
+
+        private string GetTenantCodeFromContext(HttpContext context) =>
+            context.Request.Headers[IdentityIssuerHeaders.TenantHeader];
 
         private bool HasTenantContext(HttpContext context) =>
             context.Request.Headers.ContainsKey(IdentityIssuerHeaders.TenantHeader);

@@ -15,7 +15,6 @@ namespace IdentityIssuer.Application.Tenants.Commands
         public bool EnableGoogleLogin { get; }
         public bool EnableFacebookLogin { get; }
         public bool IsAdminTenant { get; }
-        public AdminContextData AdminContextData { get; private set; }
 
         public CreateTenantCommand(
             string name,
@@ -37,12 +36,6 @@ namespace IdentityIssuer.Application.Tenants.Commands
             EnableGoogleLogin = enableGoogleLogin;
             EnableFacebookLogin = enableFacebookLogin;
             IsAdminTenant = isAdminTenant;
-        }
-
-        public CreateTenantCommand WithAdminContextData(AdminContextData contextData)
-        {
-            AdminContextData = contextData;
-            return this;
         }
     }
 }

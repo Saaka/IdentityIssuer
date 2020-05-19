@@ -6,13 +6,11 @@ namespace IdentityIssuer.Application.Users.Commands
 {
     public class MakeUserOwnerCommand : Request<Guid>
     {
-        public MakeUserOwnerCommand(Guid userGuid, AdminContextData adminContextData)
+        public MakeUserOwnerCommand(Guid userGuid)
         {
             UserGuid = userGuid;
-            AdminContextData = adminContextData;
         }
 
         public Guid UserGuid { get; }
-        public AdminContextData AdminContextData { get; }
     }
 }

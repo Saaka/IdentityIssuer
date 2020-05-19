@@ -1,5 +1,4 @@
 using FluentValidation;
-using IdentityIssuer.Application.Models;
 using IdentityIssuer.Application.Validators.FluentValidation;
 using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Requests.RequestContext;
@@ -22,13 +21,7 @@ namespace IdentityIssuer.Application
 
         public static IRuleBuilderOptions<T, RequestContextData> IsInAdminContext<T>(
             this IRuleBuilder<T, RequestContextData> ruleBuilder)
-            => ruleBuilder.SetValidator(new IsInAdminTenantContextValidator());
-
-        public static IRuleBuilderOptions<T, AdminContextData> IsValid<T>(
-            this IRuleBuilder<T, AdminContextData> ruleBuilder)
-        {
-            throw new System.NotImplementedException();
-        }
+            => ruleBuilder.SetValidator(new IsInAdminContextValidator());
 
         public static IRuleBuilderOptions<T, TProperty> WithMessageCode<T, TProperty>(
             this IRuleBuilderOptions<T, TProperty> rule, ValidationErrorCode code)

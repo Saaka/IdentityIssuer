@@ -35,8 +35,8 @@ namespace IdentityIssuer.Application.Tenants.Commands.CreateTenant
                 .MaximumLength(TenantConstants.TokenSecretMaxLength)
                 .WithMessageCode(ValidationErrorCode.TokenSecretInvalid);
 
-            RuleFor(x => x.AdminContextData)
-                .IsValid();
+            RuleFor(x => x.RequestContext)
+                .IsInAdminContext();
 
             RuleFor(x => x)
                 .Must(HaveOneLoginOptionEnabled)

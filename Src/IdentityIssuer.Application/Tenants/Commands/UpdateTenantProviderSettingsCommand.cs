@@ -11,8 +11,7 @@ namespace IdentityIssuer.Application.Tenants.Commands
         public AuthProviderType ProviderType { get; }
         public string Identifier { get; }
         public string Key { get; }
-        public AdminContextData AdminContextData { get; private set; }
-
+        
         public UpdateTenantProviderSettingsCommand(
             string tenantCode, AuthProviderType providerType,
             string identifier, string key)
@@ -21,12 +20,6 @@ namespace IdentityIssuer.Application.Tenants.Commands
             ProviderType = providerType;
             Identifier = identifier;
             Key = key;
-        }
-
-        public UpdateTenantProviderSettingsCommand WithAdminContextData(AdminContextData value)
-        {
-            AdminContextData = value;
-            return this;
         }
     }
 }

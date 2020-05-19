@@ -11,8 +11,8 @@ namespace IdentityIssuer.Application.Users.Commands.MakeUserAdmin
             RuleFor(x => x.UserGuid)
                 .NotEmpty()
                 .WithMessageCode(ValidationErrorCode.UserGuidRequired);
-            RuleFor(x => x.AdminContextData)
-                .IsValid();
+            RuleFor(x => x.RequestContext)
+                .IsInAdminContext();
         }
     }
 }
