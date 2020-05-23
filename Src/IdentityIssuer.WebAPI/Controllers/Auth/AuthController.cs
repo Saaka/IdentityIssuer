@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using IdentityIssuer.Application.Auth.Commands;
 using IdentityIssuer.Application.Auth.Models;
@@ -69,6 +70,12 @@ namespace IdentityIssuer.WebAPI.Controllers.Auth
             ).WithRequestContext(context));
 
             return GetResponse(result);
+        }
+
+        [HttpGet("confirm/{confirmationToken}")]
+        public async Task<IActionResult> Confirm(string confirmationToken)
+        {
+            throw new NotImplementedException();
         }
     }
 }
