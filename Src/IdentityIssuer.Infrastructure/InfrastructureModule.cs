@@ -1,5 +1,6 @@
 using IdentityIssuer.Application.Services;
 using IdentityIssuer.Infrastructure.Cache;
+using IdentityIssuer.Infrastructure.Email;
 using IdentityIssuer.Infrastructure.Helpers;
 using IdentityIssuer.Infrastructure.Http;
 using IdentityIssuer.Infrastructure.Images;
@@ -27,7 +28,10 @@ namespace IdentityIssuer.Infrastructure
                 .AddTransient<IGoogleApiClient, GoogleApiClient>()
                 .AddTransient<IFacebookApiClient, FacebookApiClient>()
                 
-                .AddTransient<IProfileImageUrlProvider, GravatarProfileImageUrlProvider>();
+                .AddTransient<IProfileImageUrlProvider, GravatarProfileImageUrlProvider>()
+                
+                .AddTransient<IMailClient, MailClient>()
+                ;
             
             return services;
         }
