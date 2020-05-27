@@ -82,7 +82,9 @@ namespace IdentityIssuer.Persistence
         public static IServiceCollection AddPersistenceModuleBehaviors(this IServiceCollection services)
         {
             services
-                .AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionScopeBehavior<,>));
+                .AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionScopeBehavior<,>))
+                
+                .AddScoped<ITransactionScopeManager, TransactionScopeManager>();
 
             return services;
         }

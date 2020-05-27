@@ -29,7 +29,7 @@ namespace IdentityIssuer.WebAPI.Controllers
             => _mapper ??= HttpContext.RequestServices.GetService<IMapper>();
 
         protected Task<RequestContext> GetRequestContext()
-            => _contextDataProvider.GetRequestContext(HttpContext);
+            => ContextDataProvider.GetRequestContext(HttpContext);
 
         protected ActionResult<TResponseType> GetResponse<TResponseType>(RequestResult<TResponseType> result)
         {
