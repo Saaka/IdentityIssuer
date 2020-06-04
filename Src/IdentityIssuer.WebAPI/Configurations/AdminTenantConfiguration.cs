@@ -1,5 +1,7 @@
+using System;
 using IdentityIssuer.Application.Configuration;
 using IdentityIssuer.Common.Constants;
+using IdentityIssuer.Common.Enums;
 using Microsoft.Extensions.Configuration;
 
 namespace IdentityIssuer.WebAPI.Configurations
@@ -37,5 +39,11 @@ namespace IdentityIssuer.WebAPI.Configurations
         public int TokenExpirationInMinutes =>
             int.Parse(_configuration[AdminTenantConfigurationProperties.TokenExpirationInMinutes] ??
                       TenantConstants.DefaultTokenExpirationInMinutes.ToString());
+
+        public LanguageCode DefaultLanguage =>
+            Enum.TryParse(_configuration[AdminTenantConfigurationProperties.DefaultLanguage],
+                out LanguageCode defaultLanguage)
+                ? defaultLanguage
+                : LanguageCode.EN;
     }
 }

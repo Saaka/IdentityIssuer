@@ -1,3 +1,5 @@
+using IdentityIssuer.Common.Enums;
+
 namespace IdentityIssuer.Application.Configuration
 {
     public interface IAdminTenantConfiguration
@@ -10,5 +12,6 @@ namespace IdentityIssuer.Application.Configuration
         string AllowedOrigin { get; }
         string TokenSecret { get; }
         int TokenExpirationInMinutes { get; }
+        LanguageCode DefaultLanguage { get; }
     }
 }

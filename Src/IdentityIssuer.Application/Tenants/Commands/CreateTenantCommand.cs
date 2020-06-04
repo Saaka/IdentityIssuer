@@ -1,4 +1,5 @@
 using IdentityIssuer.Application.Tenants.Models;
+using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Common.Requests;
 
 namespace IdentityIssuer.Application.Tenants.Commands
@@ -13,6 +14,7 @@ namespace IdentityIssuer.Application.Tenants.Commands
         public bool EnableCredentialsLogin { get; }
         public bool EnableGoogleLogin { get; }
         public bool EnableFacebookLogin { get; }
+        public LanguageCode DefaultLanguage { get; }
         public bool IsAdminTenant { get; }
 
         public CreateTenantCommand(
@@ -24,6 +26,7 @@ namespace IdentityIssuer.Application.Tenants.Commands
             bool enableCredentialsLogin,
             bool enableGoogleLogin,
             bool enableFacebookLogin,
+            LanguageCode defaultLanguage,
             bool isAdminTenant)
         {
             Name = name;
@@ -34,6 +37,7 @@ namespace IdentityIssuer.Application.Tenants.Commands
             EnableCredentialsLogin = enableCredentialsLogin;
             EnableGoogleLogin = enableGoogleLogin;
             EnableFacebookLogin = enableFacebookLogin;
+            DefaultLanguage = defaultLanguage;
             IsAdminTenant = isAdminTenant;
         }
     }

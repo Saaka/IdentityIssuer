@@ -17,5 +17,6 @@ namespace IdentityIssuer.WebAPI.Configurations
         public const string AllowedOrigin = "AdminTenant:AllowedOrigin";
         public const string TokenSecret = "AdminTenant:TokenSecret";
         public const string TokenExpirationInMinutes = "AdminTenant:TokenExpirationInMinutes";
+        public const string DefaultLanguage = "AdminTenant:DefaultLanguage";
     }
 }

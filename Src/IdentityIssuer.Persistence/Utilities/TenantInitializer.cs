@@ -82,6 +82,7 @@ namespace IdentityIssuer.Persistence.Utilities
 
         private async Task<Guid> CreateTenant(IAdminTenantConfiguration config, RequestContext requestContext)
         {
+            
             var createTenantCommand = new CreateTenantCommand(
                     config.TenantName,
                     config.TenantCode,
@@ -91,6 +92,7 @@ namespace IdentityIssuer.Persistence.Utilities
                     true,
                     false,
                     false,
+                    config.DefaultLanguage,
                     true)
                 .WithRequestContext(requestContext);
 

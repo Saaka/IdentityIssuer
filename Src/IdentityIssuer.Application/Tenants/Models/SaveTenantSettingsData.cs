@@ -1,3 +1,5 @@
+using IdentityIssuer.Common.Enums;
+
 namespace IdentityIssuer.Application.Tenants.Models
 {
     public class SaveTenantSettingsData
@@ -8,5 +10,6 @@ namespace IdentityIssuer.Application.Tenants.Models
         public bool EnableCredentialsLogin { get; set; }
         public bool EnableGoogleLogin { get; set; }
         public bool EnableFacebookLogin { get; set; }
+        public LanguageCode DefaultLanguage { get; set; }
     }
 }
