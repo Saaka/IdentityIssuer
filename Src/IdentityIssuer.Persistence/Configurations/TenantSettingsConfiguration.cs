@@ -36,7 +36,7 @@ namespace IdentityIssuer.Persistence.Configurations
 
             builder
                 .Property(x => x.DefaultLanguage)
-                .IsRequired(false)
+                .IsRequired()
                 .HasConversion(
                     v => (byte) v,
                     v => (LanguageCode) v);
