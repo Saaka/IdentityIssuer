@@ -20,6 +20,8 @@ namespace IdentityIssuer.Persistence
         
         public DbSet<TenantUserAvatarEntity> UserAvatars { get; set; }
         public DbSet<TenantApplicationEntity> TenantApplications { get; set; }
+        public DbSet<LanguageEntity> Languages { get; set; }
+        public DbSet<MailTemplateEntity> MailTemplates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

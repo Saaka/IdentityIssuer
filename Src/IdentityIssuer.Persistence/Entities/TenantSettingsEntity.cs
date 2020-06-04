@@ -1,3 +1,5 @@
+using IdentityIssuer.Common.Enums;
+
 namespace IdentityIssuer.Persistence.Entities
 {
     public class TenantSettingsEntity
@@ -9,6 +11,7 @@ namespace IdentityIssuer.Persistence.Entities
         public bool EnableCredentialsLogin { get; set; }
         public bool EnableGoogleLogin { get; set; }
         public bool EnableFacebookLogin { get; set; }
+        public LanguageCode? DefaultLanguage { get; set; }
 
         public virtual TenantEntity Tenant { get; set; }
     }

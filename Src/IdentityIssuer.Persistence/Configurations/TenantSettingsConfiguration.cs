@@ -1,11 +1,12 @@
 using IdentityIssuer.Common.Constants;
+using IdentityIssuer.Common.Enums;
 using IdentityIssuer.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace IdentityIssuer.Persistence.Configurations
 {
-    public class TenantSettingsConfiguration: IEntityTypeConfiguration<TenantSettingsEntity>
+    public class TenantSettingsConfiguration : IEntityTypeConfiguration<TenantSettingsEntity>
     {
         public void Configure(EntityTypeBuilder<TenantSettingsEntity> builder)
         {
@@ -24,14 +25,21 @@ namespace IdentityIssuer.Persistence.Configurations
             builder
                 .Property(x => x.EnableCredentialsLogin)
                 .IsRequired();
-            
+
             builder
                 .Property(x => x.EnableFacebookLogin)
                 .IsRequired();
-            
+
             builder
                 .Property(x => x.EnableGoogleLogin)
                 .IsRequired();
+
+            builder
+                .Property(x => x.DefaultLanguage)
+                .IsRequired(false)
+                .HasConversion(
+                    v => (byte) v,
+                    v => (LanguageCode) v);
         }
     }
 }
